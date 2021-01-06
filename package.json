@@ -1,0 +1,26 @@
+{
+  "name": "ZapBotUwU",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ffmpeg": "0.0.4",
+    "ffmpeg-static": "^4.2.7",
+    "fluent-ffmpeg": "^2.1.2",
+    "gifify": "^2.4.3",
+    "gifit": "0.0.3",
+    "gifsicle": "^5.1.0",
+    "gify": "^0.2.0",
+    "gm": "^1.23.1",
+    "graphicsmagick": "0.0.1",
+    "mime": "^2.4.7",
+    "venom-bot": "^2.2.3",
+    "web-videos": "^1.0.5"
+  }
+}
