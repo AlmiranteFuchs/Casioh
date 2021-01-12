@@ -2,32 +2,34 @@ var ffmpeg = require("fluent-ffmpeg");
 var inFilename = "recentMidia.mp4";
 var outFilename = "recentMidia.gif";
 const fs = require('fs');
-var burro
+
+var offenseJson
 var client
-fs.readFile("bernardoburro.json", function (err, data) {
+
+fs.readFile("offense.json", function (err, data) {
 
     // Check for errors 
     if (err) throw err;
 
     // Converting to JSON 
-    burro = JSON.parse(data);
+    offenseJson = JSON.parse(data);
 });
 
 module.exports = {
-    start: function (_client) {
+    Start: function (_client) {
         client = _client
     },
 
     //#region functions
-    sendReply: async function (message, text) {
+    SendReply: async function (message, text) {
         client.reply(message.from, text, message.id.toString())
     },
 
-    sendTextOnReply: async function (message, text) {
+    SendTextOnReply: async function (message, text) {
         client.sendText(message.from, text)
     },
 
-    getGpUserId: function (isGpID, messageID) {
+    GetGpUserId: function (isGpID, messageID) {
         //If isgpid return the ID of the gp, else return user ID
         let nm = 0
         if (isGpID) { nm = 1 }
@@ -35,7 +37,7 @@ module.exports = {
         return ID
     },
 
-    sendSticker: async function (isGif, httpMidia, message) {
+    SendSticker: async function (isGif, httpMidia, message) {
         let messagefrom = message.from
         if (isGif) {
             await client.sendImageAsStickerGif(messagefrom, httpMidia)
@@ -58,8 +60,8 @@ module.exports = {
             });
     },
 
-    everyonePing: async function (message) {
-        this.sendReply(message, 'Okay, chamando todos os cornos')
+    EveryonePing: async function (message) {
+        this.SendReply(message, 'Okay, chamando todos os cornos')
         let vetorUsersId = []
         let stringMessage = ""
         try {
@@ -82,31 +84,59 @@ module.exports = {
             , vetorUsersId)
     },
 
-    convertMidiaGif: async function (intputFileName, outputFileName, message) {
+    ConvertMidiaGif: async function (intputFileName, outputFileName, message) {
         try {
             ffmpeg(inFilename)
                 .outputOption("-vf", "scale=320:-1:flags=lanczos,fps=15")
                 .save(outFilename)
                 .on('end', () => {
-                    let http = 'recentMidia.gif'
-                    this.sendSticker(true, http, message);
+                    let http = `midia/recentMidia${this.GetGpUserId(true, message.from)}.gif`
+                    this.SendSticker(true, http, message);
                 });
         } catch (error) {
-            console.log(error)
+            console.log(this.SendReply(message, error))
         }
     },
 
-    burroCounter: async function (burroquem, offense, message) {
-        let temp = burroquem.toLocaleLowerCase()
-        burro[temp]++
-        write()
-        this.sendReply(message, burroquem + ' foi chamado de ' + offense + '  = ' + burro[temp] + ' vezes')
+    OffenseCounter: async function (who, offense, message) {
+        offenseJson[who][offense]++
+        WriteJSON()
+        this.SendReply(message, who + ' foi chamado(a) de ' + offense + '  = ' + offenseJson[who][offense] + ' vezes')
         return
+    },
+
+    CreateOffence: async function (who, offence, message) {
+        //check if who exists --> create
+        if (!offenseJson.hasOwnProperty(who)) {
+            let temp = { [who]: { [offence]: 0 } }
+
+            offenseJson = { ...offenseJson, ...temp }
+            await WriteJSON()
+            this.SendReply(message, "ofensa criada " + who + " ja pode ser chamado(a) de " + offence)
+            return
+        }
+        if (offenseJson[who].hasOwnProperty(offence)) {
+            this.SendReply(message, "Esse xingamento já existe, acho que você deveria ser o " + offence + " aqui ;)")
+            return
+        }
+        //write
+    },
+
+    CheckOffense: async function (who, offense) {
+        if (offenseJson.hasOwnProperty(who)) {
+            console.log("Essa pessoa existe")
+            if (offenseJson[who].hasOwnProperty(offense)) {
+                console.log("Ofensa existe em pessoa")
+                return true
+            } else { return false }
+        }
+        return false
     }
+
     //#endregion functions
 }
-async function write() {
-    fs.writeFile("bernardoburro.json", JSON.stringify(burro), err => {
+async function WriteJSON() {
+    fs.writeFile("offense.json", JSON.stringify(offenseJson), err => {
 
         // Checking for errors 
         if (err) throw err;

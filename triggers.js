@@ -1,50 +1,88 @@
+const { CheckOffense } = require("./commands.js")
 var commands = require("./commands.js")
+const text = require("./text.js")
+var txt = require("./text.js")
 
 module.exports = {
     start: function (client) {
-        commands.start(client)
+        commands.Start(client)
     },
 
     TriggerCommands: async function (message) {
-        let temp = message.body.toString().split(' ')[0].toLocaleLowerCase()
-        switch (temp) {
-
-            case "/help":
-                commands.sendReply(message, "_Fala ai galera do futvolei, Bruno henrique bot do bruno fuchs maneiro_")
-                commands.sendTextOnReply(message, "_Todos comandos começam com '/', Ai eles:\n */help* (sim)\n */everyone* (chama o pessoal ai)\n */sticker* +link/img (pega link na mensagem ou a ultima foto pra sticker)\n */stickerGif* (mesmo com gif ou mp4)\n */bernardoBurro* (burro dms, ajuda a contar)\n */christoferestranho* (conta cristofer estranho)\n _isso ai_")
-                break;
-
-            case "/everyone":
-                commands.everyonePing(message)
-                break;
-
-            case "/sticker":
-                http = message.body.toString()
-                if (http == '/sticker') {
-                    http = 'recentMidia.jpeg'
-                } else { http = message.body.toString().split(' ')[1] }
-                commands.sendSticker(false, http, message)
-                break;
-
-            case "/stickergif":
-                http = message.body.toString()
-                if (http == '/stickergif') {
-                    commands.convertMidiaGif('recentMidia.mp4', 'recentMidia.gif', message)
-                } else { http = message.body.toString().split(' ')[1], commands.sendSticker(true, http, message) }
-                break;
-
-            case "/bernardoburro":
-                commands.burroCounter('Bernardo', 'burro', message)
-                break;
-
-            case "/christoferestranho":
-                commands.burroCounter('Christofer', 'estranho', message)
-                break;
-
-
-            default:
-                commands.sendReply(message, 'Ta certo isso ai em, muito bom')
-                break;
+        let args
+        let arg1
+        let arg2
+        let command
+        let http
+        console.log(!!message.body.toString().split(/ +/)[1])
+        if (!!message.body.toString().split(/ +/)[1]) {
+            console.log("com arg")
+            args = message.body.toString().split(/ +/)
+            arg1 = args[1].toString().toLowerCase().replace("/", "")
+            if (!!args[2]) {
+                arg2 = args[2].toString().toLowerCase().replace("/", "")
+            }
+            http = message.body.toString().split(/ +/)[1]
+            command = args[0].toString().toLowerCase()
+        } else {
+            command = message.body.toString().toLowerCase()
         }
+
+
+
+        if (command == "/help") {
+            commands.SendReply(message, text.help)
+            commands.SendTextOnReply(message, text.help2)
+            return
+        }
+
+        if (command == "/everyone") {
+            commands.EveryonePing(message)
+            return
+        }
+
+        if (command == "/sticker") {
+            if (!arg1 == "") {
+                //Se possue argumento é link
+                commands.SendSticker(false, http, message)
+            } else {
+                //Senão, pegue a ultima mídia
+                commands.SendSticker(false, `midia/recentMidia${await commands.GetGpUserId(true, message.from)}.jpeg`, message)
+            }
+            return
+        }
+
+        if (command == "/stickergif") {
+            if (!arg1 == "") {
+                //Se possue argumento é link
+                commands.SendSticker(true, http, message)
+            } else {
+                //Senão, pegue a ultima mídia
+                commands.ConvertMidiaGif(`midia/recentMidia${await commands.GetGpUserId(true, message.from)}.mp4`, `midia/recentMidia${commands.GetGpUserId(true, message.from)}.gif`, message)
+            }
+            return
+        }
+
+        if (command == "/createoffence") {
+            if (arg1 == null || arg2 == null) {
+                commands.SendReply(message, "Argumentos faltam ai brother")
+                return
+            }
+            commands.CreateOffence(arg1, arg2, message)
+            return
+        }
+
+        if (!!arg1) {
+            console.log("Checando ofensa " + command.toString().replace("/", "") + " " + arg1)
+            if (await commands.CheckOffense(command.toString().replace("/", ""), arg1)) {
+                console.log(commands.CheckOffense(await command.toString().replace("/", ""), arg1))
+                //Count
+                commands.OffenseCounter(command.toString().replace("/", ""), arg1, message)
+                return
+            }
+            return
+        }
+
+        commands.SendReply(message, 'Nenhum comando encontrado com isso ai chapa')
     }
 }
