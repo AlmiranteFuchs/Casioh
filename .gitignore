@@ -6,3 +6,4 @@ token/
 /node_modules/.bin/
 debug.log
 *.ps1
+/node_modules
