@@ -1,46 +1,54 @@
-// Supports ES6
-// import { create, Whatsapp } from 'venom-bot';
 const venom = require("venom-bot");
 const commands = require("./commands");
 var triggers = require("./triggers");
 
-venom
-  .create((statusSession, session) => {
-    console.log("Status Session: ", statusSession); //return isLogged || notLogged || browserClose || qrReadSuccess || qrReadFail || autocloseCalled || desconnectedMobile || deleteToken || chatsAvailable || deviceNotConnected || serverWssNotConnected || noOpenBrowser
-    //Create session wss return "serverClose" case server for close
-    console.log("Session name: ", session);
-  })
-  .then((client) => start(client))
-  .catch((erro) => {
-    console.log(erro);
-  });
 
-async function start(client) {
-  triggers.start(client);
+const sessionName = 'sessionName';
+const commandStart = '/';
 
-  //On new message-->
-  client.onMessage(async (message) => {
-    let messageStr = "" + message.body.toString();
-    let isImg = false;
-    if (
-      message.isMedia === true ||
-      message.isMMS === true /* && message.isGroupMsg === true */
-    ) {
-      messageStr = "" + message.caption.toString();
-      isImg = true;
+
+class Bot {
+  constructor() {
+    this.initialize();
+  }
+
+  initialize = async () => {
+    this.client = await this.getVenomClient();
+    this.start();
+  }
+  
+  getVenomClient = async () => {
+    const client = await venom.create(
+                      sessionName,
+                      undefined,
+                      (statusSession, session) => {
+                        console.log(`Status session: ${statusSession}`);
+                        console.log(`Session name: ${session}`);
+                      },
+                      undefined
+                    )
+                    .then(client => client);
+
+    return client;
+  }
+
+  start = () => {
+    triggers.start(this.client);
+
+    this.client.onMessage(message => this.onReceiveMessage(message));
+  }
+
+  onReceiveMessage = message => {
+    const isImage = message.isMedia || message.isMMS;
+    const messageText = isImage ? message.caption : message.body;
+
+    if (messageText.startsWith(commandStart)) {
+      triggers.TriggerCommands(message, isImage, this.client);
+    } else {
+      triggers.TriggerLookUp(message, this.client);
     }
-
-    if (messageStr.startsWith("/") /*  && message.isGroupMsg === true */) {
-
-      triggers.TriggerCommands(message, isImg, client);
-    }else{
-      triggers.TriggerLookUp(message, client)
-    }
-  });
+    
+  }
 }
 
-/* async function test(client) {
-  const messages = await client.getAllUnreadMessages();
-  console.log(messages);
-}
- */
+const bot = new Bot();
