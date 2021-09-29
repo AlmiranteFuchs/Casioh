@@ -3,7 +3,6 @@ const commands = require("./commands");
 var triggers = require("./triggers");
 
 
-const sessionName = 'sessionName';
 const commandStart = '/';
 
 
@@ -18,16 +17,11 @@ class Bot {
   }
   
   getVenomClient = async () => {
-    const client = await venom.create(
-                      sessionName,
-                      undefined,
-                      (statusSession, session) => {
+    const client = await venom.create((statusSession, session) => {
                         console.log(`Status session: ${statusSession}`);
                         console.log(`Session name: ${session}`);
-                      },
-                      undefined
-                    )
-                    .then(client => client);
+                      })
+                      .then(client => client);
 
     return client;
   }
