@@ -3,6 +3,8 @@ var inFilename = "./recentMidia.mp4";
 var outFilename = "./recentMidia.gif";
 const ipc = require('node-ipc');
 const path = require('path');
+const lerolero = require('lerolero')
+
 
 const fs = require('fs');
 const ytdl = require('ytdl-core');
@@ -124,6 +126,16 @@ module.exports = {
             console.log(this.SendReply(message, error))
             this.SendReply(message, error)
         }
+    },
+
+    Hoefel: async function(message, texto) {
+        offenseJson['hoefel']++
+        WriteJSON()
+        this.SendTextOnReply(message, texto+"\n"+offenseJson['hoefel']+" _Vezes..._");
+    },
+
+    HoefelFrase: async function(message) {
+        this.SendTextOnReply(message, lerolero()+"\n_-Hoefel..._");
     },
 
     //#region offense 

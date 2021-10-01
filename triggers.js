@@ -63,6 +63,11 @@ module.exports = {
       return;
     }
 
+    if(command == "/hoefel"){
+      commands.HoefelFrase(message);
+      return;
+    }
+
     if (command == "/sticker") {
       if (isImg) {
         console.log("Downloading File");
@@ -210,7 +215,7 @@ module.exports = {
     let command = message.body.toString().toLowerCase().toString();
     if (command.includes("hoefel")) {
         
-      commands.SendTextOnReply(message, text.hoefel);
+      commands.Hoefel(message, text.hoefel);
       return;
     }
   },
