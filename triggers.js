@@ -6,11 +6,6 @@ const fs = require("fs");
 const mime = require("mime-types");
 
 module.exports = {
-  const: (Apps = {
-    DOTA: "dota",
-    MINE: "mine",
-  }),
-
   start: function (client) {
     commands.Start(client);
   },
@@ -158,16 +153,6 @@ module.exports = {
       message.body.toString().toLowerCase().toString().includes("/bom dia bot")
     ) {
       commands.SendReply(message, "bo dia");
-    }
-
-    if (command == "/dota2") {
-      commands.OpenApp(Apps.DOTA);
-      return;
-    }
-
-    if (command == "/mine") {
-      commands.OpenApp(Apps.MINE);
-      return;
     }
 
     if (command == "/search") {

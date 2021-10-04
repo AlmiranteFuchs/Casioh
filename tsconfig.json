@@ -1,0 +1,7 @@
+{
+  "strictPropertyInitialization": false,
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./"
+  }
+}
