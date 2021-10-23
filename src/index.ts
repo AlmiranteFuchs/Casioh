@@ -1,4 +1,4 @@
-import { Casioh } from './src/Casioh';
+import { Casioh } from './Casioh';
 
 const start = () => {
   Casioh.getInstance();
