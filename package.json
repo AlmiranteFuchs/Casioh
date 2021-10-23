@@ -24,14 +24,14 @@
     "lerolero": "^0.1.0",
     "mime": "^2.5.2",
     "node-ipc": "^9.1.4",
-    "ts-node": "^10.2.1",
+    "ts-node": "^10.4.0",
     "venom-bot": "^3.0.14",
     "web-videos": "^1.0.5",
     "wikijs": "^6.2.0",
     "ytdl-core": "^4.8.0"
   },
   "devDependencies": {
-    "@types/node": "^16.10.2",
-    "typescript": "^4.4.3"
+    "@types/node": "^16.11.4",
+    "typescript": "^4.4.4"
   }
 }
