@@ -1,15 +1,17 @@
 import { Message, Whatsapp } from 'venom-bot';
 import { CommandController } from './CommandController';
 import { MessageTrigger } from './MessageTrigger';
+import { ResponseController } from './ResponseController';
 
 const venom = require('venom-bot');
 
 class Casioh {
   private static casioh: Casioh;
 
-  client: Whatsapp;
-  commandController: CommandController;
-  messageTrigger: MessageTrigger;
+  private client: Whatsapp;
+  private commandController: CommandController;
+  private messageTrigger: MessageTrigger;
+  private responseController: ResponseController;
 
   private constructor() {
     this.initialize();
@@ -27,7 +29,12 @@ class Casioh {
     this.client = await this.getVenomClient();
     this.commandController = new CommandController();
     this.messageTrigger = new MessageTrigger(this.client, this.commandController);
+    this.responseController = new ResponseController(this.client);
     this.start();
+  }
+
+  public getResponseController(): ResponseController {
+    return this.responseController;
   }
 
   private getVenomClient = async () => {
@@ -45,53 +52,7 @@ class Casioh {
   }
 
   public onReceiveMessage = async (message: Message) => {
-    const senderChat = message.from;
-
-    const response = this.messageTrigger.processMessage(message);
-  }
-
-  private sendText = (recipient: string, text: string) => {
-    this.client.sendText(recipient, text);
-  }
-
-  private sendTextTagged = (recipient: string, text: string, taggeds: string[]) => {
-    this.client.sendMentioned(recipient, text, taggeds);
-  }
-
-  private sendTextReplyToMessage = (recipient: string, text: string, quotedMessageId: string) => {
-    this.client.reply(recipient, text, quotedMessageId);
-  }
-
-  private sendTextLinkPreview = (recipient: string, url: string, title: string) => {
-    this.client.sendLinkPreview(recipient, url, title);
-  }
-
-  private sendImage = (recipient: string, imagePath: string, imageName: string, caption: string = 'Caption') => {
-    this.client.sendImage(recipient, imagePath, imageName, caption);
-  }
-
-  private sendVoiceAudio = (recipient: string, audioPath: string) => {
-    this.client.sendVoice(recipient, audioPath);
-  }
-
-  private sendFile = (recipient: string, filePath: string, fileName: string, caption: string = 'Caption') => {
-    this.client.sendFile(recipient, filePath, fileName, caption);
-  }
-
-  private sendLocation = (recipient: string, latitude: string, longitude: string, title: string = 'Location') => {
-    this.client.sendLocation(recipient, latitude, longitude, title);
-  }
-
-  private sendImageAsSticker = (recipient: string, imagePath: string) => {
-    this.client.sendImageAsSticker(recipient, imagePath);
-  }
-
-  private sendGifAsAnimatedSticker = (recipient: string, gifPath: string) => {
-    this.client.sendImageAsStickerGif(recipient, gifPath);
-  }
-
-  private sendVideoAsAnimatedSticker = (recipient: string, videoPath: string, videoName: string, caption: string = 'Caption') => {
-    this.client.sendVideoAsGif(recipient, videoPath, videoName, caption);
+    this.messageTrigger.processMessage(message);
   }
 }
 
