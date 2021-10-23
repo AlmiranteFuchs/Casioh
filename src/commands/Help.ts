@@ -15,7 +15,8 @@ class Help implements CommandInterface {
 
   onCommand = async (args, message) => {
     try {
-      const text = await this.getHelpText();
+      let text = await this.getHelpText();
+      text = text.replace(/\\n/g, '\n');
 
       const responseController = Casioh.getInstance().getResponseController();
       responseController.sendText(message.from, text);
