@@ -1,4 +1,5 @@
-import { CommandInterface } from "./CommandInterface";
+import { Casioh } from '../Casioh';
+import { CommandInterface } from './CommandInterface';
 
 class Help implements CommandInterface {
   name = 'help';
@@ -9,11 +10,11 @@ class Help implements CommandInterface {
       name: 'default',
       parameters: 0,
     }
-  ]
+  ];
 
-  onCommand = args => {
-    console.log('im the helper!');
-    return 'abc';
+  onCommand = (args, message) => {
+    const responseController = Casioh.getInstance().getResponseController();
+    responseController.sendText(message.from, 'HELP MESSAGE');
   }
 }
 

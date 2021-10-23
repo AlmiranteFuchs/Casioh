@@ -1,4 +1,5 @@
-import { CommandInterface, Option } from "./CommandInterface";
+import { Message } from 'venom-bot';
+import { CommandInterface } from './CommandInterface';
 
 class Copypasta implements CommandInterface {
   name = 'copypasta';
@@ -6,29 +7,26 @@ class Copypasta implements CommandInterface {
 
   options = [
     {
-      name: 'default',                // /copypasta americo
+      name: 'default',
       parameters: 1,
     },
     {
-      name: 'create',                // /copypasta create hoefel eu acredito em hoefel
+      name: 'create',
       parameters: 2,
     },
     {
-      name: 'delete',               // /copypasta delete americo
+      name: 'delete',
       parameters: 1,
     }
   ]
 
-  onCommand = args => {
-    return 'abc';
+  onCommand = (args, message: Message) => {
   }
 
   onCommandCreate = (name, text) => {
-
   }
 
   onCommandDelete = name => {
-
   }
 }
 
