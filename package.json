@@ -13,6 +13,7 @@
   "dependencies": {
     "ffmpeg": "0.0.4",
     "ffmpeg-static": "^4.3.0",
+    "firebase": "^9.1.3",
     "fluent-ffmpeg": "^2.1.2",
     "gifify": "^2.4.3",
     "gifit": "0.0.3",
