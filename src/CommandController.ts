@@ -1,3 +1,4 @@
+import { Message } from 'venom-bot';
 import { CommandInterface } from './commands/CommandInterface';
 import { Copypasta } from './commands/Copypasta';
 import { Help } from './commands/Help';
@@ -24,8 +25,8 @@ class CommandController {
     return this.commands.filter(command => command.name === text)[0];
   }
 
-  executeCommand = (command, args) => {
-    command.onCommand(args);
+  executeCommand = (command, args, message: Message) => {
+    command.onCommand(args, message);
   }
 }
 

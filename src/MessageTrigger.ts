@@ -20,14 +20,14 @@ class MessageTrigger {
     messageText = messageText.replace('Nenhum comando encontrado com isso ai chapa', '/help');
 
     if (messageText.startsWith(COMMAND_START)) {
-      this.triggerCommand(messageText);
+      this.triggerCommand(messageText, message);
       return;
     }
 
     this.triggerNaturalText(messageText);
   }
 
-  triggerCommand = text => {
+  triggerCommand = (text: string, message: Message)  => {
     const splitText = text.split(' ');
 
     const commandText = splitText[0].replace('/', '');
@@ -40,7 +40,7 @@ class MessageTrigger {
     splitText.shift();
     const args = splitText;
 
-    this.commandController.executeCommand(command, args);
+    this.commandController.executeCommand(command, args, message);
   }
 
   triggerNaturalText = text => {
