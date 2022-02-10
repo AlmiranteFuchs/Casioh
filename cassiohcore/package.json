@@ -1,0 +1,17 @@
+{
+  "name": "cassiohcore",
+  "version": "1.0.0",
+  "description": "Computer Assisted Services on Input and Output Helper, Casioh",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Almirante Fuchs",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/dialogflow": "^4.6.0",
+    "dotenv": "^14.2.0",
+    "express": "^4.17.2",
+    "venom-bot": "^4.0.5"
+  }
+}

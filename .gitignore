@@ -6,4 +6,7 @@ token/
 /node_modules/.bin/
 debug.log
 *.ps1
-/node_modules
+cassiohcore/node_modules
+cassiohcore/.env
+cassiohcore/gpckey
+cassiohcore/tokens
