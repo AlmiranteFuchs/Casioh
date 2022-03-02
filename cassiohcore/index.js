@@ -1,5 +1,6 @@
 const venom = require("venom-bot");
-/* 554498579172@c.us */
+const { CommandsController } = require("./Controller/CommandsController.js");
+/* 554498579172@c.us eu acho*/
 
 class Bot {
   constructor() {
@@ -8,6 +9,7 @@ class Bot {
 
   initialize = async () => {
     this.client = await this.getVenomClient();
+    this.commands = new CommandsController(this.client);
     this.start();
   };
 
@@ -27,57 +29,10 @@ class Bot {
 
   start = async () => {
     this.client.onMessage((message) => this.onReceiveMessage(message));
-
-    const list = [
-      {
-        title: "Pasta",
-        rows: [
-          {
-            title: "Ravioli Lasagna",
-            description: "Made with layers of frozen cheese",
-          },
-        ],
-      },
-      {
-        title: "Dessert",
-        rows: [
-          {
-            title: "Baked Ricotta Cake",
-            description: "Sweets pecan baklava rolls",
-          },
-          {
-            title: "Lemon Meringue Pie",
-            description: "Pastry filled with lemonand meringue.",
-          },
-        ],
-      },
-    ];
-    await this.client
-      .sendListMenu(
-        "554498579172@c.us",
-        "Title",
-        "subTitle",
-        "Description",
-        "menu",
-        list
-      )
-      .then((result) => {
-        console.log("Result: ", result); //return object success
-      })
-      .catch((erro) => {
-        console.error("Error when sending: ", erro); //return object error
-      });
   };
 
   onReceiveMessage = (message) => {
-    /*   const isImage = message.isMedia || message.isMMS;
-    const messageText = isImage ? message.caption : message.body;
-
-    if (messageText.startsWith(commandStart)) {
-      triggers.TriggerCommands(message, isImage, this.client);
-    } else {
-      triggers.TriggerLookUp(message, this.client);
-    } */
+    console.log(message);
   };
 }
 const bot = new Bot();
