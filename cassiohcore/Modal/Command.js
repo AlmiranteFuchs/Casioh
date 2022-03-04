@@ -6,12 +6,14 @@ class Command {
     //Level 2 = users
   }
 
-  checkLevelAccess(userLevelAccess) {
+  executeCommand(userLevelAccess) {
+    console.log("Base class executada");
     if (userLevelAccess > this.levelAccess) {
+      //Talvez enviar mensagem dizendo que não possui nível de acesso
+      console.log('sem acesso');
       return false;
-    } else {
-      return true;
     }
+    //O que for executado aqui e comum a todos
   }
 }
 

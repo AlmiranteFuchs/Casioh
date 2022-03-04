@@ -7,14 +7,23 @@ class CommandsController {
   }
 
   //Funções:
-  async exemplo() {
-    let comando = new Command(2);
-    if (comando.checkLevelAccess(0)) {
-      console.log("Sim");
-    } else {
-      console.log("Não");
-    }
+
+  async exemplo(userLevelAccessCommand) {
+    //Commando que precisa de no mínimo nivel 2 para uso
+    let comando = new Command(0);
+    let base = comando.executeCommand;
+
+    comando.executeCommand = function (userLevelAccess) {
+      base.call(this, userLevelAccess);
+      console.log("filho");
+      //Função editavel aqui
+    };
+
+    comando.executeCommand(userLevelAccessCommand);
   }
   //Funções END:
 }
+
+const teste = new CommandsController("aaa");
+teste.exemplo(7);
 module.exports = { CommandsController };
