@@ -10,3 +10,4 @@ cassiohcore/node_modules
 cassiohcore/.env
 cassiohcore/gpckey
 cassiohcore/tokens
+node_modules

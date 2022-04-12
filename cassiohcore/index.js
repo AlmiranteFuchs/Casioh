@@ -2,7 +2,7 @@ const venom = require("venom-bot");
 const { CommandsController } = require("./Controller/CommandsController.js");
 /* 554498579172@c.us eu acho*/
 
-class Bot {
+class Cassioh {
   constructor() {
     this.initialize();
   }
