@@ -1,14 +1,29 @@
-export default
-    class Command_Model {
-    constructor(public nome: string, public access_level: number) { }
+export class Command_Model {
+    constructor(public nome: string, private _access_level: number) { }
 
-    console_nome(): void {
+    public console_nome(): void {
         //Faz algo sem return
         console.log(`This name test ${this.nome}`);
     }
 
-    check_access_level(_access_level: number): boolean {
-        let response = _access_level > this.access_level ? true : false;
-        return response; 
+    private check_access_level(access_level: number): boolean {
+        /***
+         * Retorna se o usuário tem acesso ao comando
+         * @param {number} access_level Nível do usuário
+         */
+
+        let response = (access_level <= this._access_level && access_level >= 0) ? true : false;
+        return response;
+    }
+
+    public exec_command(access_level: number): void {
+        /***
+         * Método base, sobrescrito nas instâncias? Não pode ser abstrato... ;(
+         */
+        if (this.check_access_level(access_level)) {
+
+        } else {
+            //TODO: tratamento de negação
+        }
     }
 }
