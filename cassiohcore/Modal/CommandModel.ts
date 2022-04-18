@@ -1,29 +1,41 @@
-export class Command_Model {
-    constructor(public nome: string, private _access_level: number) { }
+export abstract class CommandModel {
+    //constructor(public _nome: string, private _access_level: number) { }
+    protected abstract _key: string;
+    protected abstract _access_level: number;
 
-    public console_nome(): void {
-        //Faz algo sem return
-        console.log(`This name test ${this.nome}`);
+    get key(): string {
+        return this._key;
     }
 
-    private check_access_level(access_level: number): boolean {
+    protected check_access_level(access_level: number): boolean {
         /***
          * Retorna se o usuário tem acesso ao comando
          * @param {number} access_level Nível do usuário
+         * ---------------------------------------------
+         * 0 - root
+         * 1 - adm
+         * 2 - CAAD
+         * 3 - trusted
+         * 4 - plebe
          */
 
         let response = (access_level <= this._access_level && access_level >= 0) ? true : false;
         return response;
     }
 
-    public exec_command(access_level: number): void {
+    public Exec_command(access_level: number): boolean {
         /***
-         * Método base, sobrescrito nas instâncias? Não pode ser abstrato... ;(
+         * Referência pública para checar acesso o método abstrato na instância
          */
         if (this.check_access_level(access_level)) {
-
+            this.execute_command();
+            return true;
         } else {
             //TODO: tratamento de negação
+            console.log("Usuário sem acesso ao comando");
+            return false;
         }
     }
+
+    protected abstract execute_command(): void;
 }
