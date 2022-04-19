@@ -1,15 +1,32 @@
-import { HelloWorldCommand } from "./cassiohcore/Commands/HelloWorld";
 import { CommandsControllerService } from "./cassiohcore/Controller/CommandsController";
-import { CommandModel } from "./cassiohcore/Modal/CommandModel";
+const venom = require('venom-bot');
 
-//
-let user_access: number = 0;
-let key: string = "olá";
+const command_service = new CommandsControllerService().Command_service;
+//command_service.Run_command('olá',0);
+const commandStart: string = '/';
 
-let commands_array: Array<CommandModel> = [];
-let command_hello = new HelloWorldCommand();
+venom
+    .create({
+        session: 'CassiohV2',   // name of session
+    })
+    .then((client: any) => start(client))
+    .catch((erro: any) => {
+        console.log(erro);
+    });
 
-commands_array.push(command_hello);
-
-let command_service = new CommandsControllerService(commands_array);
-command_service.Run_command(key, user_access);
+function start(client: any) {
+    client.onMessage((message: any) => {
+        let key: string = message.body.split(" ")[0].toLowerCase();
+        command_service.Run_command(key, 0);
+        /* if (message.body === 'Hi' && message.isGroupMsg === false) {
+            client
+                .sendText(message.from, 'Welcome Venom 🕷')
+                .then((result: any) => {
+                    console.log('Result: ', result); //return object success
+                })
+                .catch((erro: any) => {
+                    console.error('Error when sending: ', erro); //return object error
+                });
+        } */
+    });
+}
