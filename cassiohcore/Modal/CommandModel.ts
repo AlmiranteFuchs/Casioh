@@ -1,3 +1,5 @@
+import { params_to_command } from "./keyTreatment";
+
 export abstract class CommandModel {
     //constructor(public _nome: string, private _access_level: number) { }
     protected abstract _key: string;
@@ -23,12 +25,12 @@ export abstract class CommandModel {
         return response;
     }
 
-    public Exec_command(access_level: number): boolean {
+    public Exec_command(access_level: number, params?: params_to_command): boolean {
         /***
          * Referência pública para checar acesso o método abstrato na instância
          */
         if (this.check_access_level(access_level)) {
-            this.execute_command();
+            this.execute_command(params);
             return true;
         } else {
             //TODO: tratamento de negação
@@ -37,5 +39,5 @@ export abstract class CommandModel {
         }
     }
 
-    protected abstract execute_command(): void;
+    protected abstract execute_command(params?: params_to_command): void;
 }
