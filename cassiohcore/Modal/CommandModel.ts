@@ -1,12 +1,25 @@
+import { SendReplyCommand } from "../Commands/SendReply";
 import { params_to_command } from "./keyTreatment";
 
 export abstract class CommandModel {
     //constructor(public _nome: string, private _access_level: number) { }
     protected abstract _key: string;
+    protected abstract _name: string;
+    protected abstract _description: string;
     protected abstract _access_level: number;
 
     get key(): string {
         return this._key;
+    }
+    get name(): string {
+        return this._name;
+    }
+    get description(): string {
+        return this._description;
+    }
+
+    get access_level(): number {
+        return this._access_level;
     }
 
     protected check_access_level(access_level: number): boolean {
@@ -35,6 +48,12 @@ export abstract class CommandModel {
         } else {
             //TODO: tratamento de negação
             console.log("Usuário sem acesso ao comando");
+            let message: string = "Sinto muito meu caro, mas parece que eu não confio em você pra fazer isso ai 🤷🏽‍♂️";
+            params?.client.reply(
+                params?.from,
+                message,
+                params?.id
+            );
             return false;
         }
     }

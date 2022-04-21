@@ -19,7 +19,7 @@ function start(client: any) {
     client.onMessage((message: any) => {
         let key: string = message.body.split(" ")[0].toLowerCase();
         let params: params_to_command = KeyTreatment.Params_command(client, message);
-        
+
         params.command_key_raw?.startsWith("/") ? command_service.Run_command(0, params) : "";
     });
 }
