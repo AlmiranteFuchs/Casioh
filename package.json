@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "venom-bot": "^4.0.11"
+  }
+}
