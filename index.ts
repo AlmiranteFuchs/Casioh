@@ -1,5 +1,8 @@
 import { CommandsControllerService } from "./cassiohcore/Controller/CommandsController";
 import { KeyTreatment, params_to_command } from "./cassiohcore/Modal/keyTreatment";
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 const venom = require('venom-bot');
 
 const command_service = new CommandsControllerService().Command_service;
@@ -17,6 +20,7 @@ venom
 
 function start(client: any) {
     client.onMessage((message: any) => {
+        
         let key: string = message.body.split(" ")[0].toLowerCase();
         let params: params_to_command = KeyTreatment.Params_command(client, message);
 

@@ -2,6 +2,7 @@
 export class KeyTreatment {
     public static Params_command(client?: any, message?: any, specific?: any): any {
         try {
+            message.text = message.type == "list_response" ? message.body : message.text;
             let _message_params: params_to_command = {
                 id: message.id,
                 body: message.body,
@@ -26,6 +27,7 @@ export class KeyTreatment {
                 specific: specific,
                 //Venom
                 client: client
+
             };
             _message_params.command_params?.shift();
             return _message_params;
@@ -66,5 +68,6 @@ export interface params_to_command {
 enum chat_type {
     image = "image",
     chat = "chat",
+    list_response = "list_response",
     unknown = "unknown"
 }
