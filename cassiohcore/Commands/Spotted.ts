@@ -7,7 +7,7 @@ export class SpottedCommand extends CommandModel {
     protected _description: string = "Redireciona uma mensagem anônimamente para o grupo do Spotted";
     protected _key: string = "spotted";
     protected _access_level: number = 4;
-    protected _word_min_size: number = 42;
+    protected _word_min_size: number = 5;
     protected _spotted_group_id: string = "120363023365772349@g.us";
 
 
