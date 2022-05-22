@@ -1,10 +1,11 @@
 {
   "name": "cassiohcore",
-  "version": "2.0.4",
+  "version": "2.0.6",
   "description": "Computer Assisted Services on Input and Output Helper, Casioh",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"ts-node index.ts"
   },
   "author": "Almirante Fuchs",
   "license": "MIT",

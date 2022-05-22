@@ -3,6 +3,7 @@ import { HelloWorldCommand } from "../Commands/HelloWorld";
 import { params_to_command } from "../Modal/keyTreatment";
 import { EveryoneCommand } from "../Commands/Everyone";
 import { HelpCommand } from "../Commands/Help";
+import { SpottedCommand } from "../Commands/Spotted";
 
 const _ = require('lodash');
 
@@ -29,6 +30,7 @@ export class CommandsControllerService {
     private _command_hello: CommandModel;
     private _command_everyone: EveryoneCommand;
     private _command_help: HelpCommand;
+    private _command_spotted: SpottedCommand;
 
     public Command_service: CommandsController;
 
@@ -38,10 +40,12 @@ export class CommandsControllerService {
         this._command_hello = new HelloWorldCommand();
         this._command_everyone = new EveryoneCommand();
         this._command_help = new HelpCommand();
+        this._command_spotted = new SpottedCommand();
 
         CommandsControllerService._commands_array.push(this._command_hello);
         CommandsControllerService._commands_array.push(this._command_everyone);
         CommandsControllerService._commands_array.push(this._command_help);
+        CommandsControllerService._commands_array.push(this._command_spotted);
 
 
         this.Command_service = new CommandsController(CommandsControllerService._commands_array);
