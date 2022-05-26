@@ -11,5 +11,8 @@ cassiohcore/node_modules
 cassiohcore/.env
 cassiohcore/gpckey
 cassiohcore/tokens
+cassiohcore/Ignore
 node_modules
 tokens/
+cassiohcore/index.js
+cassiohcore/notindex.js

@@ -1,7 +1,8 @@
 import { CommandsControllerService } from "./cassiohcore/Controller/CommandsController";
 import { KeyTreatment, params_to_command } from "./cassiohcore/Modal/keyTreatment";
-//import * as dotenv from 'dotenv';
-//dotenv.config();
+
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 console.log(`
 $$$$$$\                                           $$\                $$\                           $$\    $$\  $$$$$$\  
@@ -14,13 +15,10 @@ $$ |  $$\   $$  __$$ |    \____$$\     \____$$\    $$ |  $$ |  $$ |   $$ |  $$ |
 \______/ \__\_______|\__\_______/ \__\_______/ \__\__|\__\______/ \__\__|  \__|                        \_/    \________|
                                                                                                                         
                                                                                                                                                                                                                 
-`, `font-family: monospace`);
-
+`);
 
 const venom = require('venom-bot');
-
 const command_service = new CommandsControllerService().Command_service;
-//command_service.Run_command('olá',0);
 const commandStart: string = '/';
 
 venom
