@@ -2,6 +2,7 @@ import { CommandsControllerService } from "./cassiohcore/Controller/CommandsCont
 import { KeyTreatment, params_to_command } from "./cassiohcore/Modal/keyTreatment";
 
 import * as dotenv from 'dotenv';
+import { CaadReceipt } from "./websocket";
 dotenv.config();
 
 console.log(`
@@ -21,6 +22,7 @@ const venom = require('venom-bot');
 const command_service = new CommandsControllerService().Command_service;
 const commandStart: string = '/';
 
+
 venom
     .create({
         session: 'CassiohV2',   // name of session
@@ -31,6 +33,8 @@ venom
     });
 
 function start(client: any) {
+    const caadReceipt: CaadReceipt = new CaadReceipt(client);
+    caadReceipt.init();
     client.onMessage((message: any) => {
         /* console.log(message!.from!.toString());
         return; */
