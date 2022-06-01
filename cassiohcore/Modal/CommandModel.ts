@@ -38,18 +38,18 @@ export abstract class CommandModel {
         return response;
     }
 
-    public Exec_command(access_level: number, params?: params_to_command): boolean {
+    public async Exec_command(access_level: number, params?: params_to_command): Promise<boolean> {
         /***
          * Referência pública para checar acesso o método abstrato na instância
          */
         if (this.check_access_level(access_level)) {
-            this.execute_command(params);
+            await this.execute_command(params);
             return true;
         } else {
             //TODO: tratamento de negação
             console.log("Usuário sem acesso ao comando");
             let message: string = "Sinto muito meu caro, mas parece que eu não confio em você pra fazer isso ai 🤷🏽‍♂️";
-            params?.client.reply(
+            await params?.client.reply(
                 params?.from,
                 message,
                 params?.id

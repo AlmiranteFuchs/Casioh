@@ -4,20 +4,21 @@ import { params_to_command } from "../Modal/keyTreatment";
 import { EveryoneCommand } from "../Commands/Everyone";
 import { HelpCommand } from "../Commands/Help";
 import { SpottedCommand } from "../Commands/Spotted";
+import { RollDiceCommand } from "../Commands/Roll";
 
 const _ = require('lodash');
 
 class CommandsController {
     constructor(public Commands_list: Array<CommandModel>) { }
 
-    public Run_command(user_access_level: number, params: params_to_command): void {
+    public async Run_command(user_access_level: number, params: params_to_command): Promise<void> {
         let trigger_key: string = params.command_key!;
         let command: CommandModel = _.find(this.Commands_list, function (el: CommandModel) {
             return el.key == trigger_key;
         });
 
         if (command) {
-            let command_result = command.Exec_command(user_access_level, params);
+            let command_result = await command.Exec_command(user_access_level, params);
             command_result ? console.log("Executado com sucesso") : console.log("Algo de errado aconteceu");
             return;
         }
@@ -31,6 +32,7 @@ export class CommandsControllerService {
     private _command_everyone: EveryoneCommand;
     private _command_help: HelpCommand;
     private _command_spotted: SpottedCommand;
+    private _command_roll: RollDiceCommand;
 
     public Command_service: CommandsController;
 
@@ -41,11 +43,13 @@ export class CommandsControllerService {
         this._command_everyone = new EveryoneCommand();
         this._command_help = new HelpCommand();
         this._command_spotted = new SpottedCommand();
+        this._command_roll = new RollDiceCommand();
 
         CommandsControllerService._commands_array.push(this._command_hello);
         CommandsControllerService._commands_array.push(this._command_everyone);
         CommandsControllerService._commands_array.push(this._command_help);
         CommandsControllerService._commands_array.push(this._command_spotted);
+        CommandsControllerService._commands_array.push(this._command_roll);
 
 
         this.Command_service = new CommandsController(CommandsControllerService._commands_array);
