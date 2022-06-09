@@ -1,6 +1,6 @@
 {
   "name": "cassiohcore",
-  "version": "2.0.6",
+  "version": "2.0.12",
   "description": "Computer Assisted Services on Input and Output Helper, Casioh",
   "main": "index.js",
   "scripts": {

@@ -3,6 +3,8 @@ import { params_to_command } from "../Modal/keyTreatment";
 import { SendReplyCommand } from "./SendReply";
 
 export class HelloWorldCommand extends CommandModel {
+    protected _active: boolean = true;
+    protected _hidden: boolean = false;
     protected _name: string = "/olá";
     protected _description: string = "Só teste mesmo";
     protected _key: string = "olá";

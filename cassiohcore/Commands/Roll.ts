@@ -3,6 +3,8 @@ import { params_to_command } from "../Modal/keyTreatment";
 import { SendReplyCommand } from "./SendReply";
 
 export class RollDiceCommand extends CommandModel {
+    protected _active: boolean = true;
+    protected _hidden: boolean = false;
     protected _name: string = "/roll ( 1d1...10d10 )";
     protected _description: string = "Roda dados!";
     protected _key: string = "roll";

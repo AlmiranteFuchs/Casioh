@@ -16,3 +16,4 @@ node_modules
 tokens/
 cassiohcore/index.js
 cassiohcore/notindex.js
+.env

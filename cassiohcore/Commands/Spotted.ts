@@ -3,6 +3,8 @@ import { params_to_command } from "../Modal/keyTreatment";
 import { SendReplyCommand } from "./SendReply";
 
 export class SpottedCommand extends CommandModel {
+    protected _active: boolean = true;
+    protected _hidden: boolean = false;
     protected _name: string = "/spotted";
     protected _description: string = "Redireciona uma mensagem anônimamente para o grupo do Spotted";
     protected _key: string = "spotted";

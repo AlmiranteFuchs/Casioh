@@ -7,6 +7,8 @@ export abstract class CommandModel {
     protected abstract _name: string;
     protected abstract _description: string;
     protected abstract _access_level: number;
+    protected abstract _active: boolean;           //Define se é executável a qualquer momento
+    protected abstract _hidden: boolean;           //Define se aparece no /help
 
     get key(): string {
         return this._key;
@@ -20,6 +22,14 @@ export abstract class CommandModel {
 
     get access_level(): number {
         return this._access_level;
+    }
+
+    get hidden(): boolean {
+        return this._hidden
+    }
+
+    get active(): boolean {
+        return this._active
     }
 
     protected check_access_level(access_level: number): boolean {
@@ -42,6 +52,11 @@ export abstract class CommandModel {
         /***
          * Referência pública para checar acesso o método abstrato na instância
          */
+        if (!this._active) {
+            console.log("Comando desativado no momento");
+            return false;
+        }
+
         if (this.check_access_level(access_level)) {
             await this.execute_command(params);
             return true;

@@ -9,7 +9,8 @@ declare global {
       DB_STORAGE_BUCKET: string
       DB_MESSAGING_SENDER_ID: string,
       DB_APP_ID: string,
-      CAAD_PWS: string
+      CAAD_PWS: string,
+      ROOT_PWS: string
     }
   }
 }

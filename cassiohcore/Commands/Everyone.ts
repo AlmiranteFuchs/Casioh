@@ -3,6 +3,8 @@ import { params_to_command } from "../Modal/keyTreatment";
 import { SendReplyCommand } from "./SendReply";
 
 export class EveryoneCommand extends CommandModel {
+    protected _active: boolean = false;
+    protected _hidden: boolean = false;
     protected _name: string = "/everyone";
     protected _description: string = "Pinga todos os amiguinhos do grupo";
     protected _key: string = "everyone";
