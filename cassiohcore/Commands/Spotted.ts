@@ -1,6 +1,7 @@
 import { CommandModel } from "../Modal/CommandModel";
 import { params_to_command } from "../Modal/keyTreatment";
 import { SendReplyCommand } from "./SendReply";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 export class SpottedCommand extends CommandModel {
     protected _active: boolean = true;
@@ -27,6 +28,18 @@ export class SpottedCommand extends CommandModel {
                 try {
                     let random_id: number = Math.floor(Math.random() * (999 - 100 + 1) + 100);
                     let spotted_message: string = params!.text!.replace("/spotted", "");
+
+                    axios.post('http://localhost:5000/add_spotted', {
+                        message: spotted_message
+                    })
+                        .then((response: any) => {
+                            payload = { 'text_reply': "Enviei para o visualizer da festa!" };
+                            console.log("festa ok");
+                        }, (error: any) => {
+                            payload = { 'text_reply': "Não consegui enviar para a festa!" };
+                            console.log(error);
+                        });
+
                     spotted_message = `_Novo Spotted ${random_id}#:_\n ${spotted_message}`;
 
                     await params?.client

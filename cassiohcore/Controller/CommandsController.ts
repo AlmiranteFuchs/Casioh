@@ -6,6 +6,7 @@ import { HelpCommand } from "../Commands/Help";
 import { SpottedCommand } from "../Commands/Spotted";
 import { RollDiceCommand } from "../Commands/Roll";
 import { AdminShellCommand } from "../Commands/AdminShell";
+import { MoneyToRuCommand } from "../Commands/MoneyToRu";
 
 const _ = require('lodash');
 
@@ -35,6 +36,7 @@ export class CommandsControllerService {
     private _command_spotted: SpottedCommand;
     private _command_roll: RollDiceCommand;
     private _command_shell: AdminShellCommand;
+    private _command_moneyToRu: MoneyToRuCommand;
 
     public Command_service: CommandsController;
 
@@ -47,6 +49,7 @@ export class CommandsControllerService {
         this._command_spotted = new SpottedCommand();
         this._command_roll = new RollDiceCommand();
         this._command_shell = new AdminShellCommand();
+        this._command_moneyToRu = new MoneyToRuCommand();
 
         CommandsControllerService._commands_array.push(this._command_hello);
         CommandsControllerService._commands_array.push(this._command_everyone);
@@ -54,6 +57,7 @@ export class CommandsControllerService {
         CommandsControllerService._commands_array.push(this._command_spotted);
         CommandsControllerService._commands_array.push(this._command_roll);
         CommandsControllerService._commands_array.push(this._command_shell);
+        CommandsControllerService._commands_array.push(this._command_moneyToRu);
 
 
         this.Command_service = new CommandsController(CommandsControllerService._commands_array);
