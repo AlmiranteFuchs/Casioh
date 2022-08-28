@@ -26,27 +26,35 @@ export class RuMenuCommand extends CommandModel {
         await page.waitForSelector("p > strong");
 
         const response = await page.evaluate(() => {
+          //@ts-ignore
           const breakfastTitle: any = document.querySelectorAll(
             "tbody > tr:nth-child(1)"
           );
+          //@ts-ignore
           const lunchTitle: any = document.querySelectorAll(
             "tbody > tr:nth-child(3)"
           );
+          //@ts-ignore
           const dinnerTitle: any = document.querySelectorAll(
             "tbody > tr:nth-child(5)"
           );
 
+          //@ts-ignore
           const breakfastHTML: any = document.querySelectorAll(
             "tbody > tr:nth-child(2)"
           );
+          //@ts-ignore
           const lunchHTML: any = document.querySelectorAll(
             "tbody > tr:nth-child(4)"
           );
+          //@ts-ignore
           const dinnerHTML: any = document.querySelectorAll(
             "tbody > tr:nth-child(6)"
           );
+          //@ts-ignore
           let daysHTML: any = document.querySelectorAll("p > strong");
 
+          //@ts-ignore
           const numberOfTables: any = document.querySelectorAll("table").length;
 
           let days = [""];
@@ -54,6 +62,7 @@ export class RuMenuCommand extends CommandModel {
           if (numberOfTables === 1) {
             // Checks if the first day has a table
             if (
+              //@ts-ignore
               document.querySelector("p + figure")?.children.toString() ===
               "[object HTMLTableElement]"
             ) {

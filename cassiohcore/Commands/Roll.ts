@@ -13,7 +13,7 @@ export class RollDiceCommand extends CommandModel {
     protected async execute_command(params?: params_to_command): Promise<void> {
         console.log("Rodando Roll!");
         try {
-            var dices: string = params?.command_params[0];
+            var dices: string = (params as any).command_params[0];
 
             if (!dices) {
                 let payload: object = { 'text_reply': "Amigão esse comando precisa de um parâmetro e eu não encontrei \u{1F625}" };

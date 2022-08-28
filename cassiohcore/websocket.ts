@@ -1,5 +1,5 @@
-import { SendText } from "./cassiohcore/Commands/SendText";
-import { params_to_command } from "./cassiohcore/Modal/keyTreatment";
+import { SendText } from "./Commands/SendText";
+import { params_to_command } from "./Modal/keyTreatment";
 
 export class CaadReceipt {
 

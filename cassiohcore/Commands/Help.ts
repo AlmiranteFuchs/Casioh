@@ -3,8 +3,6 @@ import { CommandModel } from "../Modal/CommandModel";
 import { params_to_command } from "../Modal/keyTreatment";
 import { SendReplyCommand } from "./SendReply";
 
-const version = require('../package.json').version;
-
 export class HelpCommand extends CommandModel {
     protected _active: boolean = true;
     protected _hidden: boolean = false;

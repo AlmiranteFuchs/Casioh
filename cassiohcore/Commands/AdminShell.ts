@@ -14,8 +14,8 @@ export class AdminShellCommand extends CommandModel {
         console.log("!!!!Rodando cmd!!!!");
         try {
 
-            let root_pws: string = params?.command_params[0];
-            let cmd_command: string = params?.text.split(root_pws)[1];
+            let root_pws: string = (params as any).command_params[0] as any;
+            let cmd_command: string = (params as any).text.split(root_pws)[1] as any;
             let payload: object = { 'text_reply': "Opa amigão, você está voando muito perto do sol... De falha é meu mestre mas falha é nosso acordo" };
 
 
@@ -38,7 +38,7 @@ export class AdminShellCommand extends CommandModel {
                     message += data;
                 });
 
-                cmd.on('close', function (code) {
+                cmd.on('close', function (code:any) {
                     payload = { 'text_reply': message + `\n\nClosing code: ${code}` };
                     params!.specific = payload;
                     let command_result = new SendReplyCommand().Exec_command(0, params);

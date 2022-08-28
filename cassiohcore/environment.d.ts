@@ -10,7 +10,8 @@ declare global {
       DB_MESSAGING_SENDER_ID: string,
       DB_APP_ID: string,
       CAAD_PWS: string,
-      ROOT_PWS: string
+      ROOT_PWS: string,
+      
     }
   }
 }

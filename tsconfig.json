@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+      "target": "ES6",                          
+      "module": "commonjs",                    
+      "lib": ["es6"],                     
+      "allowJs": true,
+      "outDir": "build",                          
+      "rootDir": "cassiohcore",
+      "strict": true,         
+      "noImplicitAny": true,
+      "esModuleInterop": true,
+      "resolveJsonModule": true
+    }
+  }
+  

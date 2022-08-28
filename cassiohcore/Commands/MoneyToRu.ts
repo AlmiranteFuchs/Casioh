@@ -20,8 +20,8 @@ export class MoneyToRuCommand extends CommandModel {
         const ru_price: number = 1.30;
 
         try {
-            var coin: string = params?.command_params[0]?.toUpperCase() ?? null;
-            var amount: number = parseInt(params?.command_params[1]) ?? 1;
+            var coin: string = (params as any).command_params[0]?.toUpperCase() ?? null;
+            var amount: number = parseInt((params as any).command_params[1]) ?? 1;
 
             if (coin) {
 

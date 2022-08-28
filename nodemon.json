@@ -1,0 +1,8 @@
+{
+    "watch": [
+        "cassiohcore"
+    ],
+    "ext": ".ts,.js",
+    "ignore": [],
+    "exec": "ts-node ./cassiohcore/index.ts"
+}
