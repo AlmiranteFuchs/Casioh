@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cassioh Project</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script src="https://kit.fontawesome.com/c03ec31dc2.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" >
+        <div class="container-fluid">
+            <a class="navbar-brand align-middle" href="/"> <img class="mb-1"
+                    src="img/Design_sem_nome-removebg-preview.png" alt="" width="24" height="24"> C.a.s.s.i.o.h</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/status">Status</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <hr class="solid">
+    <div class="container hero mt-5">
+        <div class="row">
+            <div class="col-12 col-lg-6 col-xl-5 offset-xl-1">
+                <h1 class="display-3">The Cassioh Project</h1>
+                <p class="lead col-12 offset-xl-1"> Cassioh stands for Computer Assisted Services on Input and Output
+                    Helper, nonetheless, it's a
+                    conversational chat bot aimed to assist and day-to-day communications on groups, the project is
+                    open source so you can collaborate too!<br></p>
+            </div>
+            <div class="col-md-5 col-lg-5 offset-lg-1 offset-xl-0 d-none d-lg-block">
+                <div class="float-end">
+                    <img class="device" src="img/Cassioh.png" width="300vw" height="300vh">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Site footer -->
+    <footer class="footer">
+        <hr class="solid mt-5">
+        <div class="container">
+        </div>
+        <div class="container">
+            <div class="col-12 row">
+                <ul class="social-icons col-12">
+                    <li><a href="https://github.com/AlmiranteFuchs/Casioh"><i class="fab fa-github"></i></a></li>
+                    <li><a href="https://wa.me/5541936180244"><i class="fab fa-whatsapp"></i></a></li>
+                    <li><a href="https://www.linkedin.com/in/bruno-fuchs-45a4901b5/"><i class="fab fa-linkedin"></i></a>
+                    </li>
+                    <li><a href="https://www.inf.ufpr.br/bfss21/"><i class="fas fa-globe"></i></a></li>
+                </ul>
+                <div class="row">
+                    <span class="col-12 mt-2 text-muted">Copyright &copy; 2022 All Rights Reserved by
+                        <a href="https://www.inf.ufpr.br/bfss21/">Fuchs</a>.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+    <script>
+        function addDarkmodeWidget() {
+            new Darkmode().showWidget();
+        }
+        window.addEventListener('load', addDarkmodeWidget);
+    </script>
+
+</body>
+
+</html>
+<style>
+    .darkmode-toggle::after {
+        content: "🌓";
+    }
+
+    button .darkmode-layer,
+    .darkmode-toggle {
+        z-index: 500;
+    }
+
+    body {
+        background-color: #f7f0f5;
+    }
+
+    hr.solid {
+        border-top: 1px solid #bbb;
+        margin: 0;
+        margin-bottom: 2vh;
+    }
+
+    .social-icons {
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none
+    }
+
+    .social-icons li {
+        display: inline-block;
+        margin-bottom: 4px
+    }
+
+    .social-icons li.title {
+        margin-right: 15px;
+        text-transform: uppercase;
+        color: #96a2b2;
+        font-weight: 700;
+        font-size: 13px
+    }
+
+    .social-icons a {
+        background-color: #eceeef;
+        color: #818a91;
+        font-size: 16px;
+        display: inline-block;
+        line-height: 44px;
+        width: 44px;
+        height: 44px;
+        text-align: center;
+        margin-right: 8px;
+        border-radius: 100%;
+        -webkit-transition: all .2s linear;
+        -o-transition: all .2s linear;
+        transition: all .2s linear
+    }
+
+    .social-icons a:active,
+    .social-icons a:focus,
+    .social-icons a:hover {
+        color: #fff;
+        background-color: #66999b
+    }
+
+    .social-icons.size-sm a {
+        line-height: 34px;
+        height: 34px;
+        width: 34px;
+        font-size: 14px
+    }
+    
+    .footer {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding: 1rem;
+        text-align: center;
+    }
+</style>

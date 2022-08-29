@@ -15,11 +15,9 @@ console.log(`
 By: Fuchs                                                                                                                                                                                                          
 `);
 
-const command_service = new CommandsControllerService().Command_service;
-
 //#region API Express Config
 const http: any = require("http");
-const port: any = process.env.PORT || 3000;
+const port: any = process.env.PORT || 4000;
 
 import { App } from "./app";
 
