@@ -1,4 +1,5 @@
 import axios from "axios";
+import { SessionController } from "../Controller/SessionController";
 import { CommandModel } from "../Modal/CommandModel";
 import { params_to_command } from "../Modal/keyTreatment";
 import { SendReplyCommand } from "./SendReply";
@@ -61,10 +62,11 @@ export class MoneyToRuCommand extends CommandModel {
 
 
 
-            let payload: object = { 'text_reply': text };
+          /*   let payload: object = { 'text_reply': text };
             params!.specific = payload;
 
-            let command_result = new SendReplyCommand().Exec_command(0, params);
+            let command_result = new SendReplyCommand().Exec_command(0, params); */
+            SessionController.send_message(params!.chat_id!, text);
         } catch (error) {
             console.log(`Erro em Hello: ${this._name}`, error);
         }

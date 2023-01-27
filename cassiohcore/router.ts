@@ -14,5 +14,5 @@ const router: Router = Router();
 
 //Rotas
 router.get('/', home_controller.Home);
-router.post('/receive-message', receiver_controller.receive);
+//router.post('/receive-message', receiver_controller.receive);
 export { router };

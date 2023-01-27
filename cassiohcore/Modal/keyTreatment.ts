@@ -4,7 +4,7 @@ export class KeyTreatment {
         try {
             message.text = message.type == "list_response" ? message.body : message.text;
             let _message_params: params_to_command = {
-                id: message.id,
+                id: message.messages[0].key.remoteJid,
                 body: message.body,
                 text: message.text,
                 type: message.type == "chat" ? chat_type.chat : message.type == "image" ? chat_type.image : chat_type.unknown,

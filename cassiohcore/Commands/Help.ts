@@ -1,4 +1,5 @@
 import { CommandsControllerService } from "../Controller/CommandsController";
+import { SessionController } from "../Controller/SessionController";
 import { CommandModel } from "../Modal/CommandModel";
 import { params_to_command } from "../Modal/keyTreatment";
 import { SendReplyCommand } from "./SendReply";
@@ -21,7 +22,7 @@ export class HelpCommand extends CommandModel {
                     rowss.push({ title: comando.name, description: comando.description });
             });
 
-            const list = [
+           /*  const list = [
                 {
                     title: "Comandos utilizáveis!",
                     rows: rowss
@@ -38,7 +39,9 @@ export class HelpCommand extends CommandModel {
                 console.log('Result: ', "executado"); //return object success
             }).catch((erro: any) => {
                 console.error('Error when sending: ', erro); //return object error
-            });
+            }); */
+
+            SessionController.send_message(params!.chat_id!, "Comandos disponíveis para uso geral: \n" + rowss.map((row: any) => row.title).join("\n"));
 
         } catch {
 

@@ -20,5 +20,10 @@ const http: any = require("http");
 const port: any = process.env.PORT || 4000;
 
 import { App } from "./app";
+import { SessionController } from "./Controller/SessionController";
 
 new App().server.listen(port, () => { console.log(`[Cassioh]: Server is running at http://localhost:${port}`); });
+
+SessionController.init_session();
+
+export let CommandsControllers = new CommandsControllerService();

@@ -1,5 +1,7 @@
 import { SendReplyCommand } from "../Commands/SendReply";
-import { params_to_command } from "./keyTreatment";
+import { SessionController } from "../Controller/SessionController";
+import { } from "./keyTreatment";
+import { IMessage_format } from "./MessageModel";
 
 export abstract class CommandModel {
     //constructor(public _nome: string, private _access_level: number) { }
@@ -48,7 +50,7 @@ export abstract class CommandModel {
         return response;
     }
 
-    public async Exec_command(access_level: number, params?: params_to_command): Promise<boolean> {
+    public async Exec_command(access_level: number, params?: IMessage_format): Promise<boolean> {
         /***
          * Referência pública para checar acesso o método abstrato na instância
          */
@@ -64,14 +66,10 @@ export abstract class CommandModel {
             //TODO: tratamento de negação
             console.log("Usuário sem acesso ao comando");
             let message: string = "Sinto muito meu caro, mas parece que eu não confio em você pra fazer isso ai 🤷🏽‍♂️";
-            await params?.client.reply(
-                params?.from,
-                message,
-                params?.id
-            );
+            SessionController.send_message(params!.from!, message);
             return false;
         }
     }
 
-    protected abstract execute_command(params?: params_to_command): void;
+    protected abstract execute_command(params?: IMessage_format): void;
 }
