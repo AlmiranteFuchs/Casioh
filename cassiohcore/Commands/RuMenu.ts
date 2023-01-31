@@ -1,9 +1,6 @@
 const puppeteer = require("puppeteer");
-
-import { SessionController } from "../Controller/SessionController";
 import { CommandModel } from "../Modal/CommandModel";
-import { params_to_command } from "../Modal/keyTreatment";
-import { SendReplyCommand } from "./SendReply";
+import { IMessage_format } from "../Modal/MessageModel";
 
 export class RuMenuCommand extends CommandModel {
   protected _active: boolean = true;
@@ -13,7 +10,7 @@ export class RuMenuCommand extends CommandModel {
   protected _key: string = "ru";
   protected _access_level: number = 3;
 
-  protected async execute_command(params?: params_to_command): Promise<void> {
+  protected async execute_command(params?: IMessage_format): Promise<void> {
     console.log("Rodando Cardápio do RU!");
     try {
       const getMenu = async () => {
@@ -152,13 +149,14 @@ export class RuMenuCommand extends CommandModel {
         Cardápio RU Centro Politécnico \n 
         ${messageParsed}`;
 
-    /*   let payload: object = { text_reply: message };
-
-      params!.specific = payload; */
+      /*   let payload: object = { text_reply: message };
+  
+        params!.specific = payload; */
 
       /* let command_result: any = new SendReplyCommand().Exec_command(0, params); */
-      SessionController.send_message(params!.from!, message);
-      
+      params!.specific.reply = true;
+      params?.client_name.send_message(params?.id, message, params);
+
     } catch (error) {
       console.log("Erro em Ru: ", error);
     }

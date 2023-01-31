@@ -1,7 +1,6 @@
 import { CommandModel } from "../Modal/CommandModel";
-import { params_to_command } from "../Modal/keyTreatment";
-import { SendReplyCommand } from "./SendReply";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { IMessage_format } from "../Modal/MessageModel";
 
 export class SpottedCommand extends CommandModel {
     protected _active: boolean = true;
@@ -14,9 +13,12 @@ export class SpottedCommand extends CommandModel {
     protected _spotted_group_id: string = "120363023365772349@g.us";
 
 
-    protected async execute_command(params?: params_to_command): Promise<void> {
+    protected async execute_command(params?: IMessage_format): Promise<void> {
         console.log("Rodando Spotted!");
         let payload: object = {};
+
+        // FIXME: fix this
+        return;
 
         //FIXME: lazy fix, add remove from help option on every command!
         if (params!.text == `/spotted\n${this._description}`) {
@@ -42,8 +44,8 @@ export class SpottedCommand extends CommandModel {
 
                     spotted_message = `_Novo Spotted ${random_id}#:_\n ${spotted_message}`;
 
-                    await params?.client
-                        .sendText(this._spotted_group_id, spotted_message)
+                    await params?.client_name
+                        .send_message(this._spotted_group_id, spotted_message, null)
                         .then(() => {
                             payload = { 'text_reply': "Encaminhado anônimamente para o spotted! \u{1F608}, apagarei nossa conversa para ficar em segredo \u{1F92B}" };
                             console.log('Spotted enviado!'); //return object success
@@ -52,7 +54,7 @@ export class SpottedCommand extends CommandModel {
                             payload = { 'text_reply': "Hum... algum erro rolou... avisa o adm ai \u{1F625}" };
                             console.error('Error when sending: ', erro); //return object error
                         });
-                    await params?.client.deleteChat(params!.from)
+                    await params?.client_name.deleteChat(params!.from)
                         .then(() => {
                         })
                         .catch(() => {
@@ -74,7 +76,7 @@ export class SpottedCommand extends CommandModel {
         try {
             params!.specific = payload;
 
-            let command_result = new SendReplyCommand().Exec_command(0, params);
+            
         } catch (error: any) {
             console.log("Erro em Spotted, Reply: ", error);
         }

@@ -1,8 +1,6 @@
 import { CommandsControllerService } from "../Controller/CommandsController";
-import { SessionController } from "../Controller/SessionController";
 import { CommandModel } from "../Modal/CommandModel";
-import { params_to_command } from "../Modal/keyTreatment";
-import { SendReplyCommand } from "./SendReply";
+import { IMessage_format } from "../Modal/MessageModel";
 
 export class HelpCommand extends CommandModel {
     protected _active: boolean = true;
@@ -12,7 +10,7 @@ export class HelpCommand extends CommandModel {
     protected _key: string = "help";
     protected _access_level: number = 4;
 
-    protected async execute_command(params?: params_to_command): Promise<void> {
+    protected async execute_command(params?: IMessage_format): Promise<void> {
         console.log("Rodando Help!");
         try {
             let all_commands: Array<CommandModel> = CommandsControllerService.Get_commands_list();
@@ -22,31 +20,29 @@ export class HelpCommand extends CommandModel {
                     rowss.push({ title: comando.name, description: comando.description });
             });
 
-           /*  const list = [
-                {
-                    title: "Comandos utilizáveis!",
-                    rows: rowss
-                }
-            ];
-            await params?.client.sendListMenu(
-                params?.from,
-                "{ -- *_Lista de comandos V2_* -- }",
-                "subTitle",
-                "_Comandos disponíveis para uso geral_",
-                "Abrir..",
-                list
-            ).then(() => {
-                console.log('Result: ', "executado"); //return object success
-            }).catch((erro: any) => {
-                console.error('Error when sending: ', erro); //return object error
-            }); */
-
-            SessionController.send_message(params!.chat_id!, "Comandos disponíveis para uso geral: \n" + rowss.map((row: any) => row.title).join("\n"));
-
-        } catch {
-
+            /*  const list = [
+                 {
+                     title: "Comandos utilizáveis!",
+                     rows: rowss
+                 }
+             ];
+             await params?.client.sendListMenu(
+                 params?.from,
+                 "{ -- *_Lista de comandos V2_* -- }",
+                 "subTitle",
+                 "_Comandos disponíveis para uso geral_",
+                 "Abrir..",
+                 list
+             ).then(() => {
+                 console.log('Result: ', "executado"); //return object success
+             }).catch((erro: any) => {
+                 console.error('Error when sending: ', erro); //return object error
+             }); */
+            params!.specific.reply = true;
+            params?.client_name.send_message(params!.chat_id!, "Comandos disponíveis para uso geral: \n" + rowss.map((row: any) => row.title).join("\n"), params);
+        } catch (error) {
+            console.log("Erro em Help: ", error);
         }
-
     }
 
 

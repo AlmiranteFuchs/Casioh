@@ -1,6 +1,5 @@
 import { CommandModel } from "../Modal/CommandModel";
-import { params_to_command } from "../Modal/keyTreatment";
-import { SendReplyCommand } from "./SendReply";
+import { IMessage_format } from "../Modal/MessageModel";
 
 export class AdminShellCommand extends CommandModel {
     protected _active: boolean = true;
@@ -10,8 +9,11 @@ export class AdminShellCommand extends CommandModel {
     protected _key: string = "cmd";
     protected _access_level: number = 0;
 
-    protected async execute_command(params?: params_to_command): Promise<void> {
+    protected async execute_command(params?: IMessage_format): Promise<void> {
         console.log("!!!!Rodando cmd!!!!");
+
+        // FIXME: fix it
+        return;
         try {
 
             let root_pws: string = (params as any).command_params[0] as any;
@@ -41,11 +43,9 @@ export class AdminShellCommand extends CommandModel {
                 cmd.on('close', function (code:any) {
                     payload = { 'text_reply': message + `\n\nClosing code: ${code}` };
                     params!.specific = payload;
-                    let command_result = new SendReplyCommand().Exec_command(0, params);
                 })
             } else {
                 params!.specific = payload;
-                let command_result = new SendReplyCommand().Exec_command(0, params);
             }
 
         } catch (error) {

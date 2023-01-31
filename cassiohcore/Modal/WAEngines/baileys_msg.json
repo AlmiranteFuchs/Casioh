@@ -1,0 +1,52 @@
+{
+    "messages": [
+        {
+            "key": {
+                "remoteJid": "120363041877741739@g.us",
+                "fromMe": false,
+                "id": "3EB01F3CF46A01AB965A",
+                "participant": "554498579172@s.whatsapp.net"
+            },
+            "messageTimestamp": 1675123033,
+            "pushName": "A. Fuchs",
+            "message": {
+                "conversation": "a",
+                "messageContextInfo": {
+                    "deviceListMetadata": {
+                        "senderKeyHash": "y97nFe7U69hDTw==",
+                        "senderTimestamp": "1674671036",
+                        "recipientKeyHash": "bFRsFPdHBKNGEQ==",
+                        "recipientTimestamp": "1674790937"
+                    },
+                    "deviceListMetadataVersion": 2
+                }
+            },
+            "message_reply": {
+                "extendedTextMessage": {
+                    "text": "a",
+                    "contextInfo": {
+                        "stanzaId": "3EB0F843912B1739D6F2",
+                        "participant": "554498579172@s.whatsapp.net",
+                        "quotedMessage": {
+                            "conversation": "a"
+                        },
+                        "disappearingMode": {
+                            "initiator": "CHANGED_IN_CHAT"
+                        }
+                    },
+                    "inviteLinkGroupTypeV2": "DEFAULT"
+                },
+                "messageContextInfo": {
+                    "deviceListMetadata": {
+                        "senderKeyHash": "y97nFe7U69hDTw==",
+                        "senderTimestamp": "1674671036",
+                        "recipientKeyHash": "bFRsFPdHBKNGEQ==",
+                        "recipientTimestamp": "1674790937"
+                    },
+                    "deviceListMetadataVersion": 2
+                }
+            }
+        }
+    ],
+    "type": "append"
+}

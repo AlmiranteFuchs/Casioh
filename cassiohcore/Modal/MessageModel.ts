@@ -26,4 +26,5 @@ export interface IMessage_format {
     specific?: any;
     //Venom Client
     client_name?: any;
+    message?: any;
   }

@@ -1,8 +1,6 @@
 import axios from "axios";
-import { SessionController } from "../Controller/SessionController";
 import { CommandModel } from "../Modal/CommandModel";
-import { params_to_command } from "../Modal/keyTreatment";
-import { SendReplyCommand } from "./SendReply";
+import { IMessage_format } from "../Modal/MessageModel";
 
 export class MoneyToRuCommand extends CommandModel {
     protected _active: boolean = true;
@@ -12,7 +10,7 @@ export class MoneyToRuCommand extends CommandModel {
     protected _key: string = "mru";
     protected _access_level: number = 4;
 
-    protected async execute_command(params?: params_to_command): Promise<void> {
+    protected async execute_command(params?: IMessage_format): Promise<void> {
         console.log(`Rodando ${this._name}`);
 
         //Default error message 
@@ -60,13 +58,8 @@ export class MoneyToRuCommand extends CommandModel {
                 }
             }
 
-
-
-          /*   let payload: object = { 'text_reply': text };
-            params!.specific = payload;
-
-            let command_result = new SendReplyCommand().Exec_command(0, params); */
-            SessionController.send_message(params!.chat_id!, text);
+            params!.specific.reply = true;
+            params?.client_name.send_message(params!.chat_id!, text, params);
         } catch (error) {
             console.log(`Erro em Hello: ${this._name}`, error);
         }

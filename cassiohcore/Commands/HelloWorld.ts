@@ -1,8 +1,5 @@
-import { SessionController } from "../Controller/SessionController";
 import { CommandModel } from "../Modal/CommandModel";
-import { params_to_command } from "../Modal/keyTreatment";
 import { IMessage_format } from "../Modal/MessageModel";
-import { SendReplyCommand } from "./SendReply";
 
 export class HelloWorldCommand extends CommandModel {
     protected _active: boolean = true;
@@ -17,9 +14,8 @@ export class HelloWorldCommand extends CommandModel {
         try {
             let message = "👋 Olá mundo, vasto mundo mais vasto é meu coração, mais vasto é a torcida da cruz de malta no pendão, Glória!";
 
-            console.log(params);
-            
-            let command_result = new SendReplyCommand().Exec_command(0, params);
+            params!.specific.reply = true;
+            params?.client_name.send_message(params?.id, message, params);
         } catch (error) {
             console.log("Erro em Hello: ", error);
         }

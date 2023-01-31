@@ -1,6 +1,5 @@
 import { CommandModel } from "../Modal/CommandModel";
 import { HelloWorldCommand } from "../Commands/HelloWorld";
-import { params_to_command } from "../Modal/keyTreatment";
 import { EveryoneCommand } from "../Commands/Everyone";
 import { HelpCommand } from "../Commands/Help";
 import { SpottedCommand } from "../Commands/Spotted";

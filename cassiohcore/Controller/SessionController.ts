@@ -22,7 +22,7 @@ export abstract class SessionController {
    * Controla uma instância do Cassioh
    */
 
-  public static client: any;
+  public static client: API;
 
   public static async init_session(): Promise<void> {
     /***
@@ -32,12 +32,5 @@ export abstract class SessionController {
 
     this.client = new baileys_api();
     return;
-  }
-
-  public static async send_message(something: any, something2: any): Promise<boolean> {
-    /***
-     * Envia uma mensagem
-     */
-    return true;
   }
 }

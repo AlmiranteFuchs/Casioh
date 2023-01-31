@@ -1,7 +1,5 @@
-import { SessionController } from "../Controller/SessionController";
 import { CommandModel } from "../Modal/CommandModel";
-import { params_to_command } from "../Modal/keyTreatment";
-import { SendReplyCommand } from "./SendReply";
+import { IMessage_format } from "../Modal/MessageModel";
 
 export class RollDiceCommand extends CommandModel {
     protected _active: boolean = true;
@@ -11,7 +9,7 @@ export class RollDiceCommand extends CommandModel {
     protected _key: string = "roll";
     protected _access_level: number = 4;
 
-    protected async execute_command(params?: params_to_command): Promise<void> {
+    protected async execute_command(params?: IMessage_format): Promise<void> {
         console.log("Rodando Roll!");
         try {
             var dices: string = (params as any).command_params[0];
@@ -22,8 +20,9 @@ export class RollDiceCommand extends CommandModel {
                    let command_result = new SendReplyCommand().Exec_command(0, params); */
 
                 let text = "Amigão esse comando precisa de um parâmetro e eu não encontrei \u{1F625}";
-                SessionController.send_message(params!.chat_id!, text);
 
+                params!.specific.reply = true;
+                params?.client_name.send_message(params?.id, text, params);
                 return;
             }
 
@@ -39,9 +38,10 @@ export class RollDiceCommand extends CommandModel {
                       let command_result = new SendReplyCommand();
                       await command_result.Exec_command(0, params); */
                     let text = `_Rolando 🎲 #${i} (${times}d${dice}):_ *${roll}*`
-                    SessionController.send_message(params!.chat_id!, text);
 
 
+                    params!.specific.reply = true;
+                    params?.client_name.send_message(params?.id, text, params);
                 }
                 return;
             }
@@ -50,7 +50,9 @@ export class RollDiceCommand extends CommandModel {
               params!.specific = payload;
               let command_result = new SendReplyCommand().Exec_command(0, params); */
             let text = "Algo deu errado... Muitas coisas poderiam dar errado... òh ceus... \u{1F625}";
-            SessionController.send_message(params!.chat_id!, text);
+
+            params!.specific.reply = true;
+            params?.client_name.send_message(params?.id, text, params);
 
         } catch (error) {
             console.log("Erro em Hello: ", error);

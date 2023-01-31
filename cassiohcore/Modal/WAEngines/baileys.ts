@@ -1,5 +1,6 @@
 import makeWASocket, { DisconnectReason, useMultiFileAuthState } from '@adiwajshing/baileys'
 import { Boom } from '@hapi/boom'
+import { CommandsControllers } from '../..';
 import { IMessage_format } from '../MessageModel';
 import { API, SessionStatus } from './apiModel';
 
@@ -52,21 +53,23 @@ export class baileys_api implements API {
             }
         });
         sock.ev.on('messages.upsert', async m => {
-            console.log('[Cassioh]: received message', m.messages[0].message?.conversation);
+            console.log('[Cassioh]: message received');
 
-            // Keep working here, find a way to work with the message to a default interface, then send to the command service
-            /*   let message: IMessage_format = m ?? null;
-              if (message) {
-                  // TODO: send message to the command service
-  
-                  CommandsControllers.Command_service.Run_command(0, message);
-              } */
+            let formatted_message = this.parse_message(m);
+
+            CommandsControllers.Command_service.Run_command(0, formatted_message);
         })
     }
 
     // Public API
-    public async send_message(to: string, message: string, options?: any): Promise<boolean> {
+    public async send_message(to: string, message: string, options?: IMessage_format): Promise<boolean> {
         try {
+            console.log(options?.specific.reply);
+            
+            if(options?.specific?.reply){
+                await this.client.sendMessage(to, { text: message }, { quoted: options.message });
+                return true;
+            }
             await this.client.sendMessage(to, { text: message });
             return true;
         } catch (e) {
@@ -75,10 +78,45 @@ export class baileys_api implements API {
         }
     }
 
-    public async send_image(to: string, image: string, caption: string, options?: any): Promise<boolean> {
+    public async send_image(to: string, image: string, caption: string, options?: IMessage_format): Promise<boolean> {
         return false;
     };
 
+    public parse_message(message: any): IMessage_format {
+        let msg = message.messages[0];
+        return {
+            //Message
+            id: msg.key.remoteJid,
+            body: msg.message.conversation ?? msg.message.extendedTextMessage.text,
+            text: msg.message.conversation ?? msg.message.extendedTextMessage.text,
+            /* type : chat_type, */
+            from: msg.key.participant ?? msg.key.remoteJid,
+            to: "",
+            isForwarded: msg.message.conversation == null ? true : false,
+            chat_id: msg.key.remoteJid,
+            isFrom_group: msg.key.remoteJid.includes("@g.us"),
+            _serialized_chat_id: "",
+            isMedia: false,
+            last_chat_message_id: "",
+            not_Spam: false,
+            timestamp: msg.messageTimestamp,
+            //Sender
+            sender_id: msg.key.participant,
+            sender_name: msg.pushname,
+            sender_number: msg.key?.participant?.split("@")[0],
+            sender_pfp: "",
+            //Extra params
+            // Command params, remove first element (command key)
+            command_params: (msg.message.conversation ?? msg.message.extendedTextMessage.text).split(/\s*[\s,]\s*/).slice(1),
+            command_key: (msg.message.conversation ?? msg.message.extendedTextMessage.text).split(/\s*[\s,]\s*/)[0].substring(1).toLowerCase(),
+            command_key_raw: (msg.message.conversation ?? msg.message.extendedTextMessage.text).split(/\s*[\s,]\s*/)[0],
+            specific: {},
+            // This class passed to commands
+            client_name: this,
+            message: msg
+        }
+    }
 
 }
+
 

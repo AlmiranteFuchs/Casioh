@@ -1,9 +1,12 @@
+import { IMessage_format } from "../MessageModel";
+
 export interface API {
     client: any;
     session_status: SessionStatus;
 
     send_message: (to: string, message: string, options?: any) => Promise<boolean>;
     send_image: (to: string, image: string, caption: string, options?: any) => Promise<boolean>;
+    parse_message: (message: any) => IMessage_format;
 }
 
 export enum SessionStatus {

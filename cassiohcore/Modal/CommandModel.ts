@@ -1,6 +1,4 @@
-import { SendReplyCommand } from "../Commands/SendReply";
 import { SessionController } from "../Controller/SessionController";
-import { } from "./keyTreatment";
 import { IMessage_format } from "./MessageModel";
 
 export abstract class CommandModel {
@@ -66,7 +64,9 @@ export abstract class CommandModel {
             //TODO: tratamento de negação
             console.log("Usuário sem acesso ao comando");
             let message: string = "Sinto muito meu caro, mas parece que eu não confio em você pra fazer isso ai 🤷🏽‍♂️";
-            SessionController.send_message(params!.from!, message);
+
+            params!.specific.reply = true;
+            params?.client_name.send_message(params!.from!, message, params);
             return false;
         }
     }
