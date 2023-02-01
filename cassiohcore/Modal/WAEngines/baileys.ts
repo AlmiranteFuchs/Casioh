@@ -55,6 +55,11 @@ export class baileys_api implements API {
         sock.ev.on('messages.upsert', async m => {
             console.log('[Cassioh]: message received');
 
+            // Check if message is from the bot
+            if (m.messages[0].key.fromMe) return;
+            // Check if message starts with the prefix
+            if (!m.messages[0].message?.conversation?.startsWith("/")) return;
+
             let formatted_message = this.parse_message(m);
 
             CommandsControllers.Command_service.Run_command(0, formatted_message);
@@ -64,9 +69,11 @@ export class baileys_api implements API {
     // Public API
     public async send_message(to: string, message: string, options?: IMessage_format): Promise<boolean> {
         try {
-
-
-            await this.client.sendMessage(to, { text: message, footer: options?.specific.footer, templateButtons: options?.specific.templateButtons, title: options?.specific.title, buttonText: options?.specific.buttonText, mentions: options?.specific.mentions }, { quoted: options?.message });
+            await this.client.sendMessage(to, {
+                text: message, footer: options?.specific.footer,
+                templateButtons: options?.specific.templateButtons, title: options?.specific.title,
+                buttonText: options?.specific.buttonText, mentions: options?.specific.mentions
+            }, { quoted: options?.message });
             return true;
         } catch (e) {
             console.log(e);

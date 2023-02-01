@@ -13,15 +13,10 @@ export class RollDiceCommand extends CommandModel {
         console.log("Rodando Roll!");
         try {
             var dices: string = (params as any).command_params[0];
-
             if (!dices) {
-                /*    let payload: object = { 'text_reply': "Amigão esse comando precisa de um parâmetro e eu não encontrei \u{1F625}" };
-                   params!.specific = payload;
-                   let command_result = new SendReplyCommand().Exec_command(0, params); */
 
                 let text = "Amigão esse comando precisa de um parâmetro e eu não encontrei \u{1F625}";
 
-                params!.specific.reply = true;
                 params?.client_name.send_message(params?.id, text, params);
                 return;
             }
@@ -30,28 +25,21 @@ export class RollDiceCommand extends CommandModel {
             var dice: number = parseInt(dices.split("d")[1]);
 
             if (times && times <= 10 && times >= 0 && dice && dice <= 100 && dice >= 0) {
+                let text = "";
                 for (let i = 0; i < times; i++) {
                     let roll: number = Math.floor(Math.random() * dice) + 1;
 
-                    /*   let payload: object = { 'text_reply': `_Rolando 🎲 #${i} (${times}d${dice}):_ *${roll}*` };
-                      params!.specific = payload;
-                      let command_result = new SendReplyCommand();
-                      await command_result.Exec_command(0, params); */
-                    let text = `_Rolando 🎲 #${i} (${times}d${dice}):_ *${roll}*`
+                    text += `_Rolando 🎲 #${i + 1} (${times}d${dice}):_   *${roll}*\n`;
 
 
-                    params!.specific.reply = true;
-                    params?.client_name.send_message(params?.id, text, params);
                 }
+
+                params?.client_name.send_message(params?.id, text, params);
                 return;
             }
 
-            /*   let payload: object = { 'text_reply': "Algo deu errado... Muitas coisas poderiam dar errado... òh ceus... \u{1F625}" };
-              params!.specific = payload;
-              let command_result = new SendReplyCommand().Exec_command(0, params); */
             let text = "Algo deu errado... Muitas coisas poderiam dar errado... òh ceus... \u{1F625}";
 
-            params!.specific.reply = true;
             params?.client_name.send_message(params?.id, text, params);
 
         } catch (error) {

@@ -8,6 +8,7 @@ import { AdminShellCommand } from "../Commands/AdminShell";
 import { MoneyToRuCommand } from "../Commands/MoneyToRu";
 import { RuMenuCommand } from "../Commands/RuMenu";
 import { IMessage_format } from "../Modal/MessageModel";
+import { CopypastaCommand } from "../Commands/Copypasta";
 
 const _ = require("lodash");
 
@@ -50,6 +51,7 @@ export class CommandsControllerService {
   //private _command_shell: AdminShellCommand;
   private _command_moneyToRu: MoneyToRuCommand;
   private _command_ruMenu: RuMenuCommand;
+  private _command_copypasta: CopypastaCommand;
 
   public Command_service: CommandsController;
 
@@ -64,6 +66,7 @@ export class CommandsControllerService {
     //this._command_shell = new AdminShellCommand();
     this._command_moneyToRu = new MoneyToRuCommand();
     this._command_ruMenu = new RuMenuCommand();
+    this._command_copypasta = new CopypastaCommand();
 
     CommandsControllerService._commands_array.push(this._command_hello);
     CommandsControllerService._commands_array.push(this._command_everyone);
@@ -73,6 +76,7 @@ export class CommandsControllerService {
     //CommandsControllerService._commands_array.push(this._command_shell);
     CommandsControllerService._commands_array.push(this._command_moneyToRu);
     CommandsControllerService._commands_array.push(this._command_ruMenu);
+    CommandsControllerService._commands_array.push(this._command_copypasta);
 
     this.Command_service = new CommandsController(
       CommandsControllerService._commands_array
