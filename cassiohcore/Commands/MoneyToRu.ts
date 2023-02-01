@@ -3,7 +3,7 @@ import { CommandModel } from "../Modal/CommandModel";
 import { IMessage_format } from "../Modal/MessageModel";
 
 export class MoneyToRuCommand extends CommandModel {
-    protected _active: boolean = true;
+    protected _active: boolean = false;
     protected _hidden: boolean = false;
     protected _name: string = "/mru";
     protected _description: string = "Converte uma cotação para RU's \u{1F625}, _ex: /mru USD 5_ converte 5 dólares para RU's ";

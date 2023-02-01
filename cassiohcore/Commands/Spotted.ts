@@ -3,7 +3,7 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { IMessage_format } from "../Modal/MessageModel";
 
 export class SpottedCommand extends CommandModel {
-    protected _active: boolean = true;
+    protected _active: boolean = false;
     protected _hidden: boolean = false;
     protected _name: string = "/spotted";
     protected _description: string = "Redireciona uma mensagem anônimamente para o grupo do Spotted";

@@ -2,7 +2,7 @@ import { CommandModel } from "../Modal/CommandModel";
 import { IMessage_format } from "../Modal/MessageModel";
 
 export class AdminShellCommand extends CommandModel {
-    protected _active: boolean = true;
+    protected _active: boolean = false;
     protected _hidden: boolean = true;
     protected _name: string = "/cmd";
     protected _description: string = "Se você está lendo isso algo muito errado acontece...";

@@ -64,13 +64,9 @@ export class baileys_api implements API {
     // Public API
     public async send_message(to: string, message: string, options?: IMessage_format): Promise<boolean> {
         try {
-            console.log(options?.specific.reply);
-            
-            if(options?.specific?.reply){
-                await this.client.sendMessage(to, { text: message }, { quoted: options.message });
-                return true;
-            }
-            await this.client.sendMessage(to, { text: message });
+
+
+            await this.client.sendMessage(to, { text: message, footer: options?.specific.footer, templateButtons: options?.specific.templateButtons, title: options?.specific.title, buttonText: options?.specific.buttonText, mentions: options?.specific.mentions }, { quoted: options?.message });
             return true;
         } catch (e) {
             console.log(e);
@@ -79,8 +75,20 @@ export class baileys_api implements API {
     }
 
     public async send_image(to: string, image: string, caption: string, options?: IMessage_format): Promise<boolean> {
-        return false;
+        throw new Error("Method not implemented.");
     };
+
+    public async get_group_members(group_id: string): Promise<Array<string>> {
+        try {
+            let members = await this.client.groupMetadata(group_id);
+
+
+            return members.participants.map((member: any) => member.id);
+        } catch (error) {
+            console.log(error);
+            return [];
+        }
+    }
 
     public parse_message(message: any): IMessage_format {
         let msg = message.messages[0];
@@ -102,7 +110,7 @@ export class baileys_api implements API {
             timestamp: msg.messageTimestamp,
             //Sender
             sender_id: msg.key.participant,
-            sender_name: msg.pushname,
+            sender_name: msg.pushname ?? msg.key.participant,
             sender_number: msg.key?.participant?.split("@")[0],
             sender_pfp: "",
             //Extra params

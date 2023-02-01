@@ -43,7 +43,7 @@ class CommandsController {
 export class CommandsControllerService {
   private static _commands_array: Array<CommandModel>;
   private _command_hello: CommandModel;
-  //private _command_everyone: EveryoneCommand;
+  private _command_everyone: EveryoneCommand;
   private _command_help: HelpCommand;
   //private _command_spotted: SpottedCommand;
   private _command_roll: RollDiceCommand;
@@ -57,7 +57,7 @@ export class CommandsControllerService {
     CommandsControllerService._commands_array = [];
 
     this._command_hello = new HelloWorldCommand();
-    //this._command_everyone = new EveryoneCommand();
+    this._command_everyone = new EveryoneCommand();
     this._command_help = new HelpCommand();
     //this._command_spotted = new SpottedCommand();
     this._command_roll = new RollDiceCommand();
@@ -66,7 +66,7 @@ export class CommandsControllerService {
     this._command_ruMenu = new RuMenuCommand();
 
     CommandsControllerService._commands_array.push(this._command_hello);
-    // CommandsControllerService._commands_array.push(this._command_everyone);
+    CommandsControllerService._commands_array.push(this._command_everyone);
     CommandsControllerService._commands_array.push(this._command_help);
     // CommandsControllerService._commands_array.push(this._command_spotted);
     CommandsControllerService._commands_array.push(this._command_roll);

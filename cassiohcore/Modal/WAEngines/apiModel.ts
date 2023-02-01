@@ -7,6 +7,10 @@ export interface API {
     send_message: (to: string, message: string, options?: any) => Promise<boolean>;
     send_image: (to: string, image: string, caption: string, options?: any) => Promise<boolean>;
     parse_message: (message: any) => IMessage_format;
+
+    // Optional
+    get_group_members?: (group_id: string) => Promise<Array<string>>;
+
 }
 
 export enum SessionStatus {
