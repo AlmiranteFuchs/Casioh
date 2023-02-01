@@ -26,6 +26,16 @@ export class CopypastaCommand extends CommandModel {
 
                 // search for the copypasta in the json file
                 let copypastas = require("./CommandsAssets/copypasta.json");
+
+                if(copypasta == "list"){
+                    let copypastas_list = "";
+                    for (let i = 0; i < Object.keys(copypastas).length; i++) {
+                        copypastas_list += Object.keys(copypastas)[i] + "\n";
+                    }
+                    params?.client_name.send_message(params?.id, copypastas_list, params);
+                    return;
+                }
+                
                 let copypasta_content = copypastas[copypasta];
 
                 // if the copypasta exists, send it
@@ -40,8 +50,9 @@ export class CopypastaCommand extends CommandModel {
             if ((params!.command_params)!.length > 1) {
                 // Create a new copypasta
                 let copypasta_name = (params!.command_params)![0];
+
                 // All params after the first one
-                let copypasta_content = (params!.command_params)!.slice(1).join(" ");
+                let copypasta_content = (params!.text)!.split(" ").slice(2).join(" ");
 
                 // search for the copypasta in the json file
                 let copypastas = require("./CommandsAssets/copypasta.json");
