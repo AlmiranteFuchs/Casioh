@@ -17,3 +17,4 @@ tokens/
 cassiohcore/index.js
 cassiohcore/notindex.js
 .env
+/auth_info_baileys/
