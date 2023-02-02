@@ -125,6 +125,14 @@ export class baileys_api implements API {
                 return true;
             }
 
+            // Send audio
+            if (options?.specific.audio) {
+                await this.client.sendMessage(to, { audio: { url: `./${message}` }, mimetype: 'audio/mp4' },
+                    { url: message }, // can send mp3, mp4, & ogg
+                );
+                return true;
+            }
+
             await this.client.sendMessage(to, {
                 text: message, footer: options?.specific.footer,
                 templateButtons: options?.specific.templateButtons, title: options?.specific.title,

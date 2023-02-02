@@ -10,6 +10,7 @@ import { RuMenuCommand } from "../Commands/RuMenu";
 import { IMessage_format } from "../Modal/MessageModel";
 import { CopypastaCommand } from "../Commands/Copypasta";
 import { StickerCommand } from "../Commands/Sticker";
+import { TextToSpeechCommand } from "../Commands/TextToSpeech";
 
 const _ = require("lodash");
 
@@ -54,6 +55,7 @@ export class CommandsControllerService {
   private _command_ruMenu: RuMenuCommand;
   private _command_copypasta: CopypastaCommand;
   private _command_sendSticker: StickerCommand;
+  private _command_tts: TextToSpeechCommand;
 
   public Command_service: CommandsController;
 
@@ -70,6 +72,7 @@ export class CommandsControllerService {
     this._command_ruMenu = new RuMenuCommand();
     this._command_copypasta = new CopypastaCommand();
     this._command_sendSticker = new StickerCommand();
+    this._command_tts = new TextToSpeechCommand();
 
     CommandsControllerService._commands_array.push(this._command_hello);
     CommandsControllerService._commands_array.push(this._command_everyone);
@@ -81,6 +84,7 @@ export class CommandsControllerService {
     CommandsControllerService._commands_array.push(this._command_ruMenu);
     CommandsControllerService._commands_array.push(this._command_copypasta);
     CommandsControllerService._commands_array.push(this._command_sendSticker);
+    CommandsControllerService._commands_array.push(this._command_tts);
 
     this.Command_service = new CommandsController(
       CommandsControllerService._commands_array
