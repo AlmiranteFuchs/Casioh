@@ -8,6 +8,7 @@ export class RuMenuCommand extends CommandModel {
   protected _name: string = "/ru";
   protected _description: string = "Mostra o cardápio do RU";
   protected _key: string = "ru";
+  protected _alias = undefined;
   protected _access_level: number = 3;
 
   protected async execute_command(params?: IMessage_format): Promise<void> {

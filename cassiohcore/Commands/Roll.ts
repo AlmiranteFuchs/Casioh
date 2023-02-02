@@ -7,6 +7,7 @@ export class RollDiceCommand extends CommandModel {
     protected _name: string = "/roll ( 1d1...10d10 )";
     protected _description: string = "Roda dados!";
     protected _key: string = "roll";
+    protected _alias = "r";
     protected _access_level: number = 4;
 
     protected async execute_command(params?: IMessage_format): Promise<void> {

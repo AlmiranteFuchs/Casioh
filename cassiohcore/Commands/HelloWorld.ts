@@ -7,6 +7,7 @@ export class HelloWorldCommand extends CommandModel {
     protected _name: string = "/olá";
     protected _description: string = "Só teste mesmo";
     protected _key: string = "olá";
+    protected _alias = "hi";
     protected _access_level: number = 4;
 
     protected execute_command(params?: IMessage_format): void {

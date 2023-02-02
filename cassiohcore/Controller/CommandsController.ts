@@ -24,7 +24,7 @@ class CommandsController {
     let command: CommandModel = _.find(
       this.Commands_list,
       function (el: CommandModel) {
-        return el.key == trigger_key;
+        return el.key == trigger_key || el.alias == trigger_key;
       }
     );
 

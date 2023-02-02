@@ -8,6 +8,7 @@ export class MoneyToRuCommand extends CommandModel {
     protected _name: string = "/mru";
     protected _description: string = "Converte uma cotação para RU's \u{1F625}, _ex: /mru USD 5_ converte 5 dólares para RU's ";
     protected _key: string = "mru";
+    protected _alias = undefined;
     protected _access_level: number = 4;
 
     protected async execute_command(params?: IMessage_format): Promise<void> {

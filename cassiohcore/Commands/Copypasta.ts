@@ -4,6 +4,7 @@ import { IMessage_format } from "../Modal/MessageModel";
 
 export class CopypastaCommand extends CommandModel {
     protected _key = "copypasta";
+    protected _alias= "c";
     protected _name = "/copypasta (nome_copypasta) (copypasta)";
     protected _description = "Cria uma copypasta com o nome e o conteúdo especificados";
     protected _access_level = 4;
@@ -35,7 +36,7 @@ export class CopypastaCommand extends CommandModel {
                     params?.client_name.send_message(params?.id, copypastas_list, params);
                     return;
                 }
-                
+
                 let copypasta_content = copypastas[copypasta];
 
                 // if the copypasta exists, send it

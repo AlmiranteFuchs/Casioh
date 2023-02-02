@@ -7,6 +7,7 @@ export class EveryoneCommand extends CommandModel {
     protected _name: string = "/everyone";
     protected _description: string = "Pinga todos os amiguinhos do grupo";
     protected _key: string = "everyone";
+    protected _alias? = undefined;
     protected _access_level: number = 3;
 
     protected async execute_command(params?: IMessage_format): Promise<void> {

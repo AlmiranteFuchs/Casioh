@@ -8,6 +8,7 @@ export class HelpCommand extends CommandModel {
     protected _name: string = "/help";
     protected _description: string = "Wow, o que será que ele faz???";
     protected _key: string = "help";
+    protected _alias = "h";
     protected _access_level: number = 4;
 
     protected async execute_command(params?: IMessage_format): Promise<void> {
@@ -17,7 +18,7 @@ export class HelpCommand extends CommandModel {
             let rowss: Array<any> = [];
             all_commands.forEach((comando: CommandModel) => {
                 if (!comando.hidden && comando.active)
-                    rowss.push({ title: comando.name, description: comando.description });
+                    rowss.push({ title: comando.name, description: comando.description, alias: comando.alias });
             });
 
             /*  const list = [
@@ -39,7 +40,11 @@ export class HelpCommand extends CommandModel {
                  console.error('Error when sending: ', erro); //return object error
              }); */
             params!.specific.reply = true;
-            params?.client_name.send_message(params!.chat_id!, "Comandos disponíveis para uso geral: \n" + rowss.map((row: any) => row.title).join("\n"), params);
+            params?.client_name.send_message(params!.chat_id!,
+                "_*Comandos disponíveis para uso geral:*_ \n" +
+                rowss.map((row: any) =>
+                    "_*" + row.title +(row.alias != undefined ? (" ou /" + row.alias) : "") + "*_\n" +
+                    " - " + row.description + "\n").join("\n"), params);
         } catch (error) {
             console.log("Erro em Help: ", error);
         }

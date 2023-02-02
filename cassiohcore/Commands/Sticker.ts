@@ -3,6 +3,7 @@ import { IMessage_format } from "../Modal/MessageModel";
 
 export class StickerCommand extends CommandModel {
     protected _key = "sticker";
+    protected _alias = "s";
     protected _name = "/sticker (url || imagem anexada)";
     protected _description = "Envia um sticker com a imagem especificada ou por url";
     protected _access_level = 4;

@@ -5,6 +5,8 @@ export abstract class CommandModel {
     //constructor(public _nome: string, private _access_level: number) { }
     protected abstract _key: string;
     protected abstract _name: string;
+    // Optional alias
+    protected abstract _alias?: string;
     protected abstract _description: string;
     protected abstract _access_level: number;
     protected abstract _active: boolean;           //Define se é executável a qualquer momento
@@ -13,6 +15,11 @@ export abstract class CommandModel {
     get key(): string {
         return this._key;
     }
+
+    get alias(): string {
+        return this._alias as string;
+    }
+
     get name(): string {
         return this._name;
     }
