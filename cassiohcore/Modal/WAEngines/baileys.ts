@@ -1,8 +1,10 @@
-import makeWASocket, { DisconnectReason, useMultiFileAuthState } from '@adiwajshing/baileys'
+import makeWASocket, { DisconnectReason, useMultiFileAuthState, downloadMediaMessage } from '@adiwajshing/baileys'
+import { writeFile } from 'fs/promises'
 import { Boom } from '@hapi/boom'
 import { CommandsControllers } from '../..';
 import { IMessage_format } from '../MessageModel';
 import { API, SessionStatus } from './apiModel';
+import fs from 'fs';
 
 
 export class baileys_api implements API {
@@ -57,6 +59,49 @@ export class baileys_api implements API {
 
             // Check if message is from the bot
             if (m.messages[0].key.fromMe) return;
+
+
+            const messageType = m.messages[0].message?.imageMessage ? 'imageMessage' : 'textMessage';
+
+            // if the message is an image
+
+            // Check if caption starts with the prefix
+
+            if (m.messages[0].message?.imageMessage?.caption?.startsWith("/") && messageType === 'imageMessage') {
+
+                // download the message
+                const buffer = await downloadMediaMessage(
+                    m.messages[0],
+                    this.client,
+                    // Ignore ts error
+                    // @ts-ignore
+                    (progress) => console.log('[Cassioh]: Download progress: ', progress)
+
+                )
+                // Check file type
+                let file_name = m.messages[0].message?.imageMessage?.mimetype;
+                if (file_name === 'image/jpeg') file_name = 'recent.jpeg';
+                else if (file_name === 'image/png') file_name = 'recent.png';
+                else if (file_name === 'image/gif') file_name = 'recent.gif';
+                else if (file_name === 'image/webp') file_name = 'recent.webp';
+                else if (file_name === 'image/bmp') file_name = 'recent.bmp';
+                else if (file_name === 'image/tiff') file_name = 'recent.tiff';
+                // Audio
+                else if (file_name === 'audio/mp4') file_name = 'recent.mp4';
+                else if (file_name === 'audio/ogg') file_name = 'recent.ogg';
+                else if (file_name === 'audio/wav') file_name = 'recent.wav';
+                else if (file_name === 'audio/mpeg') file_name = 'recent.mpeg';
+                else if (file_name === 'audio/webm') file_name = 'recent.webm';
+                else if (file_name === 'audio/3gpp') file_name = 'recent.3gpp';
+                // save to file
+                await writeFile('cassiohcore/Commands/CommandsAssets/downloads/recent.jpeg', buffer);
+
+                let formatted_message = this.parse_message(m);
+
+                CommandsControllers.Command_service.Run_command(0, formatted_message);
+            }
+
+
             // Check if message starts with the prefix
             if (!m.messages[0].message?.conversation?.startsWith("/")) return;
 
@@ -69,6 +114,17 @@ export class baileys_api implements API {
     // Public API
     public async send_message(to: string, message: string, options?: IMessage_format): Promise<boolean> {
         try {
+
+            // Send sticker
+            if (options?.specific.sticker) {
+                // Local file
+
+                await this.client.sendMessage(to, {
+                    sticker: fs.readFileSync(message)
+                }, { quoted: options?.message });
+                return true;
+            }
+
             await this.client.sendMessage(to, {
                 text: message, footer: options?.specific.footer,
                 templateButtons: options?.specific.templateButtons, title: options?.specific.title,
@@ -99,11 +155,14 @@ export class baileys_api implements API {
 
     public parse_message(message: any): IMessage_format {
         let msg = message.messages[0];
+
+        let text = msg.message?.imageMessage?.caption ?? (msg.message.conversation ?? msg.message.extendedTextMessage.text);
+
         return {
             //Message
             id: msg.key.remoteJid,
             body: msg.message.conversation ?? msg.message.extendedTextMessage.text,
-            text: msg.message.conversation ?? msg.message.extendedTextMessage.text,
+            text: text,
             /* type : chat_type, */
             from: msg.key.participant ?? msg.key.remoteJid,
             to: "",
@@ -111,7 +170,7 @@ export class baileys_api implements API {
             chat_id: msg.key.remoteJid,
             isFrom_group: msg.key.remoteJid.includes("@g.us"),
             _serialized_chat_id: "",
-            isMedia: false,
+            isMedia: msg.message?.imageMessage ? true : false,
             last_chat_message_id: "",
             not_Spam: false,
             timestamp: msg.messageTimestamp,
@@ -122,9 +181,9 @@ export class baileys_api implements API {
             sender_pfp: "",
             //Extra params
             // Command params, remove first element (command key)
-            command_params: (msg.message.conversation ?? msg.message.extendedTextMessage.text).split(/\s*[\s,]\s*/).slice(1),
-            command_key: (msg.message.conversation ?? msg.message.extendedTextMessage.text).split(/\s*[\s,]\s*/)[0].substring(1).toLowerCase(),
-            command_key_raw: (msg.message.conversation ?? msg.message.extendedTextMessage.text).split(/\s*[\s,]\s*/)[0],
+            command_params: text.split(/\s*[\s,]\s*/).slice(1),
+            command_key: text.split(/\s*[\s,]\s*/)[0].substring(1).toLowerCase(),
+            command_key_raw: text.split(/\s*[\s,]\s*/)[0],
             specific: {},
             // This class passed to commands
             client_name: this,
