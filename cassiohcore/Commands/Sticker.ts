@@ -9,6 +9,9 @@ export class StickerCommand extends CommandModel {
     protected _access_level = 4;
     protected _active = true;
     protected _hidden = false;
+    protected _limitedUse = false;
+    protected _useLimit = 0;
+
     protected async execute_command(params?: IMessage_format | undefined): Promise<void> {
         console.log("Rodando sticker!");
 
@@ -19,18 +22,34 @@ export class StickerCommand extends CommandModel {
                 // If there is no param, get from recent.jpeg
                 image_url = "cassiohcore/Commands/CommandsAssets/downloads/recent.jpeg";
 
-                // Convert to webp and resize to 512x512
-                let sharp = require("sharp");
-                await sharp(image_url)
-                    .resize(512, 512)
-                    .webp()
-                    .toFile("./cassiohcore/Commands/CommandsAssets/downloads/sticker.webp", (err: any, info: any) => {
-                        if (err) {
-                            console.log(err);
-                        }
-                        console.log(info);
-                        image_url = "cassiohcore/Commands/CommandsAssets/downloads/sticker.webp";
-                    });
+                // Convert to webp and resize to 512x512, usse ffmpeg
+                const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+                const ffmpeg = require('fluent-ffmpeg');
+                ffmpeg.setFfmpegPath(ffmpegPath);
+
+                // Promise to wait for the conversion
+                await new Promise<void>(async (resolve, reject) => {
+                    await ffmpeg(image_url)
+                        .outputOptions([
+                            '-vf scale=512:512',
+                            '-f webp'
+                        ])
+                        .on('end', function () {
+                            console.log('Finished processing');
+                            resolve();
+                        })
+                        .on('error', function (err: any) {
+                            console.log('an error happened: ' + err.message);
+                            reject();
+                        })
+                        .save('cassiohcore/Commands/CommandsAssets/downloads/sticker.webp');
+                });
+
+                // Set the image url to the new webp
+                image_url = "cassiohcore/Commands/CommandsAssets/downloads/sticker.webp";
+
+                params?.client_name.send_message(params?.id, "Ok lol", params);
+
 
             } else {
                 // If there is a param, get from the param

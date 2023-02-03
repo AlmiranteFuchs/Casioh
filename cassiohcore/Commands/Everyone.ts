@@ -9,6 +9,8 @@ export class EveryoneCommand extends CommandModel {
     protected _key: string = "everyone";
     protected _alias? = undefined;
     protected _access_level: number = 3;
+    protected _limitedUse = true;
+    protected _useLimit = 2;
 
     protected async execute_command(params?: IMessage_format): Promise<void> {
         console.log("Rodando Everyone!");

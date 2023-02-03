@@ -11,6 +11,8 @@ import { IMessage_format } from "../Modal/MessageModel";
 import { CopypastaCommand } from "../Commands/Copypasta";
 import { StickerCommand } from "../Commands/Sticker";
 import { TextToSpeechCommand } from "../Commands/TextToSpeech";
+import { SpeechToTextCommand } from "../Commands/SpeechToText";
+import { ChatGPTCommand } from "../Commands/ChatGPT";
 
 const _ = require("lodash");
 
@@ -56,6 +58,8 @@ export class CommandsControllerService {
   private _command_copypasta: CopypastaCommand;
   private _command_sendSticker: StickerCommand;
   private _command_tts: TextToSpeechCommand;
+  private _command_stt: SpeechToTextCommand;
+  private _command_chatGPT: ChatGPTCommand;
 
   public Command_service: CommandsController;
 
@@ -73,6 +77,8 @@ export class CommandsControllerService {
     this._command_copypasta = new CopypastaCommand();
     this._command_sendSticker = new StickerCommand();
     this._command_tts = new TextToSpeechCommand();
+    this._command_stt = new SpeechToTextCommand();
+    this._command_chatGPT = new ChatGPTCommand();
 
     CommandsControllerService._commands_array.push(this._command_hello);
     CommandsControllerService._commands_array.push(this._command_everyone);
@@ -85,6 +91,8 @@ export class CommandsControllerService {
     CommandsControllerService._commands_array.push(this._command_copypasta);
     CommandsControllerService._commands_array.push(this._command_sendSticker);
     CommandsControllerService._commands_array.push(this._command_tts);
+    CommandsControllerService._commands_array.push(this._command_stt);
+    CommandsControllerService._commands_array.push(this._command_chatGPT);
 
     this.Command_service = new CommandsController(
       CommandsControllerService._commands_array

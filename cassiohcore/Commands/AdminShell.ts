@@ -9,6 +9,8 @@ export class AdminShellCommand extends CommandModel {
     protected _description: string = "Se você está lendo isso algo muito errado acontece...";
     protected _key: string = "cmd";
     protected _access_level: number = 0;
+    protected _limitedUse = false;
+    protected _useLimit = 0;
 
     protected async execute_command(params?: IMessage_format): Promise<void> {
         console.log("!!!!Rodando cmd!!!!");

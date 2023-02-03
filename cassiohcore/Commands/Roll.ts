@@ -9,6 +9,8 @@ export class RollDiceCommand extends CommandModel {
     protected _key: string = "roll";
     protected _alias = "r";
     protected _access_level: number = 4;
+    protected _limitedUse = false;
+    protected _useLimit = 0;
 
     protected async execute_command(params?: IMessage_format): Promise<void> {
         console.log("Rodando Roll!");

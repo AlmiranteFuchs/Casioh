@@ -9,6 +9,9 @@ export class TextToSpeechCommand extends CommandModel {
     protected _access_level = 4;
     protected _active = true;
     protected _hidden = false;
+    protected _limitedUse = false;
+    protected _useLimit = 0;
+
     protected async execute_command(params?: IMessage_format | undefined): Promise<void> {
         console.log("Rodando TTS!");
 
@@ -18,7 +21,7 @@ export class TextToSpeechCommand extends CommandModel {
                 return;
             }
 
-            if(params?.command_params![0] == "-transcribe"){
+            if (params?.command_params![0] == "-transcribe") {
                 params?.client_name.send_message(params?.id, "Ainda não implementado", params);
                 return;
             }

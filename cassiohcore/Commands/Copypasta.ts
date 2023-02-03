@@ -10,6 +10,9 @@ export class CopypastaCommand extends CommandModel {
     protected _access_level = 4;
     protected _active = true;
     protected _hidden = false;
+    protected _limitedUse = false;
+    protected _useLimit = 0;
+
     protected execute_command(params?: IMessage_format | undefined): void {
         console.log("Rodando copypasta!");
 

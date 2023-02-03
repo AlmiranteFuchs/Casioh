@@ -33,4 +33,11 @@ export abstract class SessionController {
     this.client = new baileys_api();
     return;
   }
+
+  public static async getInstance(): Promise<API> {
+    /***
+     * Retorna a instância do Cassioh
+     */
+    return this.client;
+  }
 }

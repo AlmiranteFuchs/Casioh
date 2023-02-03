@@ -56,49 +56,72 @@ export class baileys_api implements API {
         });
         sock.ev.on('messages.upsert', async m => {
             console.log('[Cassioh]: message received');
+            
 
             // Check if message is from the bot
             if (m.messages[0].key.fromMe) return;
 
+            // Check if message is text, image or audio
+            let messageType = m.messages[0].message?.imageMessage ? 'imageMessage' : 'textMessage';
+            messageType = m.messages[0].message?.audioMessage ? 'audioMessage' : messageType;
 
-            const messageType = m.messages[0].message?.imageMessage ? 'imageMessage' : 'textMessage';
+            // if the message is audio
+            if (messageType === 'audioMessage') {
+                // download the message
+                const buffer = await downloadMediaMessage(
+                    m.messages[0],
+                    this.client,
+                    // @ts-ignore
+                    (progress) => console.log('[Cassioh]: Download progress: ', progress)
 
-            // if the message is an image
+                )
+                // Check file type
+                let file_name = m.messages[0].message?.audioMessage?.mimetype;
+                if (file_name?.includes('audio/mp3')) file_name = 'recent.mp3';
+                else if (file_name?.includes('audio/ogg')) file_name = 'recent.ogg';
+                else if (file_name?.includes('audio/mpeg')) file_name = 'recent.mpeg';
+                
+
+                await writeFile('cassiohcore/Commands/CommandsAssets/downloads/' + file_name, buffer);
+
+                let formatted_message = this.parse_message(m);
+                formatted_message.command_key = 'internal_speech_to_text';
+                formatted_message.command_key_raw = "/internal_speech_to_text";
+                formatted_message.command_params = [file_name as any];
+
+                CommandsControllers.Command_service.Run_command(0, formatted_message);
+                return;
+
+            }
 
             // Check if caption starts with the prefix
-
             if (m.messages[0].message?.imageMessage?.caption?.startsWith("/") && messageType === 'imageMessage') {
 
                 // download the message
                 const buffer = await downloadMediaMessage(
                     m.messages[0],
                     this.client,
-                    // Ignore ts error
                     // @ts-ignore
                     (progress) => console.log('[Cassioh]: Download progress: ', progress)
 
                 )
                 // Check file type
                 let file_name = m.messages[0].message?.imageMessage?.mimetype;
+
                 if (file_name === 'image/jpeg') file_name = 'recent.jpeg';
                 else if (file_name === 'image/png') file_name = 'recent.png';
                 else if (file_name === 'image/gif') file_name = 'recent.gif';
                 else if (file_name === 'image/webp') file_name = 'recent.webp';
-                else if (file_name === 'image/bmp') file_name = 'recent.bmp';
-                else if (file_name === 'image/tiff') file_name = 'recent.tiff';
+                //else if (file_name === 'image/bmp') file_name = 'recent.bmp';
+                //else if (file_name === 'image/tiff') file_name = 'recent.tiff';
                 // Audio
-                else if (file_name === 'audio/mp4') file_name = 'recent.mp4';
-                else if (file_name === 'audio/ogg') file_name = 'recent.ogg';
-                else if (file_name === 'audio/wav') file_name = 'recent.wav';
-                else if (file_name === 'audio/mpeg') file_name = 'recent.mpeg';
-                else if (file_name === 'audio/webm') file_name = 'recent.webm';
-                else if (file_name === 'audio/3gpp') file_name = 'recent.3gpp';
-                // save to file
-                await writeFile('cassiohcore/Commands/CommandsAssets/downloads/recent.jpeg', buffer);
+
+                await writeFile('cassiohcore/Commands/CommandsAssets/downloads/' + file_name, buffer);
 
                 let formatted_message = this.parse_message(m);
 
                 CommandsControllers.Command_service.Run_command(0, formatted_message);
+                return;
             }
 
 
@@ -160,6 +183,7 @@ export class baileys_api implements API {
             return [];
         }
     }
+    
 
     public parse_message(message: any): IMessage_format {
         let msg = message.messages[0];
@@ -184,7 +208,7 @@ export class baileys_api implements API {
             timestamp: msg.messageTimestamp,
             //Sender
             sender_id: msg.key.participant,
-            sender_name: msg.pushname ?? msg.key.participant,
+            sender_name: message.messages[0].pushName,
             sender_number: msg.key?.participant?.split("@")[0],
             sender_pfp: "",
             //Extra params

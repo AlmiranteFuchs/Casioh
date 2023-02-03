@@ -10,6 +10,8 @@ export class MoneyToRuCommand extends CommandModel {
     protected _key: string = "mru";
     protected _alias = undefined;
     protected _access_level: number = 4;
+    protected _limitedUse = false;
+    protected _useLimit = 0;
 
     protected async execute_command(params?: IMessage_format): Promise<void> {
         console.log(`Rodando ${this._name}`);
