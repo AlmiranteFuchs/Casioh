@@ -47,7 +47,8 @@ export class HelpCommand extends CommandModel {
                 rowss.map((row: any) =>
                     "_*" + row.title + (row.alias != undefined ? (" ou /" + row.alias) : "") + "*_" +
                     (row.useLimit > 0 ? (" *Usos:* " + row.useLimit) : "") + "\n" +
-                    " - " + row.description + "\n").join("\n"), params);
+                    " - " + row.description + "\n").join("\n"), params)+
+                    "\n\n_Criado por Fuchs e colaboradores 💓, versão v3_\n_https://github.com/AlmiranteFuchs/Casioh_";
         } catch (error) {
             console.log("Erro em Help: ", error);
         }
