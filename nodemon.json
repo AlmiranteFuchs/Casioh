@@ -4,5 +4,5 @@
     ],
     "ext": ".ts,.js",
     "ignore": [],
-    "exec": "ts-node ./cassiohcore/index.ts"
+    "exec": "npx ts-node ./cassiohcore/index.ts"
 }

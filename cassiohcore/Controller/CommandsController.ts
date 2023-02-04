@@ -13,6 +13,8 @@ import { StickerCommand } from "../Commands/Sticker";
 import { TextToSpeechCommand } from "../Commands/TextToSpeech";
 import { SpeechToTextCommand } from "../Commands/SpeechToText";
 import { ChatGPTCommand } from "../Commands/ChatGPT";
+import { InfoCommand } from "../Commands/Credits";
+import { TermsCommand } from "../Commands/Terms";
 
 const _ = require("lodash");
 
@@ -60,6 +62,8 @@ export class CommandsControllerService {
   private _command_tts: TextToSpeechCommand;
   private _command_stt: SpeechToTextCommand;
   private _command_chatGPT: ChatGPTCommand;
+  private _command_info: InfoCommand;
+  private _command_terms: TermsCommand;
 
   public Command_service: CommandsController;
 
@@ -79,6 +83,8 @@ export class CommandsControllerService {
     this._command_tts = new TextToSpeechCommand();
     this._command_stt = new SpeechToTextCommand();
     this._command_chatGPT = new ChatGPTCommand();
+    this._command_info = new InfoCommand();
+    this._command_terms = new TermsCommand();
 
     CommandsControllerService._commands_array.push(this._command_hello);
     CommandsControllerService._commands_array.push(this._command_everyone);
@@ -93,6 +99,8 @@ export class CommandsControllerService {
     CommandsControllerService._commands_array.push(this._command_tts);
     CommandsControllerService._commands_array.push(this._command_stt);
     CommandsControllerService._commands_array.push(this._command_chatGPT);
+    CommandsControllerService._commands_array.push(this._command_info);
+    CommandsControllerService._commands_array.push(this._command_terms);
 
     this.Command_service = new CommandsController(
       CommandsControllerService._commands_array

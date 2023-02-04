@@ -56,7 +56,7 @@ export class baileys_api implements API {
         });
         sock.ev.on('messages.upsert', async m => {
             console.log('[Cassioh]: message received');
-            
+
 
             // Check if message is from the bot
             if (m.messages[0].key.fromMe) return;
@@ -80,7 +80,7 @@ export class baileys_api implements API {
                 if (file_name?.includes('audio/mp3')) file_name = 'recent.mp3';
                 else if (file_name?.includes('audio/ogg')) file_name = 'recent.ogg';
                 else if (file_name?.includes('audio/mpeg')) file_name = 'recent.mpeg';
-                
+
 
                 await writeFile('cassiohcore/Commands/CommandsAssets/downloads/' + file_name, buffer);
 
@@ -132,6 +132,22 @@ export class baileys_api implements API {
 
             CommandsControllers.Command_service.Run_command(0, formatted_message);
         })
+        sock.ev.on('group-participants.update', async m => {
+            console.log('[Cassioh]: Group participants updated');
+            
+            if(m.action === 'add') {
+                console.log('[Cassioh]: New participant added to group');
+                //FIXME: Internal command to send welcome message, follow the same pattern as the other commands
+                this.send_message(m.id, 'Ih alá, seja bem vindo ao grupo meu nobre');
+            }
+        });
+        // On new chat
+        sock.ev.on('chats.upsert', async m => {
+            console.log('[Cassioh]: New chat');
+            
+            // FIXME: Internal command to send terms message, follow the same pattern as the other commands
+            this.send_message(m[0].id, 'Salve meu caro! ao usar o Cassioh você concorda com os *termos* de uso do bot, digite /terms para ver os termos de uso');
+        });
     }
 
     // Public API
@@ -183,7 +199,7 @@ export class baileys_api implements API {
             return [];
         }
     }
-    
+
 
     public parse_message(message: any): IMessage_format {
         let msg = message.messages[0];
