@@ -1,5 +1,7 @@
 import { SessionController } from "../Controller/SessionController";
 import { IMessage_format } from "./MessageModel";
+import json from "../Commands/CommandsAssets/userUse.json"
+import path from 'path';
 import fs from 'fs';
 
 export abstract class CommandModel {
@@ -81,42 +83,52 @@ export abstract class CommandModel {
         if (limitedUse) {
             // FIXME: Implementar controle de uso de comandos, banco de dados
             // Read from json
-            // Check if user has used the command before
+            let json_path = path.resolve(__dirname, "../Commands/CommandsAssets/userUse.json");
 
-            let json_path = "cassiohcore/Commands/CommandsAssets/userUse.json";
-
-            // load json with fs
-            let json_data = JSON.parse(fs.readFileSync(json_path, 'utf8'));
-
-            // check if user has used the command before
-            if (json_data[user_id] === undefined) {
-                json_data[user_id] = {};
-                json_data[user_id]["lastUse"] = new Date().toLocaleDateString();
-                json_data[user_id][command_key] = 1;
-
-                // write to json
-                fs.writeFileSync(json_path, JSON.stringify(json_data));
-                return true;
-            } else if (json_data[user_id][command_key] === undefined) {
-                json_data[user_id][command_key] = 1;
-                // write to json
-                fs.writeFileSync(json_path, JSON.stringify(json_data));
-                return true;
-            } else if (json_data[user_id]["lastUse"] !== new Date().toLocaleDateString()) {
-                json_data[user_id]["lastUse"] = new Date().toLocaleDateString();
-                json_data[user_id][command_key] = 1;
-                // write to json
-                fs.writeFileSync(json_path, JSON.stringify(json_data));
-                return true;
-            } else if (json_data[user_id][command_key] < useLimit) {
-                json_data[user_id][command_key] += 1;
-                // write to json
-                fs.writeFileSync(json_path, JSON.stringify(json_data));
-                return true;
+            // Check if user exists
+            let userUse = (json as any)[user_id];
+            if (userUse) {
+                // Check if user has used the command before
+                let commandUse = userUse[command_key];
+                if (commandUse) {
+                    // Check if user has reached the limit
+                    if (commandUse >= useLimit) {
+                        return false;
+                    } else {
+                        // Increment command use
+                        userUse[command_key] = commandUse + 1;
+                        // Write to json
+                        fs.writeFile(json_path, JSON.stringify(json), (err) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                        });
+                        return true;
+                    }
+                } else {
+                    // Add command to user
+                    userUse[command_key] = 1;
+                    // Write to json
+                    fs.writeFile(json_path, JSON.stringify(json), (err) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                    });
+                    return true;
+                }
             } else {
-                return false;
+                // Add user to json
+                (json as any)[user_id] = {};
+                // Add command to user
+                (json as any)[user_id][command_key] = 1;
+                // Write to json
+                fs.writeFile(json_path, JSON.stringify(json), (err) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+                return true;
             }
-
 
         } else {
             return true;
