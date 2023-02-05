@@ -1,7 +1,6 @@
 import { Sequelize }  from 'sequelize';
 
 import * as dotenv from 'dotenv';
-import { Connection } from 'puppeteer';
 
 export class Db {
 

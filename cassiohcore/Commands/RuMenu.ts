@@ -1,4 +1,3 @@
-//const puppeteer = require("puppeteer");
 import { CommandModel } from "../Modal/CommandModel";
 import { IMessage_format } from "../Modal/MessageModel";
 import { Alergeno, Alimento } from "./CommandsAssets/RuAPI/model/alimento";
