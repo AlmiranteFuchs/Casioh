@@ -30,7 +30,7 @@ export class baileys_api implements API {
             // can provide additional config here
             auth: state,
             printQRInTerminal: true
-        } as any);
+        });
 
         // Update object
         this.client = sock;
@@ -56,7 +56,6 @@ export class baileys_api implements API {
         });
         sock.ev.on('messages.upsert', async m => {
             console.log('[Cassioh]: message received');
-
 
             // Check if message is from the bot
             if (m.messages[0].key.fromMe) return;
@@ -130,12 +129,13 @@ export class baileys_api implements API {
 
             let formatted_message = this.parse_message(m);
 
+
             CommandsControllers.Command_service.Run_command(0, formatted_message);
         })
         sock.ev.on('group-participants.update', async m => {
             console.log('[Cassioh]: Group participants updated');
-            
-            if(m.action === 'add') {
+
+            if (m.action === 'add') {
                 console.log('[Cassioh]: New participant added to group');
                 //FIXME: Internal command to send welcome message, follow the same pattern as the other commands
                 this.send_message(m.id, 'Ih alá, seja bem vindo ao grupo meu nobre');
@@ -144,7 +144,7 @@ export class baileys_api implements API {
         // On new chat
         sock.ev.on('chats.upsert', async m => {
             console.log('[Cassioh]: New chat');
-            
+
             // FIXME: Internal command to send terms message, follow the same pattern as the other commands
             this.send_message(m[0].id, 'Salve meu caro! ao usar o Cassioh você concorda com os *termos* de uso do bot, digite /terms para ver os termos de uso');
         });
@@ -154,24 +154,26 @@ export class baileys_api implements API {
     public async send_message(to: string, message: string, options?: IMessage_format): Promise<boolean> {
         try {
 
-            // Send sticker
+            // Send sticker, if sticker is true
             if (options?.specific.sticker) {
-                // Local file
 
+                // Reads the common and unic local file, url passed as message
                 await this.client.sendMessage(to, {
                     sticker: fs.readFileSync(message)
                 }, { quoted: options?.message });
                 return true;
             }
 
-            // Send audio
+            // Send audio, if audio is true
             if (options?.specific.audio) {
+                // Reads the common and unic local file, url passed as message
                 await this.client.sendMessage(to, { audio: { url: `./${message}` }, mimetype: 'audio/mp4' },
                     { url: message }, // can send mp3, mp4, & ogg
                 );
                 return true;
             }
 
+            // Send message, with all params possible
             await this.client.sendMessage(to, {
                 text: message, footer: options?.specific.footer,
                 templateButtons: options?.specific.templateButtons, title: options?.specific.title,
@@ -188,10 +190,11 @@ export class baileys_api implements API {
         throw new Error("Method not implemented.");
     };
 
+    // Optional 
     public async get_group_members(group_id: string): Promise<Array<string>> {
+        // Get all members of a group
         try {
             let members = await this.client.groupMetadata(group_id);
-
 
             return members.participants.map((member: any) => member.id);
         } catch (error) {
@@ -200,18 +203,35 @@ export class baileys_api implements API {
         }
     }
 
+    public async clear_chat(params: IMessage_format): Promise<boolean> {
+        // Assume que a mensagem passada em params é a última mensagem do chat, função para limpar o chat on command
+        try {
+            await this.client.chatModify({
+                delete: true,
+                lastMessages: [{ key: params.message.key, messageTimestamp: params.message.messageTimestamp }]
+            },
+                params?.id);
+
+            return true;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
 
     public parse_message(message: any): IMessage_format {
+        // Transforms the message to a common format, used by the command service
         let msg = message.messages[0];
 
         let text = msg.message?.imageMessage?.caption ?? (msg.message.conversation ?? msg.message.extendedTextMessage.text);
 
         return {
-            //Message
+            // Message Id, chat can be group or user and the same person
             id: msg.key.remoteJid,
             body: msg.message.conversation ?? msg.message.extendedTextMessage.text,
             text: text,
-            /* type : chat_type, */
+            // Unique id, users only have one
             from: msg.key.participant ?? msg.key.remoteJid,
             to: "",
             isForwarded: msg.message.conversation == null ? true : false,
@@ -235,6 +255,7 @@ export class baileys_api implements API {
             specific: {},
             // This class passed to commands
             client_name: this,
+            // Copy of the original message object, passed up and down the chain
             message: msg
         }
     }

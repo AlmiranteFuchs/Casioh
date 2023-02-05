@@ -12,6 +12,7 @@ export interface API {
     get_group_members?: (group_id: string) => Promise<Array<string>>;
     send_sticker?: (to: string, sticker: string, options?: any) => Promise<boolean>;
     get_user?: (user_id: string) => Promise<any>;
+    clear_chat?: (params: IMessage_format) => Promise<boolean>;
 
 }
 
