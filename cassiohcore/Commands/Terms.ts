@@ -1,5 +1,6 @@
 import { CommandModel } from "../Modal/CommandModel";
 import { IMessage_format } from "../Modal/MessageModel";
+import terms from "./CommandsAssets/use_terms.json";
 
 export class TermsCommand extends CommandModel {
     protected _key: string = "terms";
@@ -19,8 +20,6 @@ export class TermsCommand extends CommandModel {
         try {
 
             // Get the terms of use json
-            let terms = require("../../use_terms.json");
-
             // Read the terms of use
             let terms_content = terms["terms"];
 

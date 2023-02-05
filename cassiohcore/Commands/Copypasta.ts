@@ -1,6 +1,7 @@
 // I'm going to regret this
 import { CommandModel } from "../Modal/CommandModel";
 import { IMessage_format } from "../Modal/MessageModel";
+import copypastas from "./CommandsAssets/copypasta.json";
 
 export class CopypastaCommand extends CommandModel {
     protected _key: string = "copypasta";
@@ -29,8 +30,6 @@ export class CopypastaCommand extends CommandModel {
                 // search for the copypasta
                 let copypasta = (params!.command_params)![0];
 
-                // search for the copypasta in the json file
-                let copypastas = require("./CommandsAssets/copypasta.json");
 
                 if (copypasta == "list") {
                     let copypastas_list = "";
@@ -41,7 +40,7 @@ export class CopypastaCommand extends CommandModel {
                     return;
                 }
 
-                let copypasta_content = copypastas[copypasta];
+                let copypasta_content = copypastas.copypasta;
 
                 // if the copypasta exists, send it
                 if (copypasta_content) {
