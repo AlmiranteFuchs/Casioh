@@ -91,6 +91,24 @@ export abstract class CommandModel {
                 // Check if user has used the command before
                 let commandUse = userUse[command_key];
                 if (commandUse) {
+
+                    
+                    // Check if is time to reset
+                    let today = new Date();
+                    let lastUse = new Date(userUse["lastUse"]);
+                    if (today.getDate() !== lastUse.getDate()) {
+                        // Reset command use
+                        userUse[command_key] = 0;
+                        // Update last use
+                        userUse["lastUse"] = today;
+                        // Write to json
+                        fs.writeFile(json_path, JSON.stringify(json), (err) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                        });
+                    }
+
                     // Check if user has reached the limit
                     if (commandUse >= useLimit) {
                         return false;
@@ -121,6 +139,8 @@ export abstract class CommandModel {
                 (json as any)[user_id] = {};
                 // Add command to user
                 (json as any)[user_id][command_key] = 1;
+                // Add last use to user
+                (json as any)[user_id]["lastUse"] = new Date();
                 // Write to json
                 fs.writeFile(json_path, JSON.stringify(json), (err) => {
                     if (err) {
