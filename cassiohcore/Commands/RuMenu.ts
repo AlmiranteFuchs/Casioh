@@ -1,6 +1,9 @@
-const puppeteer = require("puppeteer");
+//const puppeteer = require("puppeteer");
 import { CommandModel } from "../Modal/CommandModel";
 import { IMessage_format } from "../Modal/MessageModel";
+import { Alergeno, Alimento } from "./CommandsAssets/RuAPI/model/alimento";
+import { Cardapio } from "./CommandsAssets/RuAPI/model/cardapio";
+import { RestaurantLink, Scrapper } from "./CommandsAssets/RuAPI/scrapper/scrapper";
 
 export class RuMenuCommand extends CommandModel {
   protected _active: boolean = true;
@@ -15,153 +18,133 @@ export class RuMenuCommand extends CommandModel {
 
   protected async execute_command(params?: IMessage_format): Promise<void> {
     console.log("Rodando Cardápio do RU!");
+
     try {
+
+      const restaurat: RestaurantLink = params?.command_params![0] as RestaurantLink ?? RestaurantLink.Politecnico;
       const getMenu = async () => {
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
-        await page.goto("https://pra.ufpr.br/ru/ru-centro-politecnico/", {
-          waitUntil: "networkidle2",
+
+        const menu: Cardapio[] = await Scrapper.get(restaurat);
+
+        function parseMenu(pratos: Alimento[]): string {
+          let parsedMenu = "";
+
+          pratos.forEach((prato) => {
+            parsedMenu += ` - _${prato.nome}_ ${mapAlergenicsToEmote(prato)}\n`;
+          });
+
+          return parsedMenu.trim();
+        }
+
+        function mapAlergenicsToEmote(prato: Alimento): string {
+          // Maps name to emote
+          let alergenos_menu = "";
+
+          prato.alergenos.forEach((alergenos: Alergeno) => {
+
+            switch (alergenos) {
+              case Alergeno.Amendoim:
+                alergenos_menu += "🥜";
+                break;
+              case Alergeno.Crustáceos:
+                alergenos_menu += "🦀";
+                break;
+              case Alergeno.Glúten:
+                alergenos_menu += "🍞";
+                break;
+              case Alergeno.Lactose:
+                alergenos_menu += "🐮";
+                break;
+              case Alergeno.Ovos:
+                alergenos_menu += "🥚";
+                break;
+              case Alergeno["Origem animal"]:
+                alergenos_menu += "🍖";
+                break;
+              case Alergeno.Peixe:
+                alergenos_menu += "🐟";
+                break;
+              case Alergeno.Pimenta:
+                alergenos_menu += "🌶️";
+                break;
+              case Alergeno.Soja:
+                alergenos_menu += "🌾";
+                break;
+              case Alergeno.Outros:
+                alergenos_menu += "⁉️";
+                break;
+            }
+          });
+          if (prato.vegano === true) alergenos_menu += "🌱";
+          return alergenos_menu;
+        }
+
+        const menuMessage_today = {
+          text: `*Cardápio do RU* _${restaurat}_ \nhoje\n`,
+          attachments: [
+            {
+              title: "*Café da manhã*",
+              text: parseMenu(menu[0].cafe.pratos),
+            },
+            {
+              title: "*Almoço*",
+              text: parseMenu(menu[0].almoco.pratos),
+            },
+            {
+              title: "*Jantar*",
+              text: parseMenu(menu[0].jantar.pratos),
+            },
+          ],
+        };
+
+        const menuMessage_tomorrow = {
+          text: `*Cardápio do RU* _${restaurat}_ \namanhã\n `,
+          attachments: [
+            {
+              title: "Café da manhã",
+              text: parseMenu(menu[1].cafe.pratos),
+            },
+            {
+              title: "*Almoço*",
+              text: parseMenu(menu[1].almoco.pratos),
+            },
+            {
+              title: "*Jantar*",
+              text: parseMenu(menu[1].jantar.pratos),
+            },
+          ],
+        }
+
+        return [menuMessage_today, menuMessage_tomorrow];
+      }
+
+      const menu = await getMenu();
+
+      for (let i = 0; i < menu.length; i++) {
+        const cardapio = menu[i];
+
+        let menu_message = "";
+        menu_message += `${cardapio.text}\n`;
+        cardapio.attachments.forEach(refeicao => {
+          menu_message += `${refeicao.title}\n ${refeicao.text}\n\n`;
         });
 
-        await page.waitForSelector("tbody");
-        await page.waitForSelector("p > strong");
-
-        const response = await page.evaluate(() => {
-          //@ts-ignore
-          const breakfastTitle: any = document.querySelectorAll(
-            "tbody > tr:nth-child(1)"
-          );
-          //@ts-ignore
-          const lunchTitle: any = document.querySelectorAll(
-            "tbody > tr:nth-child(3)"
-          );
-          //@ts-ignore
-          const dinnerTitle: any = document.querySelectorAll(
-            "tbody > tr:nth-child(5)"
-          );
-
-          //@ts-ignore
-          const breakfastHTML: any = document.querySelectorAll(
-            "tbody > tr:nth-child(2)"
-          );
-          //@ts-ignore
-          const lunchHTML: any = document.querySelectorAll(
-            "tbody > tr:nth-child(4)"
-          );
-          //@ts-ignore
-          const dinnerHTML: any = document.querySelectorAll(
-            "tbody > tr:nth-child(6)"
-          );
-          //@ts-ignore
-          let daysHTML: any = document.querySelectorAll("p > strong");
-
-          //@ts-ignore
-          const numberOfTables: any = document.querySelectorAll("table").length;
-
-          let days = [""];
-
-          if (numberOfTables === 1) {
-            // Checks if the first day has a table
-            if (
-              //@ts-ignore
-              document.querySelector("p + figure")?.children.toString() ===
-              "[object HTMLTableElement]"
-            ) {
-              days = [daysHTML[0].innerText.toString()];
-            } else {
-              days = [daysHTML[1].innerText.toString()];
-            }
-          } else {
-            days = [
-              daysHTML[0].innerText.toString(),
-              daysHTML[1].innerText.toString(),
-            ];
-          }
-
-          const titles = days.map((day: string, index: number) => {
-            return {
-              breakfast: breakfastTitle[index].innerText.toString(),
-              lunch: lunchTitle[index].innerText.toString(),
-              dinner: dinnerTitle[index].innerText.toString(),
-            };
-          });
-
-          const menus = days.map((day: string, index: number) => {
-            return {
-              breakfast: breakfastHTML[index].innerText.toString(),
-              lunch: lunchHTML[index].innerText.toString(),
-              dinner: dinnerHTML[index].innerText.toString(),
-            };
-          });
-
-          let menuResponse = [];
-
-          menuResponse = days.map((day: string, index: number) => {
-            return {
-              weekDay: days[index].toString(),
-              breakfast: {
-                title: titles[index].breakfast.toString(),
-                menu: menus[index].breakfast.toString(),
-              },
-              lunch: {
-                title: titles[index].lunch.toString(),
-                menu: menus[index].lunch.toString(),
-              },
-              dinner: {
-                title: titles[index].dinner.toString(),
-                menu: menus[index].dinner.toString(),
-              },
-            };
-          });
-
-          return menuResponse;
+        await new Promise<void>((resolve, reject) => {
+          setTimeout(() => {
+            resolve();
+          }, 1000);
+        }).then(() => {
+          params?.client_name?.send_message(params?.id, menu_message, params);
+        }).catch((error) => {
+          console.log(error);
         });
-
-        await browser.close();
-
-        return response;
       };
 
-      const ruMenu = await getMenu();
-
-      const parseMenu = (menu: string): string => {
-        return menu
-          .split("\n")
-          .map((meal: string, index: number) => {
-            if (index === 0) {
-              return `\n*-* ${meal.trim()}`;
-            }
-            return `*-* ${meal.trim()}`;
-          })
-          .join("\n");
-      };
-
-      const messageParsed = ruMenu
-        .map((day: any) => {
-          return `\n*${day.weekDay}* \n
-      *_${day.breakfast.title}_*
-      ${parseMenu(day.breakfast.menu)} \n
-      *_${day.lunch.title}_*
-      ${parseMenu(day.lunch.menu)} \n
-      *_${day.dinner.title}_*
-      ${parseMenu(day.dinner.menu)}\n`;
-        })
-        .join("\n");
-
-      const message = `
-        Cardápio RU Centro Politécnico \n 
-        ${messageParsed}`;
-
-      /*   let payload: object = { text_reply: message };
-  
-        params!.specific = payload; */
-
-      /* let command_result: any = new SendReplyCommand().Exec_command(0, params); */
-      params!.specific.reply = true;
-      params?.client_name.send_message(params?.id, message, params);
+      return;
 
     } catch (error) {
-      console.log("Erro em Ru: ", error);
+      console.log(error);
+      params?.client_name?.send_message(params?.id, "Brother, algo deu ruim lol, vê ai e avisa alguém: " + error, params);
     }
   }
 }
