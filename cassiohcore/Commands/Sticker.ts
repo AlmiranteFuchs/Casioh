@@ -2,15 +2,16 @@ import { CommandModel } from "../Modal/CommandModel";
 import { IMessage_format } from "../Modal/MessageModel";
 
 export class StickerCommand extends CommandModel {
-    protected _key = "sticker";
-    protected _alias = "s";
-    protected _name = "/sticker (url || imagem anexada)";
-    protected _description = "Envia um sticker com a imagem especificada ou por url";
-    protected _access_level = 4;
-    protected _active = true;
-    protected _hidden = false;
-    protected _limitedUse = false;
-    protected _useLimit = 0;
+    protected _key: string = "sticker";
+    protected _alias: string = "s";
+    protected _options?: string[] | undefined = undefined;
+    protected _name: string = "/sticker (url || imagem anexada)";
+    protected _description: string = "Envia um sticker com a imagem especificada ou por url";
+    protected _access_level: number = 4;
+    protected _active: boolean = true;
+    protected _hidden: boolean = false;
+    protected _limitedUse: boolean = false;
+    protected _useLimit: number = 0;
 
     protected async execute_command(params?: IMessage_format | undefined): Promise<void> {
         console.log("Rodando sticker!");

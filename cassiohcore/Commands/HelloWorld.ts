@@ -7,10 +7,11 @@ export class HelloWorldCommand extends CommandModel {
     protected _name: string = "/olá";
     protected _description: string = "Só teste mesmo";
     protected _key: string = "olá";
+    protected _options?: string[] | undefined = undefined;
     protected _alias = "hi";
     protected _access_level: number = 4;
-    protected _limitedUse = false;
-    protected _useLimit = 0;
+    protected _limitedUse:boolean = false;
+    protected _useLimit:number = 0;
 
     protected execute_command(params?: IMessage_format): void {
         console.log("Rodando Hello!");

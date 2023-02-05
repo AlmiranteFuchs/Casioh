@@ -7,6 +7,7 @@ export class SpottedCommand extends CommandModel {
     protected _name: string = "/spotted";
     protected _description: string = "Redireciona uma mensagem anônimamente para o grupo do Spotted";
     protected _key: string = "spotted";
+    protected _options?: string[] | undefined = undefined;
     protected _alias = undefined;
     protected _access_level: number = 4;
     protected _word_min_size: number = 5;
@@ -22,8 +23,6 @@ export class SpottedCommand extends CommandModel {
         console.log("Rodando Spotted!");
 
         try {
-
-
 
             // Check if the user sent this on a group
             if (params?.isFrom_group) {
@@ -44,7 +43,7 @@ export class SpottedCommand extends CommandModel {
             }
 
             // Else send the message to the spotted group
-            let message_to_send = "_*Novo Spotted!:*_# "+(this._session_spotted_number++)+"\n" + params?.command_params?.join(" ");
+            let message_to_send = "_*Novo Spotted!:*_# "+(this._session_spotted_number++)+"\n" + params?.text!.replace(this._name, "");
             params?.client_name.send_message(this._spotted_group_id, message_to_send);
             params?.client_name.send_message(params?.id, "Enviado! 😎, vou limpar o chat pra você não ficar com vergonha 😏");
 

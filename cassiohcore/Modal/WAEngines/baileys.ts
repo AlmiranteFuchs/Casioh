@@ -80,7 +80,6 @@ export class baileys_api implements API {
                 else if (file_name?.includes('audio/ogg')) file_name = 'recent.ogg';
                 else if (file_name?.includes('audio/mpeg')) file_name = 'recent.mpeg';
 
-
                 await writeFile('cassiohcore/Commands/CommandsAssets/downloads/' + file_name, buffer);
 
                 let formatted_message = this.parse_message(m);
@@ -222,9 +221,20 @@ export class baileys_api implements API {
 
     public parse_message(message: any): IMessage_format {
         // Transforms the message to a common format, used by the command service
-        let msg = message.messages[0];
+        // Message object
+        const msg: any = message.messages[0];
 
-        let text = msg.message?.imageMessage?.caption ?? (msg.message.conversation ?? msg.message.extendedTextMessage.text);
+        // Message body, can be a text or a image caption
+        const text: string = msg.message?.imageMessage?.caption ?? (msg.message.conversation ?? msg.message.extendedTextMessage.text);
+
+        // Raw params, all words in the message, options and params
+        const raw_params = text.split(/\s*[\s,]\s*/).slice(1);
+        // Command params, all words that are not options
+        const command_params: string[] = raw_params.filter((word: string) => !word.startsWith("-"));
+        // Command options, all options starting with "-" 
+        const options: string[] = raw_params.filter((word: string) => word.startsWith("-"));
+        console.log(options, command_params, raw_params);
+
 
         return {
             // Message Id, chat can be group or user and the same person
@@ -249,9 +259,10 @@ export class baileys_api implements API {
             sender_pfp: "",
             //Extra params
             // Command params, remove first element (command key)
-            command_params: text.split(/\s*[\s,]\s*/).slice(1),
+            command_params: command_params,
             command_key: text.split(/\s*[\s,]\s*/)[0].substring(1).toLowerCase(),
             command_key_raw: text.split(/\s*[\s,]\s*/)[0],
+            command_options: options,
             specific: {},
             // This class passed to commands
             client_name: this,

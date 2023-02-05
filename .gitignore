@@ -19,4 +19,5 @@ cassiohcore/notindex.js
 .env
 /auth_info_baileys/
 auth_info_baileys/
+/downloads/
 downloads/

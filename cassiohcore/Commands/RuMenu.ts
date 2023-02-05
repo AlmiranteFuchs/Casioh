@@ -11,10 +11,11 @@ export class RuMenuCommand extends CommandModel {
   protected _name: string = "/ru";
   protected _description: string = "Mostra o cardápio do RU";
   protected _key: string = "ru";
-  protected _alias = undefined;
+  protected _options?: string[] | undefined = undefined;
+  protected _alias: string | undefined = undefined;
   protected _access_level: number = 3;
-  protected _limitedUse = false;
-  protected _useLimit = 0;
+  protected _limitedUse: boolean = false;
+  protected _useLimit: number = 0;
 
   protected async execute_command(params?: IMessage_format): Promise<void> {
     console.log("Rodando Cardápio do RU!");

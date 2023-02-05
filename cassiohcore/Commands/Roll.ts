@@ -7,10 +7,11 @@ export class RollDiceCommand extends CommandModel {
     protected _name: string = "/roll ( 1d1...10d10 )";
     protected _description: string = "Roda dados!";
     protected _key: string = "roll";
-    protected _alias = "r";
+    protected _options?: string[] | undefined = undefined;
+    protected _alias:string = "r";
     protected _access_level: number = 4;
-    protected _limitedUse = false;
-    protected _useLimit = 0;
+    protected _limitedUse:boolean = false;
+    protected _useLimit:number = 0;
 
     protected async execute_command(params?: IMessage_format): Promise<void> {
         console.log("Rodando Roll!");

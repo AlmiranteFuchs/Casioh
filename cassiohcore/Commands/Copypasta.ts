@@ -3,15 +3,16 @@ import { CommandModel } from "../Modal/CommandModel";
 import { IMessage_format } from "../Modal/MessageModel";
 
 export class CopypastaCommand extends CommandModel {
-    protected _key = "copypasta";
-    protected _alias= "c";
-    protected _name = "/copypasta (nome_copypasta) (copypasta)";
-    protected _description = "Cria uma copypasta com o nome e o conteúdo especificados";
-    protected _access_level = 4;
-    protected _active = true;
-    protected _hidden = false;
-    protected _limitedUse = false;
-    protected _useLimit = 0;
+    protected _key: string = "copypasta";
+    protected _options?: string[] | undefined = undefined;
+    protected _alias: string = "c";
+    protected _name: string = "/copypasta (nome_copypasta) (copypasta)";
+    protected _description: string = "Cria uma copypasta com o nome e o conteúdo especificados";
+    protected _access_level: number = 4;
+    protected _active: boolean = true;
+    protected _hidden: boolean = false;
+    protected _limitedUse: boolean = false;
+    protected _useLimit: number = 0;
 
     protected execute_command(params?: IMessage_format | undefined): void {
         console.log("Rodando copypasta!");
@@ -31,7 +32,7 @@ export class CopypastaCommand extends CommandModel {
                 // search for the copypasta in the json file
                 let copypastas = require("./CommandsAssets/copypasta.json");
 
-                if(copypasta == "list"){
+                if (copypasta == "list") {
                     let copypastas_list = "";
                     for (let i = 0; i < Object.keys(copypastas).length; i++) {
                         copypastas_list += Object.keys(copypastas)[i] + "\n";

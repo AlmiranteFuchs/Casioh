@@ -4,6 +4,7 @@ import { IMessage_format } from "../Modal/MessageModel";
 export class AdminShellCommand extends CommandModel {
     protected _active: boolean = false;
     protected _hidden: boolean = true;
+    protected _options?: undefined = undefined;
     protected _alias: string = "cmd";
     protected _name: string = "/cmd";
     protected _description: string = "Se você está lendo isso algo muito errado acontece...";

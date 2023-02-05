@@ -23,6 +23,7 @@ export interface IMessage_format {
     command_key?: string;
     command_key_raw?: string;
     command_params?: Array<string>;
+    command_options?: Array<string>;
     specific?: any;
     //Venom Client
     client_name?: any;

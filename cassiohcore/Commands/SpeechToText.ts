@@ -4,15 +4,16 @@ import { IMessage_format } from "../Modal/MessageModel";
 import * as dotenv from "dotenv";
 
 export class SpeechToTextCommand extends CommandModel {
-    protected _key = "internal_speech_to_text";
-    protected _name = "/internal_speech_to_text";
-    protected _alias = undefined;
-    protected _description = "Converte áudio em texto";
-    protected _access_level = 4;
-    protected _active = true;
-    protected _hidden = true;
-    protected _limitedUse = false;
-    protected _useLimit = 0;
+    protected _key: string = "internal_speech_to_text";
+    protected _name: string = "/internal_speech_to_text";
+    protected _alias: string | undefined = undefined;
+    protected _options?: string[] | undefined = undefined;
+    protected _description: string = "Converte áudio em texto";
+    protected _access_level: number = 4;
+    protected _active: boolean = true;
+    protected _hidden: boolean = true;
+    protected _limitedUse: boolean = false;
+    protected _useLimit: number = 0;
 
     protected async execute_command(params?: IMessage_format | undefined): Promise<void> {
         console.log("Rodando STT!");

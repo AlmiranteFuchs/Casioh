@@ -2,15 +2,16 @@ import { CommandModel } from "../Modal/CommandModel";
 import { IMessage_format } from "../Modal/MessageModel";
 
 export class InfoCommand extends CommandModel {
-    protected _key = "info";
-    protected _alias = undefined;
-    protected _name = "/info";
-    protected _description = "Informações sobre o bot, versão e contribuidores";
-    protected _access_level = 4;
-    protected _active = true;
-    protected _hidden = false;
-    protected _limitedUse = false;
-    protected _useLimit = 0;
+    protected _key: string = "info";
+    protected _alias: string | undefined = undefined;
+    protected _options?: string[] | undefined = undefined;
+    protected _name: string = "/info";
+    protected _description: string = "Informações sobre o bot, versão e contribuidores";
+    protected _access_level: number = 4;
+    protected _active: boolean = true;
+    protected _hidden: boolean = false;
+    protected _limitedUse: boolean = false;
+    protected _useLimit: number = 0;
 
     protected async execute_command(params?: IMessage_format | undefined): Promise<void> {
         console.log("Rodando Info!");
@@ -37,7 +38,7 @@ export class InfoCommand extends CommandModel {
 
 
                 // Send the message
-                let message:string = "_*C.A.S.S.I.O.H*_ : Computer ASSisted Input & Output Helper\n*Versão*: " + "*" + version + "* " + "\n*Contribuidores*: _" + names.join(", ") + "_ 🖤";
+                let message: string = "_*C.A.S.S.I.O.H*_ : Computer ASSisted Input & Output Helper\n*Versão*: " + "*" + version + "* " + "\n*Contribuidores*: _" + names.join(", ") + "_ 🖤";
                 params?.client_name.send_message(params?.id, message, params);
             });
 

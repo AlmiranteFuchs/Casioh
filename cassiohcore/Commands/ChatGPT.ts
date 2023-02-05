@@ -3,15 +3,16 @@ import { IMessage_format } from "../Modal/MessageModel";
 import dotenv from "dotenv";
 
 export class ChatGPTCommand extends CommandModel {
-    protected _key = "gpt";
-    protected _name = "/gpt (prompt)";
-    protected _alias = undefined;
-    protected _description = "Gera texto com base em um prompt";
-    protected _access_level = 4;
-    protected _active = true;
-    protected _hidden = false;
-    protected _limitedUse = true;
-    protected _useLimit = 5;
+    protected _key: string = "gpt";
+    protected _name: string = "/gpt (prompt)";
+    protected _options?: string[] | undefined = [];
+    protected _alias?: string = undefined;
+    protected _description: string = "Gera texto com base em um prompt";
+    protected _access_level: number = 4;
+    protected _active: boolean = true;
+    protected _hidden: boolean = false;
+    protected _limitedUse?: boolean = true;
+    protected _useLimit?: number = 5;
 
     protected async execute_command(params?: IMessage_format | undefined): Promise<void> {
         console.log("Rodando GPT!");
@@ -29,7 +30,7 @@ export class ChatGPTCommand extends CommandModel {
             if (params?.command_params?.length == 0) {
                 params?.client_name.send_message(params?.id, "Sim, quer dizer não, quer dizer sei lá mano o que diabos tu quer dizer com isso?", params);
             }
-            
+
             const { Configuration, OpenAIApi } = require("openai");
 
             const configuration = new Configuration({

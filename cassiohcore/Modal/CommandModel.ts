@@ -8,6 +8,7 @@ export abstract class CommandModel {
     protected abstract _name: string;
     // Optional alias
     protected abstract _alias?: string;
+    protected abstract _options?: string[];       // Opções do comando
     protected abstract _description: string;
     protected abstract _access_level: number;
     protected abstract _active: boolean;           //Define se é executável a qualquer momento

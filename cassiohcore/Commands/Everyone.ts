@@ -4,13 +4,14 @@ import { IMessage_format } from "../Modal/MessageModel";
 export class EveryoneCommand extends CommandModel {
     protected _active: boolean = true;
     protected _hidden: boolean = false;
+    protected _options?: string[] | undefined = undefined;
     protected _name: string = "/everyone";
     protected _description: string = "Pinga todos os amiguinhos do grupo";
     protected _key: string = "everyone";
-    protected _alias? = undefined;
+    protected _alias?= undefined;
     protected _access_level: number = 3;
-    protected _limitedUse = true;
-    protected _useLimit = 2;
+    protected _limitedUse: boolean = true;
+    protected _useLimit: number = 2;
 
     protected async execute_command(params?: IMessage_format): Promise<void> {
         console.log("Rodando Everyone!");
@@ -31,7 +32,7 @@ export class EveryoneCommand extends CommandModel {
             let message: string = "";
 
             user_ids = await params?.client_name.get_group_members(params?.id);
-            
+
             message = params?.sender_name + " solicitou uma reunião dos cornos.\n";
 
             params!.specific.mention = true;

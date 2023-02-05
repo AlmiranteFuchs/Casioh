@@ -2,15 +2,16 @@ import { CommandModel } from "../Modal/CommandModel";
 import { IMessage_format } from "../Modal/MessageModel";
 
 export class TextToSpeechCommand extends CommandModel {
-    protected _key = "tts";
-    protected _name = "/tts (texto)";
-    protected _alias = undefined;;
-    protected _description = "Converte texto em áudio";
-    protected _access_level = 4;
-    protected _active = true;
-    protected _hidden = false;
-    protected _limitedUse = false;
-    protected _useLimit = 0;
+    protected _key: string = "tts";
+    protected _name: string = "/tts (texto)";
+    protected _options?: string[] | undefined = undefined;
+    protected _alias: string | undefined = undefined;;
+    protected _description: string = "Converte texto em áudio";
+    protected _access_level: number = 4;
+    protected _active: boolean = true;
+    protected _hidden: boolean = false;
+    protected _limitedUse: boolean = false;
+    protected _useLimit: number = 0;
 
     protected async execute_command(params?: IMessage_format | undefined): Promise<void> {
         console.log("Rodando TTS!");

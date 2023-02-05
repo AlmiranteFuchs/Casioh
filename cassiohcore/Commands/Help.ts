@@ -5,13 +5,14 @@ import { IMessage_format } from "../Modal/MessageModel";
 export class HelpCommand extends CommandModel {
     protected _active: boolean = true;
     protected _hidden: boolean = false;
+    protected _options?: string[] | undefined = undefined;
     protected _name: string = "/help";
     protected _description: string = "Wow, o que será que ele faz???";
     protected _key: string = "help";
-    protected _alias = "h";
+    protected _alias: string = "h";
     protected _access_level: number = 4;
-    protected _limitedUse = false;
-    protected _useLimit = 0;
+    protected _limitedUse: boolean = false;
+    protected _useLimit: number = 0;
 
     protected async execute_command(params?: IMessage_format): Promise<void> {
         console.log("Rodando Help!");
