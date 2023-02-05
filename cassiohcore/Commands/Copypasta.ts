@@ -1,7 +1,9 @@
 // I'm going to regret this
 import { CommandModel } from "../Modal/CommandModel";
 import { IMessage_format } from "../Modal/MessageModel";
+import fs from "fs";
 import copypastas from "./CommandsAssets/copypasta.json";
+import path from "path";
 
 export class CopypastaCommand extends CommandModel {
     protected _key: string = "copypasta";
@@ -19,6 +21,8 @@ export class CopypastaCommand extends CommandModel {
         console.log("Rodando copypasta!");
 
         try {
+            // Used to save on write
+            let cp_path = path.resolve(__dirname, "./CommandsAssets/copypasta.json");
 
             // Test if the command has parameters
             if ((params!.command_params)!.length == 0) {
@@ -40,7 +44,7 @@ export class CopypastaCommand extends CommandModel {
                     return;
                 }
 
-                let copypasta_content = copypastas.copypasta;
+                let copypasta_content = (copypastas as any)[copypasta];
 
                 // if the copypasta exists, send it
                 if (copypasta_content) {
@@ -58,17 +62,13 @@ export class CopypastaCommand extends CommandModel {
                 // All params after the first one
                 let copypasta_content = (params!.text)!.split(" ").slice(2).join(" ");
 
-                // search for the copypasta in the json file
-                let copypastas = require("./CommandsAssets/copypasta.json");
-
                 // if the copypasta exists, send it
-                if (copypastas[copypasta_name]) {
+                if ((copypastas as any)[copypasta_name]) {
                     params?.client_name.send_message(params?.id, "Brother, essa copypasta já existe", params);
                 } else {
-                    copypastas[copypasta_name] = copypasta_content;
+                    (copypastas as any)[copypasta_name] = copypasta_content;
                     // write in the json
-                    const fs = require('fs');
-                    fs.writeFile("./cassiohcore/Commands/CommandsAssets/copypasta.json", JSON.stringify(copypastas), function (err: any) {
+                    fs.writeFile(cp_path, JSON.stringify(copypastas), function (err: any) {
                         if (err) {
                             console.log("Erro ao escrever no arquivo copypasta.json: ", err);
                             params?.client_name.send_message(params?.id, "Meu chegado, deu erro 😢, consegui salvar não lol", params);
