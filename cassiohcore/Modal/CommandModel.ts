@@ -8,15 +8,14 @@ export abstract class CommandModel {
     //constructor(public _nome: string, private _access_level: number) { }
     protected abstract _key: string;
     protected abstract _name: string;
-    // Optional alias
-    protected abstract _alias?: string;
+    protected abstract _alias?: string;           // Optional alias
     protected abstract _options?: string[];       // Opções do comando
     protected abstract _description: string;
     protected abstract _access_level: number;
     protected abstract _active: boolean;           //Define se é executável a qualquer momento
     protected abstract _hidden: boolean;           //Define se aparece no /help
     protected abstract _limitedUse?: boolean;       //Define se o comando pode ser usado apenas algumas vezes por sessão
-    protected abstract _useLimit?: number;          //Define o limite de uso do comando por sessão
+    protected abstract _useLimit?: number;           //Define o limite de uso do comando por sessão
 
     get key(): string {
         return this._key;
@@ -59,15 +58,17 @@ export abstract class CommandModel {
          * Retorna se o usuário tem acesso ao comando
          * @param {number} access_level Nível do usuário
          * ---------------------------------------------
-         * 0 - root
-         * 1 - adm
+         * 0 - Root
+         * 1 - Adm
          * 2 - CAAD
-         * 3 - trusted
-         * 4 - plebe
-         */
-
-        let response = (access_level <= this._access_level && access_level >= 0) ? true : false;
-        return response;
+         * 3 - Trusted
+         * 4 - Plebe
+         * 5 - Blocked
+        */
+        
+        // TODO: Implement function to get access level of user on database
+        
+        return (access_level <= this._access_level && access_level >= 0) ? true : false;
     }
 
     protected check_use_limit(limitedUse: boolean, useLimit: number, user_id: string, command_key: string): boolean {
@@ -81,7 +82,8 @@ export abstract class CommandModel {
         */
 
         if (limitedUse) {
-            // FIXME: Implementar controle de uso de comandos, banco de dados
+            // TODO:: Implementar controle de uso de comandos, banco de dados!!!
+            
             // Read from json
             let json_path = path.resolve(__dirname, "../Commands/CommandsAssets/userUse.json");
 
@@ -114,7 +116,7 @@ export abstract class CommandModel {
                         return false;
                     } else {
                         // Increment command use
-                        userUse[command_key] = commandUse + 1;
+                        userUse[command_key] = commandUse++;
                         // Write to json
                         fs.writeFile(json_path, JSON.stringify(json), (err) => {
                             if (err) {

@@ -16,7 +16,6 @@ export class SpottedCommand extends CommandModel {
 
     // Specific command properties
     protected _spotted_group_id: string = "120363023365772349@g.us";
-    protected _session_spotted_number: number = 0;
 
 
     protected async execute_command(params?: IMessage_format): Promise<void> {
@@ -42,8 +41,10 @@ export class SpottedCommand extends CommandModel {
                 return;
             }
 
+            // Random id number from 0 to 500;
+            let random_id = Math.floor(Math.random() * 500);
             // Else send the message to the spotted group
-            let message_to_send = "_*Novo Spotted!:*_# "+(this._session_spotted_number++)+"\n" + params?.text!.replace(this._name, "");
+            let message_to_send = "_*Novo Spotted!:*_ #*"+(random_id)+"*\n" + params?.text!.replace(this._name, "");
             params?.client_name.send_message(this._spotted_group_id, message_to_send);
             params?.client_name.send_message(params?.id, "Enviado! 😎, vou limpar o chat pra você não ficar com vergonha 😏");
 

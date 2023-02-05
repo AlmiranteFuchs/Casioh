@@ -80,6 +80,7 @@ export class baileys_api implements API {
                 else if (file_name?.includes('audio/ogg')) file_name = 'recent.ogg';
                 else if (file_name?.includes('audio/mpeg')) file_name = 'recent.mpeg';
 
+                // FIXME: relative path on build is gonnar throw an error
                 await writeFile('cassiohcore/Commands/CommandsAssets/downloads/' + file_name, buffer);
 
                 let formatted_message = this.parse_message(m);
@@ -128,6 +129,8 @@ export class baileys_api implements API {
 
             let formatted_message = this.parse_message(m);
 
+            // TODO: Get user info from DB, and access the user level
+            // DBCOntrollers.User_controller.GetUser(formatted_message.user_id);
 
             CommandsControllers.Command_service.Run_command(0, formatted_message);
         })
@@ -233,7 +236,6 @@ export class baileys_api implements API {
         const command_params: string[] = raw_params.filter((word: string) => !word.startsWith("-"));
         // Command options, all options starting with "-" 
         const options: string[] = raw_params.filter((word: string) => word.startsWith("-"));
-        console.log(options, command_params, raw_params);
 
 
         return {

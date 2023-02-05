@@ -18,7 +18,6 @@ export class HelloWorldCommand extends CommandModel {
         try {
             let message = "👋 Olá mundo, vasto mundo mais vasto é meu coração, mais vasto é a torcida da cruz de malta no pendão, Glória!";
 
-            params!.specific.reply = true;
             params?.client_name.send_message(params?.id, message, params);
         } catch (error) {
             console.log("Erro em Hello: ", error);
