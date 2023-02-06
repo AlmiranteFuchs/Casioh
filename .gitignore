@@ -21,3 +21,6 @@ cassiohcore/notindex.js
 auth_info_baileys/
 /downloads/
 downloads/
+cassiohcore/Commands/CommandsAssets/userUse.json
+cassiohcore/Commands/CommandsAssets/downloads/*
+cassiohcore/Commands/CommandsAssets/userUse.json
