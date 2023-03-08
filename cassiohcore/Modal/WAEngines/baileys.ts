@@ -175,6 +175,15 @@ export class baileys_api implements API {
                 return true;
             }
 
+            // Send image
+            if (options?.specific.image) {
+                // Reads the common and unic local file, url passed as message
+                await this.client.sendMessage(to, {
+                    image: fs.readFileSync(message)
+                }, { quoted: options?.message });
+                return true;
+            }
+
             // Send message, with all params possible
             await this.client.sendMessage(to, {
                 text: message, footer: options?.specific.footer,
