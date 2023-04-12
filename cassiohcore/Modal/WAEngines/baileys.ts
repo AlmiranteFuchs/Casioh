@@ -5,6 +5,7 @@ import { CommandsControllers } from '../..';
 import { IMessage_format } from '../MessageModel';
 import { API, SessionStatus } from './apiModel';
 import fs from 'fs';
+import path from 'path';
 
 
 export class baileys_api implements API {
@@ -133,6 +134,12 @@ export class baileys_api implements API {
             // DBCOntrollers.User_controller.GetUser(formatted_message.user_id);
 
             CommandsControllers.Command_service.Run_command(0, formatted_message);
+
+            // Saves the message to the database
+            // Clear unused fields
+            let copy = JSON.parse(JSON.stringify(formatted_message)) as IMessage_format; // For some fucking reason TS is using this as reference and not creating a fucking copy
+            copy.client_name = undefined;
+            this.save_message_json(copy);
         })
         sock.ev.on('group-participants.update', async m => {
             console.log('[Cassioh]: Group participants updated');
@@ -282,6 +289,42 @@ export class baileys_api implements API {
         }
     }
 
+    public save_message_json(message: IMessage_format): boolean {
+
+        const path_url = path.resolve(__dirname, '../../Commands/CommandsAssets/lastmessages.json');
+        // Pushes the new message to the json file
+        try {
+            // Check if json already exists
+            if (!fs.existsSync(path_url)) {
+                // Create the json
+                fs.writeFileSync(path_url, JSON.stringify({
+                    message_list: []
+                }));
+            }
+
+            // Read the file
+            let data = fs.readFileSync(path_url);
+            // Parse the json
+            let json = JSON.parse(data.toString());
+            // Push the new message
+            json.message_list.push(message);
+            // remove the first element, if the array is bigger than 100
+            if (json.message_list.length > 100) {
+                json.message_list.shift();
+            }
+            // Write the new json
+            // Save altered json
+            fs.writeFileSync(path_url, JSON.stringify(json));
+            console.log("Mensagem salva no json");
+            
+            return true;
+
+        }
+        catch (e) {
+            console.log("Erro ao salvar mensagem no json: " + e);
+            return false;
+        }
+    }
 }
 
 
