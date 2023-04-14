@@ -16,6 +16,7 @@ import { ChatGPTCommand } from "../Commands/ChatGPT";
 import { InfoCommand } from "../Commands/Credits";
 import { TermsCommand } from "../Commands/Terms";
 import { MemesCommand } from "../Commands/ComputuMeme";
+import { LaEleCommand } from "../Commands/LaEle";
 
 const _ = require("lodash");
 
@@ -66,6 +67,7 @@ export class CommandsControllerService {
   private _command_info: InfoCommand;
   private _command_terms: TermsCommand;
   private _command_memes: MemesCommand;
+  private _command_laEle: LaEleCommand;
 
   public Command_service: CommandsController;
 
@@ -88,6 +90,7 @@ export class CommandsControllerService {
     this._command_info = new InfoCommand();
     this._command_terms = new TermsCommand();
     this._command_memes = new MemesCommand();
+    this._command_laEle = new LaEleCommand();
 
     CommandsControllerService._commands_array.push(this._command_hello);
     CommandsControllerService._commands_array.push(this._command_everyone);
@@ -105,6 +108,7 @@ export class CommandsControllerService {
     CommandsControllerService._commands_array.push(this._command_info);
     CommandsControllerService._commands_array.push(this._command_terms);
     CommandsControllerService._commands_array.push(this._command_memes);
+    CommandsControllerService._commands_array.push(this._command_laEle);
 
     this.Command_service = new CommandsController(
       CommandsControllerService._commands_array
