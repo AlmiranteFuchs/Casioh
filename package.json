@@ -1,15 +1,16 @@
 {
   "name": "cassiohcore",
-  "version": "2.0.13",
+  "version": "2.0.16",
   "description": "Computer Assisted Services on Input and Output Helper, Casioh",
   "main": "index.js",
   "scripts": {
-    "dev": "npx nodemon",
+    "dev": "cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/ && git pull && cd - && npx nodemon",
     "start": "npm run build && node build/index.js",
     "build": "rimraf ./build && tsc"
   },
   "author": "Almirante Fuchs",
-  "license": "MIT",
+    "dev": "cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/ && git pull && cd - && npx nodemon",
+    "license": "MIT",
   "dependencies": {
     "@adiwajshing/baileys": "^5.0.0",
     "@adiwajshing/keyed-db": "^0.2.4",
