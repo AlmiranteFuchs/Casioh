@@ -4,9 +4,10 @@
   "description": "Computer Assisted Services on Input and Output Helper, Casioh",
   "main": "index.js",
   "scripts": {
-    "dev": "cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/ && git pull && cd - && npx nodemon",
+    "dev": "npm run update && npx nodemon",
     "start": "npm run build && node build/index.js",
-    "build": "rimraf ./build && tsc"
+    "build": "rimraf ./build && tsc",
+    "update": "git pull && cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/ && git pull && cd - "
   },
   "author": "Almirante Fuchs",
     "dev": "cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/ && git pull && cd - && npx nodemon",

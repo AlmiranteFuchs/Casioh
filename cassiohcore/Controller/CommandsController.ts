@@ -17,6 +17,7 @@ import { InfoCommand } from "../Commands/Credits";
 import { TermsCommand } from "../Commands/Terms";
 import { MemesCommand } from "../Commands/ComputuMeme";
 import { LaEleCommand } from "../Commands/LaEle";
+import { RestartCommand } from "../Commands/Restart";
 
 const _ = require("lodash");
 
@@ -68,6 +69,7 @@ export class CommandsControllerService {
   private _command_terms: TermsCommand;
   private _command_memes: MemesCommand;
   private _command_laEle: LaEleCommand;
+  private _command_restart : RestartCommand;
 
   public Command_service: CommandsController;
 
@@ -91,6 +93,7 @@ export class CommandsControllerService {
     this._command_terms = new TermsCommand();
     this._command_memes = new MemesCommand();
     this._command_laEle = new LaEleCommand();
+    this._command_restart = new RestartCommand();
 
     CommandsControllerService._commands_array.push(this._command_hello);
     CommandsControllerService._commands_array.push(this._command_everyone);
@@ -109,6 +112,7 @@ export class CommandsControllerService {
     CommandsControllerService._commands_array.push(this._command_terms);
     CommandsControllerService._commands_array.push(this._command_memes);
     CommandsControllerService._commands_array.push(this._command_laEle);
+    CommandsControllerService._commands_array.push(this._command_restart);
 
     this.Command_service = new CommandsController(
       CommandsControllerService._commands_array

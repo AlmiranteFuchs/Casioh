@@ -16,14 +16,13 @@ export class MemesCommand extends CommandModel {
     protected _useLimit?: number | undefined = 0;
 
     protected async execute_command(params?: IMessage_format | undefined): Promise<void> {
+
         console.log("Rodando meme!");
         try {
             const cmd: any = require('node-cmd');
 
             // command options
             if (params?.command_options?.includes("-s") || params?.command_options?.includes("-u")) {
-                console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\n\n\n\naaaa");
-
                 console.log("Saving new image on /meme");
 
                 // Make the hash of the saved image
@@ -50,7 +49,6 @@ export class MemesCommand extends CommandModel {
                     console.log(this._options);
 
                     if (params.command_options?.includes("-u")) {
-                        console.log("BBBBBBBBBBBBBBBBBBBBBBB");
 
                         this._use_image(params!, "cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/figures/" + data + ".jpeg")
                     }
