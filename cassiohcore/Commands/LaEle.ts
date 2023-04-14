@@ -17,8 +17,17 @@ export class LaEleCommand extends CommandModel {
         console.log("Rodando LÁ ELE!");
 
         try {
-            // write "LÁ ELE n vezes" where n is a random number between 1 and 1000
-            let reply = "LÁ ELE " + Math.floor(Math.random() * 1000) + 1 + " vezes";
+            const min = 2;
+            const max = 10;
+            let randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
+            
+            // write "LÁ ELE n vezes" where n is a random number between 1 and 100
+            let reply = "LÁ ELE " + randomNum;
+
+            // generate a random number between 0 and 1
+            (Math.round(Math.random()) + 1) % 2  ? reply += " mil" : reply += "";
+            
+            reply += " vezes!";
 
             params?.client_name.send_message(params?.id, reply, params);
 
