@@ -21,68 +21,44 @@ export class MemesCommand extends CommandModel {
             const cmd: any = require('node-cmd');
 
             // command options
-            if (this._options?.includes("-s") || this._options?.includes("-u")) {
+            if (params?.command_options?.includes("-s") || params?.command_options?.includes("-u")) {
+                console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\n\n\n\naaaa");
+
                 console.log("Saving new image on /meme");
 
                 // Make the hash of the saved image
                 const { imageHash } = require('image-hash');
-                const fBuffer = fs.readFileSync(__dirname + '/CommandsAssets/downloads/recent.jpeg');
-                let hash:any;
-                
+                const fBuffer = fs.readFileSync(__dirname + '/CommandsAssets/MemeGen/Computudos-Simulator/result.png');
+
                 await imageHash({
                     data: fBuffer
-                }, 16, true, (error: any, data: any) => {
-                    if (error) throw error;
-                    hash = data;
-                });
-
-
-                if (await this._save_image(hash)) {
-                    params!.client_name.send_message(params?.id, "Salvo ;)", params);
-                    if (this._options?.includes("-u")) {
-                        let file_path = "cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/" + hash;
-
-                        cmd.run(
-                            `cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator
-                            python3 chroma_key.py ${file_path}`,
-                            function (err: any, data: any, stderr: any) {
-                                if (!err) {
-                                    params?.client_name.send_message(params?.id, "Ok lol", params);
-                                    // Send the image result.png
-
-                                    const image_path: string = "cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/result.png";
-                                    params!.specific.image = image_path;
-                                    params?.client_name.send_message(params?.id, image_path, params);
-                                } else {
-                                    console.log('error', err);
-                                    params?.client_name.send_message(params?.id, "Não rolou ai ;c : " + err, params);
-                                }
-                            }
-                        );
-                    }
-                }
-                params!.client_name.send_message(params?.id, "Não consegui lmao", params);
-                return;
-            }
-
-            // await for python to finish
-            cmd.run(
-                `cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator
-                python3 chroma_key.py`,
-                function (err: any, data: any, stderr: any) {
-                    if (!err) {
-                        params?.client_name.send_message(params?.id, "Ok lol", params);
-                        // Send the image result.png
-
-                        const image_path: string = "cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/result.png";
-                        params!.specific.image = image_path;
-                        params?.client_name.send_message(params?.id, image_path, params);
+                }, 16, true, async (error: any, data: any) => {
+                    if (error) {
+                        params!.client_name.send_message(params?.id, "Não consegui, hash n funfou", params);
+                        return;
+                    };
+                    // Callback
+                    // Save
+                    if (! await this._save_image(data)) {
+                        params!.client_name.send_message(params?.id, "Não consegui salvar", params);
+                        return;
                     } else {
-                        console.log('error', err);
-                        params?.client_name.send_message(params?.id, "Não rolou ai ;c : " + err, params);
+                        params!.client_name.send_message(params?.id, "Salvei", params);
                     }
-                }
-            );
+
+
+                    console.log(this._options);
+
+                    if (params.command_options?.includes("-u")) {
+                        console.log("BBBBBBBBBBBBBBBBBBBBBBB");
+
+                        this._use_image(params!, "cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/figures/" + data + ".jpeg")
+                    }
+                });
+                return;
+            } else {
+                this._use_image(params!, "");
+            }
 
         } catch (error) {
             console.log("Erro ao executar comando: " + error);
@@ -94,7 +70,7 @@ export class MemesCommand extends CommandModel {
 
         // Get the saved image 
         let image_path: string = "cassiohcore/Commands/CommandsAssets/downloads/recent.jpeg";
-        let save_dir_path: string = "cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/figures/" + image_hash;
+        let save_dir_path: string = "cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/figures/" + image_hash + ".jpeg";
 
         fs.rename(image_path, save_dir_path, function (err) {
             if (err) {
@@ -104,7 +80,28 @@ export class MemesCommand extends CommandModel {
             console.log('Successfully renamed - AKA moved!');
             return true;
         });
-        return false;
+        return true;
     }
 
+    private async _use_image(params: IMessage_format, filename: string): Promise<void> {
+        const cmd: any = require('node-cmd');
+
+        cmd.run(
+            `cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator
+                    python3 chroma_key.py ${filename ?? ""}`,
+            function (err: any, data: any, stderr: any) {
+                if (!err) {
+                    params?.client_name.send_message(params?.id, "Ok lol", params);
+                    // Send the image result.png
+
+                    const image_path: string = "cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/result.png";
+                    params!.specific.image = image_path;
+                    params?.client_name.send_message(params?.id, image_path, params);
+                } else {
+                    console.log('error', err);
+                    params?.client_name.send_message(params?.id, "Não rolou ai ;c : " + err, params);
+                }
+            }
+        );
+    }
 }
