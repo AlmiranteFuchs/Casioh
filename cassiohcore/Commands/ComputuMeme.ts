@@ -38,7 +38,7 @@ export class MemesCommand extends CommandModel {
                     };
                     // Callback
                     // Save
-                    if (! await this._save_image(data)) {
+                    if (! await this._save_image(data, params)) {
                         params!.client_name.send_message(params?.id, "Não consegui salvar", params);
                         return;
                     } else {
@@ -64,11 +64,14 @@ export class MemesCommand extends CommandModel {
         }
     }
 
-    private async _save_image(image_hash: string): Promise<boolean> {
+    private async _save_image(image_hash: string, params?:IMessage_format): Promise<boolean> {
 
         // Get the saved image 
         let image_path: string = "cassiohcore/Commands/CommandsAssets/downloads/recent.jpeg";
-        let save_dir_path: string = "cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/figures/" + image_hash + ".jpeg";
+        let save_dir_path: string = `cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/figures/` + image_hash + ".jpeg";
+
+        console.log(save_dir_path);
+        
 
         fs.rename(image_path, save_dir_path, function (err) {
             if (err) {
@@ -84,9 +87,16 @@ export class MemesCommand extends CommandModel {
     private async _use_image(params: IMessage_format, filename: string): Promise<void> {
         const cmd: any = require('node-cmd');
 
+        // Remove everything from the string before figures
+        filename = filename.split("figures/")[1];
+
+console.log(`cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator
+python3 chroma_key.py ${params.command_options?.includes("-u") ? params.command_options?.includes("-m") ? "-m" : "-f" : ""} ${filename ?? ""}`);
+
+
         cmd.run(
             `cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator
-                    python3 chroma_key.py ${filename ?? ""}`,
+                    python3 chroma_key.py ${params.command_options?.includes("-u") ? "-f figures/" : ""} ${filename ?? ""}`,
             function (err: any, data: any, stderr: any) {
                 if (!err) {
                     params?.client_name.send_message(params?.id, "Ok lol", params);
