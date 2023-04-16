@@ -7,7 +7,7 @@
     "dev": "npm run update && npx nodemon",
     "start": "npm run build && node build/index.js",
     "build": "rimraf ./build && tsc",
-    "update": "git pull && npm i && cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/ && git pull && cd - "
+    "update": "git stash & git pull && npm i && cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/ && git pull && cd - "
   },
   "author": "Almirante Fuchs",
     "dev": "cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/ && git pull && cd - && npx nodemon",
