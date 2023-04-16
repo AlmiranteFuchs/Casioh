@@ -73,14 +73,7 @@ export class MemesCommand extends CommandModel {
         console.log(save_dir_path);
         
 
-        fs.rename(image_path, save_dir_path, function (err) {
-            if (err) {
-                console.log("error on saving");
-                return false;
-            }
-            console.log('Successfully renamed - AKA moved!');
-            return true;
-        });
+        fs.renameSync(image_path, save_dir_path);
         return true;
     }
 
@@ -96,7 +89,7 @@ python3 chroma_key.py ${params.command_options?.includes("-u") ? params.command_
 
         cmd.run(
             `cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator
-                    python3 chroma_key.py ${params.command_options?.includes("-u") ? "-f figures/" : ""} ${filename ?? ""}`,
+                    python3 chroma_key.py ${params.command_options?.includes("-u") ? "-f figures/" : ""}${filename ?? ""}`,
             function (err: any, data: any, stderr: any) {
                 if (!err) {
                     params?.client_name.send_message(params?.id, "Ok lol", params);
