@@ -7,11 +7,11 @@
     "dev": "npm run update && npx nodemon",
     "start": "npm run build && node build/index.js",
     "build": "rimraf ./build && tsc",
-    "update": "git stash & git pull && npm i && cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/ && git pull && cd - "
+    "update": "git pull && npm i && cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/ && git pull && cd - "
   },
   "author": "Almirante Fuchs",
-    "dev": "cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/ && git pull && cd - && npx nodemon",
-    "license": "MIT",
+  "dev": "cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/ && git pull && cd - && npx nodemon",
+  "license": "MIT",
   "dependencies": {
     "@adiwajshing/baileys": "^5.0.0",
     "@adiwajshing/keyed-db": "^0.2.4",
@@ -26,6 +26,7 @@
     "express": "^4.18.1",
     "ffmpeg": "^0.0.4",
     "fluent-ffmpeg": "^2.1.2",
+    "fs.promises": "^0.1.2",
     "git-contributors": "^0.2.5",
     "gtts": "^0.1.1",
     "image-hash": "^5.3.1",

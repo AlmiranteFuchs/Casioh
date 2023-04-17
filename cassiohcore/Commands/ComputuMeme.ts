@@ -18,17 +18,20 @@ export class MemesCommand extends CommandModel {
     protected async execute_command(params?: IMessage_format | undefined): Promise<void> {
 
         console.log("Rodando meme!");
+
+
         try {
             const cmd: any = require('node-cmd');
 
             // command options
             if (params?.command_options?.includes("-s") || params?.command_options?.includes("-u")) {
-                console.log("Saving new image on /meme");
+                console.log("Saving new image on /meme");   // TODO: check if already downloaded
 
                 // Make the hash of the saved image
                 const { imageHash } = require('image-hash');
                 const fBuffer = fs.readFileSync(__dirname + '/CommandsAssets/MemeGen/Computudos-Simulator/result.png');
 
+                // Make a hash value of the image
                 await imageHash({
                     data: fBuffer
                 }, 16, true, async (error: any, data: any) => {
@@ -36,7 +39,7 @@ export class MemesCommand extends CommandModel {
                         params!.client_name.send_message(params?.id, "Não consegui, hash n funfou", params);
                         return;
                     };
-                    // Callback
+
                     // Save
                     if (! await this._save_image(data, params)) {
                         params!.client_name.send_message(params?.id, "Não consegui salvar", params);
@@ -45,12 +48,9 @@ export class MemesCommand extends CommandModel {
                         params!.client_name.send_message(params?.id, "Salvei", params);
                     }
 
-
-                    console.log(this._options);
-
                     if (params.command_options?.includes("-u")) {
 
-                        this._use_image(params!, "cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/figures/" + data + ".jpeg")
+                        this._use_image(params!, `cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/${params.command_options?.includes("-t") ? "models" : "figures"}/` + data + ".jpeg")
                     }
                 });
                 return;
@@ -64,14 +64,12 @@ export class MemesCommand extends CommandModel {
         }
     }
 
-    private async _save_image(image_hash: string, params?:IMessage_format): Promise<boolean> {
+    private async _save_image(image_hash: string, params?: IMessage_format): Promise<boolean> {
 
         // Get the saved image 
         let image_path: string = "cassiohcore/Commands/CommandsAssets/downloads/recent.jpeg";
-        let save_dir_path: string = `cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/figures/` + image_hash + ".jpeg";
+        let save_dir_path: string = `cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/${params!.command_options?.includes("-t") ? "models" : "figures"}/` + image_hash + ".jpeg";
 
-        console.log(save_dir_path);
-        
 
         fs.renameSync(image_path, save_dir_path);
         return true;
@@ -81,15 +79,12 @@ export class MemesCommand extends CommandModel {
         const cmd: any = require('node-cmd');
 
         // Remove everything from the string before figures
-        filename = filename.split("figures/")[1];
-
-console.log(`cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator
-python3 chroma_key.py ${params.command_options?.includes("-u") ? params.command_options?.includes("-m") ? "-m" : "-f" : ""} ${filename ?? ""}`);
+        filename = params!.command_options?.includes("-t") ? filename.split("models/")[1] : filename.split("figures/")[1];
 
 
         cmd.run(
             `cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator
-                    python3 chroma_key.py ${params.command_options?.includes("-u") ? "-f figures/" : ""}${filename ?? ""}`,
+                    python3 chroma_key.py ${params.command_options?.includes("-u") ? (params.command_options?.includes("-t") ? "-t models/" : "-f figures/") : ""}${filename ?? ""}`,
             function (err: any, data: any, stderr: any) {
                 if (!err) {
                     params?.client_name.send_message(params?.id, "Ok lol", params);

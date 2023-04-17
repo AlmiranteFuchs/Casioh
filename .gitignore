@@ -21,6 +21,16 @@ cassiohcore/notindex.js
 auth_info_baileys/
 /downloads/
 downloads/
+#Secondary Repo dependencies
 cassiohcore/Commands/CommandsAssets/MemeGen
 /cassiohcore/Commands/CommandsAssets/MemeGen
+#Images and temporary bd
 cassiohcore/Commands/CommandsAssets/lastmessages.json
+cassiohcore/Commands/CommandsAssets/copypasta.json
+cassiohcore/Commands/CommandsAssets/userUse.json
+cassiohcore/Commands/CommandsAssets/*.png
+cassiohcore/Commands/CommandsAssets/*.jpg
+cassiohcore/Commands/CommandsAssets/*.jpeg
+
+
+
