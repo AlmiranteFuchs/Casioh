@@ -1,6 +1,5 @@
 import { SessionController } from "../Controller/SessionController";
 import { IMessage_format } from "./MessageModel";
-import json from "../Commands/CommandsAssets/userUse.json"
 import path from 'path';
 import fs from 'fs';
 
@@ -71,92 +70,6 @@ export abstract class CommandModel {
         return (access_level <= this._access_level && access_level >= 0) ? true : false;
     }
 
-    protected check_use_limit(limitedUse: boolean, useLimit: number, user_id: string, command_key: string): boolean {
-        /***
-         * Retorna se o usuário tem acesso ao comando com seus usos limitados
-         * @param {boolean}
-         * @param {number}
-         * @param {string}
-         * ---------------------------------------------
-         * 
-        */
-
-        if (limitedUse) {
-            // TODO:: Implementar controle de uso de comandos, banco de dados!!!
-            
-            // Read from json
-            let json_path = path.resolve(__dirname, "../Commands/CommandsAssets/userUse.json");
-
-            // Check if user exists
-            let userUse = (json as any)[user_id];
-            if (userUse) {
-                // Check if user has used the command before
-                let commandUse = userUse[command_key];
-                if (commandUse) {
-
-                    
-                    // Check if is time to reset
-                    let today = new Date();
-                    let lastUse = new Date(userUse["lastUse"]);
-                    if (today.getDate() !== lastUse.getDate()) {
-                        // Reset command use
-                        userUse[command_key] = 0;
-                        // Update last use
-                        userUse["lastUse"] = today;
-                        // Write to json
-                        fs.writeFile(json_path, JSON.stringify(json), (err) => {
-                            if (err) {
-                                console.log(err);
-                            }
-                        });
-                    }
-
-                    // Check if user has reached the limit
-                    if (commandUse >= useLimit) {
-                        return false;
-                    } else {
-                        // Increment command use
-                        userUse[command_key] = commandUse++;
-                        // Write to json
-                        fs.writeFile(json_path, JSON.stringify(json), (err) => {
-                            if (err) {
-                                console.log(err);
-                            }
-                        });
-                        return true;
-                    }
-                } else {
-                    // Add command to user
-                    userUse[command_key] = 1;
-                    // Write to json
-                    fs.writeFile(json_path, JSON.stringify(json), (err) => {
-                        if (err) {
-                            console.log(err);
-                        }
-                    });
-                    return true;
-                }
-            } else {
-                // Add user to json
-                (json as any)[user_id] = {};
-                // Add command to user
-                (json as any)[user_id][command_key] = 1;
-                // Add last use to user
-                (json as any)[user_id]["lastUse"] = new Date();
-                // Write to json
-                fs.writeFile(json_path, JSON.stringify(json), (err) => {
-                    if (err) {
-                        console.log(err);
-                    }
-                });
-                return true;
-            }
-
-        } else {
-            return true;
-        }
-
-    }
 
     public async Exec_command(access_level: number, params?: IMessage_format): Promise<boolean> {
         /***
@@ -167,13 +80,6 @@ export abstract class CommandModel {
             return false;
         }
 
-        if (this.check_use_limit(this._limitedUse as boolean, this._useLimit as number, params?.from as string, this._key) === false) {
-            console.log("Limite de uso do comando atingido");
-            let message: string = "Você já usou esse comando hoje, mais do que devia, tente novamente amanhã 🤷🏽‍♂️";
-
-            params?.client_name.send_message(params!.id!, message, params);
-            return false;
-        }
 
         if (this.check_access_level(access_level)) {
             await this.execute_command(params);

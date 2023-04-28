@@ -5,7 +5,7 @@ export class RestartCommand extends CommandModel {
     // I don't have time to make this cool with auto git update and stuff
 
     protected _key: string = "internal_restart";
-    protected _name: string = "/internal_restart";
+    protected _name: string = "!internal_restart";
     protected _alias: string | undefined = undefined;
     protected _options?: string[] | undefined = undefined;
     protected _description: string = "Restarts";
