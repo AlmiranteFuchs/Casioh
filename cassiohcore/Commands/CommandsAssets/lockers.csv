@@ -1,7 +1,6 @@
 locker,active,status,owner,owner_phone,owner_email,last_payment,due_date,is_overdue,notified,responsible,responsible_phone,responsible_email
-1,false,Não alugado,Fuchs,554498579172,algo@gmail.com,12,13,true,true,fuchsResponsible,554498579172,fuchsResponsible@gmail.com
-2,false,Não alugado,,,,,,false,false,,,
 3,false,Não alugado,,,,,,false,false,,,
+2,false,Não alugado,,,,,,false,false,,,
 4,false,Não alugado,,,,,,false,false,,,
 5,false,Não alugado,,,,,,false,false,,,
 6,false,Não alugado,,,,,,false,false,,,
@@ -44,21 +43,4 @@ locker,active,status,owner,owner_phone,owner_email,last_payment,due_date,is_over
 43,false,Não alugado,,,,,,false,false,,,
 44,false,Não alugado,,,,,,false,false,,,
 45,false,Não alugado,,,,,,false,false,,,
-NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
-NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
-NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
-NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
-NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
-NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
-NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
-NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
-NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
-NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
-NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
-NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
-NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
-NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
-NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
-NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
-NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
-NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
+1,true,Alugado,Fuchs,554498579172,fuchs@gmail.com,2023-04-29T20:32:48.935Z,2023-01-29T20:32:48.935Z,true,true,Fuchs_responsible,554498579172,fuchs_res@gmail.com

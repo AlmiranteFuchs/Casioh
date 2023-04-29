@@ -84,18 +84,18 @@ export class LockersCommand extends CommandModel {
     }
 
     // Generates locker object
-    private _createLockerObject(locker: number, status: string): csv_object {
+    private _createLockerObject(locker: number, status: string): any {
         return {
             locker: locker,
-            active: false,
+            active: "false",
             status: status,
             owner: "",
             owner_phone: "",
             owner_email: "",
             last_payment: "",
             due_date: "",
-            is_overdue: false,
-            notified: false,
+            is_overdue: "false",
+            notified: "false",
             responsible: "",
             responsible_phone: "",
             responsible_email: ""
@@ -202,7 +202,15 @@ export class LockersCommand extends CommandModel {
 
         lockers.forEach((element) => {
             // TODO: Determine overdue by date, make possible to confirm payment for x days
-            if ((element.is_overdue) && element.notified == false) {
+            if (!element.active) { return; }
+
+            if ((new Date().toISOString() >= element.due_date) && element.due_date != "") {
+                // Redundant, but just to be sure
+                element.is_overdue = true;
+            }
+
+            // Check if locker is overdue and if it was notified
+            if (element.is_overdue && element.notified == false) {
                 overdue_lockers.push(element);
             }
         });
@@ -249,18 +257,33 @@ export class LockersCommand extends CommandModel {
                 const message_owner: string = `Olá, ${element.owner}! O armário ${element.locker} está atrasado. Por favor, entre em contato com o responsável pelo armário para regularizar a situação,
                 telefone: ${element.responsible_phone}, email: ${element.responsible_email}`;
 
-                params?.client_name.send_message(element.owner_phone + "@s.whatsapp.net", message_owner);
+                // We need to wait a little bit to send the message, otherwise it will not be sent bc the other one
+                setTimeout(() => {
+                    params?.client_name.send_message(element.owner_phone + "@s.whatsapp.net", message_owner);
+                }, 1000);
 
                 // Update CSV file
                 overdue_lockers[i].notified = true;
             }
 
+            // Switch all the filtered lockers on the original array
+            csv_object_array.forEach((element) => {
+                overdue_lockers.forEach((overdue_element) => {
+                    if (element.locker == overdue_element.locker) {
+                        element = overdue_element;
+                    }
+                });
+            });
+
+            let copy: csv_object[] = csv_object_array;  // Remove last element, bc ????
+            copy.pop();
+
+            // Update CSV file
+            this._updateCSVFile(copy);
+
         } else {
             console.log("[Caadsioh]: Nenhum armário atrasado encontrado!");
         }
-
-        // Update CSV file
-        this._updateCSVFile(csv_object_array);
         return;
 
     }
