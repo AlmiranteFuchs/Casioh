@@ -6,6 +6,7 @@ import { IMessage_format } from '../MessageModel';
 import { API, SessionStatus } from './apiModel';
 import fs from 'fs';
 import path from 'path';
+import { LockersCommand } from '../../Commands/Lockers';
 
 
 export class baileys_api implements API {
@@ -22,6 +23,22 @@ export class baileys_api implements API {
         console.log("[Caadsioh]: Initializing baileys...");
 
         this.connectToWhatsApp();
+
+        // Run once 
+        setTimeout(() => {
+            setInterval(() => {
+                if (this.session_status == SessionStatus.SESSION_STARTED) {
+                    let fake_message: IMessage_format = {
+                        chat_id: "",
+                        client_name: this,
+                        command_key: "lockers",
+                        message: "",
+                        command_options: ["-internal"]
+                    }
+                    CommandsControllers.Command_service.Run_command(0, fake_message);
+                }
+            }, 1000 * 60 * 10);
+        }, 5000);
     }
 
     private async connectToWhatsApp() {
@@ -41,7 +58,7 @@ export class baileys_api implements API {
 
         // On credentials
         sock.ev.on('creds.update', saveCreds);
-        
+
         // On con update
         sock.ev.on('connection.update', (update) => {
             const { connection, lastDisconnect } = update;
@@ -74,6 +91,9 @@ export class baileys_api implements API {
             let formatted_message = this.parse_message(m);
 
             CommandsControllers.Command_service.Run_command(0, formatted_message);
+
+            console.log(formatted_message.chat_id);
+            
 
             // Saves the message to the database
             // Clear unused fields
@@ -240,7 +260,7 @@ export class baileys_api implements API {
             // Save altered json
             fs.writeFileSync(path_url, JSON.stringify(json));
             console.log("Mensagem salva no json");
-            
+
             return true;
 
         }

@@ -19,11 +19,17 @@ export class LockersCommand extends CommandModel {
 
     // Private variablesactive
     private _csv_path: string = path.resolve(__dirname, "./CommandsAssets/lockers.csv");
-    private _csv_headers = ["locker", "active", "status", "owner", "owner_phone", "owner_email", "last_payment", "due_date", "is_overdue", "responsible", "responsible_phone", "responsible_email"];
+    private _csv_headers = ["locker", "active", "status", "owner", "owner_phone", "owner_email", "last_payment", "due_date", "is_overdue", "notified", "responsible", "responsible_phone", "responsible_email"];
 
     protected execute_command(params?: IMessage_format | undefined): void {
         // Check if CSV already exists
         if (this._fileExists("lockers.csv")) {
+
+            // Check if its internal run 
+            if (params?.command_options?.includes("-internal")) {
+                this.checkOverdueLockers(params);
+                return;
+            }
 
             // Get phone number of the user
             const phone_number = params?.chat_id?.split("@")[0]! ?? 999999999999;
@@ -89,6 +95,7 @@ export class LockersCommand extends CommandModel {
             last_payment: "",
             due_date: "",
             is_overdue: false,
+            notified: false,
             responsible: "",
             responsible_phone: "",
             responsible_email: ""
@@ -180,12 +187,104 @@ export class LockersCommand extends CommandModel {
             last_payment: csv_array[6],
             due_date: csv_array[7],
             is_overdue: csv_array[8] == "true" ? true : false,
-            responsible: csv_array[9],
-            responsible_phone: csv_array[10],
-            responsible_email: csv_array[11]
+            notified: csv_array[9] == "true" ? true : false,
+            responsible: csv_array[10],
+            responsible_phone: csv_array[11],
+            responsible_email: csv_array[12]
         }
 
         return csv_object;
+    }
+
+    // Check for overdue lockers
+    private _checkOverdueLockers(lockers: csv_object[]): csv_object[] {
+        let overdue_lockers: csv_object[] = [];
+
+        lockers.forEach((element) => {
+            // TODO: Determine overdue by date, make possible to confirm payment for x days
+            if ((element.is_overdue) && element.notified == false) {
+                overdue_lockers.push(element);
+            }
+        });
+
+        return overdue_lockers;
+    }
+
+    // Checking overdue lockers and sending messages to responsible and owner
+    private checkOverdueLockers(params: IMessage_format): void {
+        // Read CSV file
+        const data = fs.readFileSync(this._csv_path);
+
+        // Convert CSV to string
+        const csv_string: string = data.toString();
+
+        // Convert CSV string to array
+        const csv_array: string[] = csv_string.split("\n");
+
+        // Remove headers
+        csv_array.shift();
+
+        // Cast the array to csv_object
+        const csv_object_array: csv_object[] = this._castArrayToCSVObject(csv_array);
+
+        // Check for overdue lockers
+        const overdue_lockers: csv_object[] = this._checkOverdueLockers(csv_object_array);
+
+        // Check if there are overdue lockers
+        if (overdue_lockers.length > 0) {
+            console.log("[Caadsioh]: Armários atrasados encontrados!");
+            // Send messages to responsible and owner
+
+            // Responsible 
+            for (let i = 0; i < overdue_lockers.length; i++) {
+                const element = overdue_lockers[i];
+
+                // Message to responsible
+                const message: string = `Olá, ${element.responsible}! O armário ${element.locker} está atrasado. Por favor, entre em contato com o dono do armário para regularizar a situação,
+                telefone: ${element.owner_phone}, email: ${element.owner_email}`;
+
+                params?.client_name.send_message(element.responsible_phone + "@s.whatsapp.net", message);
+
+                // Message to owner
+                const message_owner: string = `Olá, ${element.owner}! O armário ${element.locker} está atrasado. Por favor, entre em contato com o responsável pelo armário para regularizar a situação,
+                telefone: ${element.responsible_phone}, email: ${element.responsible_email}`;
+
+                params?.client_name.send_message(element.owner_phone + "@s.whatsapp.net", message_owner);
+
+                // Update CSV file
+                overdue_lockers[i].notified = true;
+            }
+
+        } else {
+            console.log("[Caadsioh]: Nenhum armário atrasado encontrado!");
+        }
+
+        // Update CSV file
+        this._updateCSVFile(csv_object_array);
+        return;
+
+    }
+
+    private _updateCSVFile(csv_object_array: csv_object[]): void {
+        let csv_string: string = this._csv_headers.join(",") + "\n";
+
+        csv_object_array.forEach((element) => {
+            csv_string += element.locker + "," +
+                element.active + "," +
+                element.status + "," +
+                element.owner + "," +
+                element.owner_phone + "," +
+                element.owner_email + "," +
+                element.last_payment + "," +
+                element.due_date + "," +
+                element.is_overdue + "," +
+                element.notified + "," +
+                element.responsible + "," +
+                element.responsible_phone + "," +
+                element.responsible_email + "\n";
+        });
+
+        fs.writeFileSync(this._csv_path, csv_string);
     }
 }
 
@@ -202,6 +301,7 @@ interface csv_object {
     last_payment: string;
     due_date: string;
     is_overdue: boolean;
+    notified: boolean;
 
     responsible: string;
     responsible_phone: string;

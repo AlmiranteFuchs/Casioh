@@ -1,46 +1,64 @@
-locker,active,status,owner,owner_phone,owner_email,last_payment,due_date,is_overdue,responsible,responsible_phone,responsible_email
-1,,Não alugado,,554498579172,,,,,,554498579172,
-2,,Não alugado,,,,,,,,554498579172,
-3,,Não alugado,,,,,,,,,
-4,,Não alugado,,,,,,,,,
-5,,Não alugado,,,,,,,,,
-6,,Não alugado,,,,,,,,,
-7,,Não alugado,,,,,,,,,
-8,,Não alugado,,,,,,,,,
-9,,Não alugado,,,,,,,,,
-10,,Não alugado,,,,,,,,,
-11,,Não alugado,,,,,,,,,
-12,,Não alugado,,,,,,,,,
-13,,Não alugado,,,,,,,,,
-14,,Não alugado,,,,,,,,,
-15,,Não alugado,,,,,,,,,
-16,,Não alugado,,,,,,,,,
-17,,Não alugado,,,,,,,,,
-18,,Não alugado,,,,,,,,,
-19,,Não alugado,,,,,,,,,
-20,,Não alugado,,,,,,,,,
-21,,Não alugado,,,,,,,,,
-22,,Não alugado,,,,,,,,,
-23,,Não alugado,,,,,,,,,
-24,,Não alugado,,,,,,,,,
-25,,Não alugado,,,,,,,,,
-26,,Não alugado,,,,,,,,,
-27,,Não alugado,,,,,,,,,
-28,,Não alugado,,,,,,,,,
-29,,Não alugado,,,,,,,,,
-30,,Não alugado,,,,,,,,,
-31,,Não alugado,,,,,,,,,
-32,,Não alugado,,,,,,,,,
-33,,Não alugado,,,,,,,,,
-34,,Não alugado,,,,,,,,,
-35,,Não alugado,,,,,,,,,
-36,,Não alugado,,,,,,,,,
-37,,Não alugado,,,,,,,,,
-38,,Não alugado,,,,,,,,,
-39,,Não alugado,,,,,,,,,
-40,,Não alugado,,,,,,,,,
-41,,Não alugado,,,,,,,,,
-42,,Não alugado,,,,,,,,,
-43,,Não alugado,,,,,,,,,
-44,,Não alugado,,,,,,,,,
-45,,Não alugado,,,,,,,,,
+locker,active,status,owner,owner_phone,owner_email,last_payment,due_date,is_overdue,notified,responsible,responsible_phone,responsible_email
+1,false,Não alugado,Fuchs,554498579172,algo@gmail.com,12,13,true,true,fuchsResponsible,554498579172,fuchsResponsible@gmail.com
+2,false,Não alugado,,,,,,false,false,,,
+3,false,Não alugado,,,,,,false,false,,,
+4,false,Não alugado,,,,,,false,false,,,
+5,false,Não alugado,,,,,,false,false,,,
+6,false,Não alugado,,,,,,false,false,,,
+7,false,Não alugado,,,,,,false,false,,,
+8,false,Não alugado,,,,,,false,false,,,
+9,false,Não alugado,,,,,,false,false,,,
+10,false,Não alugado,,,,,,false,false,,,
+11,false,Não alugado,,,,,,false,false,,,
+12,false,Não alugado,,,,,,false,false,,,
+13,false,Não alugado,,,,,,false,false,,,
+14,false,Não alugado,,,,,,false,false,,,
+15,false,Não alugado,,,,,,false,false,,,
+16,false,Não alugado,,,,,,false,false,,,
+17,false,Não alugado,,,,,,false,false,,,
+18,false,Não alugado,,,,,,false,false,,,
+19,false,Não alugado,,,,,,false,false,,,
+20,false,Não alugado,,,,,,false,false,,,
+21,false,Não alugado,,,,,,false,false,,,
+22,false,Não alugado,,,,,,false,false,,,
+23,false,Não alugado,,,,,,false,false,,,
+24,false,Não alugado,,,,,,false,false,,,
+25,false,Não alugado,,,,,,false,false,,,
+26,false,Não alugado,,,,,,false,false,,,
+27,false,Não alugado,,,,,,false,false,,,
+28,false,Não alugado,,,,,,false,false,,,
+29,false,Não alugado,,,,,,false,false,,,
+30,false,Não alugado,,,,,,false,false,,,
+31,false,Não alugado,,,,,,false,false,,,
+32,false,Não alugado,,,,,,false,false,,,
+33,false,Não alugado,,,,,,false,false,,,
+34,false,Não alugado,,,,,,false,false,,,
+35,false,Não alugado,,,,,,false,false,,,
+36,false,Não alugado,,,,,,false,false,,,
+37,false,Não alugado,,,,,,false,false,,,
+38,false,Não alugado,,,,,,false,false,,,
+39,false,Não alugado,,,,,,false,false,,,
+40,false,Não alugado,,,,,,false,false,,,
+41,false,Não alugado,,,,,,false,false,,,
+42,false,Não alugado,,,,,,false,false,,,
+43,false,Não alugado,,,,,,false,false,,,
+44,false,Não alugado,,,,,,false,false,,,
+45,false,Não alugado,,,,,,false,false,,,
+NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
+NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
+NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
+NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
+NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
+NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
+NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
+NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
+NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
+NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
+NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
+NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
+NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
+NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
+NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
+NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
+NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
+NaN,false,undefined,undefined,undefined,undefined,undefined,undefined,false,false,undefined,undefined,undefined
