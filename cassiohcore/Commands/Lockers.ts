@@ -31,6 +31,16 @@ export class LockersCommand extends CommandModel {
                 return;
             }
 
+            // Check if its the pay option
+            if (params?.command_options?.includes("-pay")) {
+                if(params.command_params?.length == 0){
+                    params?.client_name.send_message(params.chat_id, "Você precisa especificar o armário que deseja registrar como pago");
+                    return;
+                }
+                this._payLocker(params);
+                return;
+            }
+
             // Get phone number of the user
             const phone_number = params?.chat_id?.split("@")[0]! ?? 999999999999;
 
@@ -248,8 +258,8 @@ export class LockersCommand extends CommandModel {
                 const element = overdue_lockers[i];
 
                 // Message to responsible
-                const message: string = `Olá, ${element.responsible}! O armário ${element.locker} está atrasado. Por favor, entre em contato com o dono do armário para regularizar a situação,
-                telefone: ${element.owner_phone}, email: ${element.owner_email}`;
+                const message: string = `Olá, ${element.responsible}! O armário ${element.locker} está atrasado. Por favor, entre em contato com ${element.owner} para regularizar a situação,
+                telefone: ${element.owner_phone}, email: ${element.owner_email}, após confirme o pagamento com o comando !lockers -p ${element.locker}`;
 
                 params?.client_name.send_message(element.responsible_phone + "@s.whatsapp.net", message);
 
@@ -259,7 +269,7 @@ export class LockersCommand extends CommandModel {
 
                 // We need to wait a little bit to send the message, otherwise it will not be sent bc the other one
                 setTimeout(() => {
-                    params?.client_name.send_message(element.owner_phone + "@s.whatsapp.net", message_owner);
+                    params?.client_name.send_message(element.owner_phone + ">@s.whatsapp.net", message_owner);
                 }, 1000);
 
                 // Update CSV file
@@ -308,6 +318,61 @@ export class LockersCommand extends CommandModel {
         });
 
         fs.writeFileSync(this._csv_path, csv_string);
+    }
+
+    private _payLocker(params: IMessage_format): void {
+        // Get all the lockers
+        const data = fs.readFileSync(this._csv_path);
+
+        // Convert CSV to string
+        const csv_string: string = data.toString();
+
+        // Convert CSV string to array
+        const csv_array: string[] = csv_string.split("\n");
+
+        // Remove headers
+        csv_array.shift();
+
+        // Cast the array to csv_object
+        const csv_object_array: csv_object[] = this._castArrayToCSVObject(csv_array);
+
+        // Search for the locker
+        let locker: csv_object | undefined = csv_object_array.find((element) => {
+            return element.locker == parseInt(params.command_params![0]);
+        });
+
+        if (locker == undefined) {
+            params.client_name.send_message(params.chat_id, "Armário não encontrado!");
+            return;
+        }
+        
+        // Check if the responsible for the locker is the one who is paying
+        if (locker.responsible_phone != params.chat_id?.split("@")[0]) {
+            params.client_name.send_message(params.chat_id, "Você não é o responsável pelo armário!");
+            return;
+        }
+
+        // Add 30 days to the due date
+        let due_date: Date = new Date(locker.due_date);
+        due_date.setDate(due_date.getDate() + 30);
+
+        // Update locker
+        locker.due_date = due_date.toISOString();
+        locker.is_overdue = false;
+        locker.notified = false;
+
+        // Alter the locker on the array
+        csv_object_array.forEach((element) => {
+            if (element.locker == locker!.locker) {
+                element = locker as csv_object;
+            }
+        });
+
+        csv_object_array.pop();
+
+        // Update CSV file
+        this._updateCSVFile(csv_object_array);
+        
     }
 }
 
