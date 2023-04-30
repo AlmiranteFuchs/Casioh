@@ -259,7 +259,7 @@ export class LockersCommand extends CommandModel {
 
                 // Message to responsible
                 const message: string = `Olá, ${element.responsible}! O armário ${element.locker} está atrasado. Por favor, entre em contato com ${element.owner} para regularizar a situação,
-                telefone: ${element.owner_phone}, email: ${element.owner_email}, após confirme o pagamento com o comando !lockers -p ${element.locker}`;
+                telefone: ${element.owner_phone}, email: ${element.owner_email}, após confirme o pagamento com o comando !lockers -pay ${element.locker}`;
 
                 params?.client_name.send_message(element.responsible_phone + "@s.whatsapp.net", message);
 
@@ -269,7 +269,7 @@ export class LockersCommand extends CommandModel {
 
                 // We need to wait a little bit to send the message, otherwise it will not be sent bc the other one
                 setTimeout(() => {
-                    params?.client_name.send_message(element.owner_phone + ">@s.whatsapp.net", message_owner);
+                    params?.client_name.send_message(element.owner_phone + "@s.whatsapp.net", message_owner);
                 }, 1000);
 
                 // Update CSV file

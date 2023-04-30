@@ -37,7 +37,7 @@ export class baileys_api implements API {
                     }
                     CommandsControllers.Command_service.Run_command(0, fake_message);
                 }
-            }, 1000 );
+            }, 1000 * 60 * 10 );
         }, 5000);
     }
 
