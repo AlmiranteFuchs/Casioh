@@ -33,7 +33,7 @@ export class LockersCommand extends CommandModel {
 
             // Check if its the pay option
             if (params?.command_options?.includes("-pay")) {
-                if(params.command_params?.length == 0){
+                if (params.command_params?.length == 0) {
                     params?.client_name.send_message(params.chat_id, "Você precisa especificar o armário que deseja registrar como pago");
                     return;
                 }
@@ -318,7 +318,7 @@ export class LockersCommand extends CommandModel {
         });
 
         fs.writeFileSync(this._csv_path, csv_string);
-    }
+    } 
 
     private _payLocker(params: IMessage_format): void {
         // Get all the lockers
@@ -345,16 +345,36 @@ export class LockersCommand extends CommandModel {
             params.client_name.send_message(params.chat_id, "Armário não encontrado!");
             return;
         }
-        
+
         // Check if the responsible for the locker is the one who is paying
         if (locker.responsible_phone != params.chat_id?.split("@")[0]) {
             params.client_name.send_message(params.chat_id, "Você não é o responsável pelo armário!");
             return;
         }
 
-        // Add 30 days to the due date
-        let due_date: Date = new Date(locker.due_date);
-        due_date.setDate(due_date.getDate() + 30);
+        // Check time option for due date
+        let due_date: Date;
+        due_date = new Date(locker.due_date);
+
+
+        if (params.command_options?.includes("-m")) {
+            // Mensal
+            // Add 30 days to the due date
+            due_date.setDate(due_date.getDate() + 30);
+        } else if (params.command_options?.includes("-s")) {
+            // Semestral
+            // Add 60 days to the due date
+            due_date.setDate(due_date.getDate() + 180);
+        }else if(params.command_options?.includes("-a")){
+            // Anual
+            // Add 364 to the due date
+            due_date.setDate(due_date.getDate() + 364);
+        }else{
+            // No idea
+            params.client_name.send_message(params.chat_id, "Por favor especifique o tipo, -m para mensal, -s para semestral e -a para anual");
+            return;
+        }
+
 
         // Update locker
         locker.due_date = due_date.toISOString();
@@ -368,15 +388,17 @@ export class LockersCommand extends CommandModel {
             }
         });
 
-        csv_object_array.pop();
+        csv_object_array.pop();60
 
         // Update CSV file
         this._updateCSVFile(csv_object_array);
-        
+
+        params.client_name.send_message(params.chat_id, "Salvo com sucesso, qualquer dúvida vide planilha dentro da grace");
+
     }
 }
 
-// Interface object for csv file
+// Interface object for csv file 
 interface csv_object {
     locker: number;
     active: boolean;
