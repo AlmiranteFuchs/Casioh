@@ -1,6 +1,14 @@
 import { CommandModel } from "../Modal/CommandModel";
 import { IMessage_format } from "../Modal/MessageModel";
 
+function escapeRegExp(str: string): string {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
+function replaceAll(str: string, find: string, replace: string): string {
+    return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
+
 export class UwUfyCommand extends CommandModel {
     protected _active: boolean = true;
     protected _hidden: boolean = false;
@@ -28,35 +36,19 @@ export class UwUfyCommand extends CommandModel {
                 params?.client_name.send_message(params?.id, "Vc mandouwu o comando sem o comando? @‘~’@");
                 return;
             } else {
-                let msg = params?.text!.substr(word_idx);
-                if (msg === undefined) {
+                let message_to_send = params?.text!.substr(word_idx);
+                if (message_to_send === undefined) {
                     params?.client_name.send_message(params?.id, "Vc mandouwu o comando sem o comando? @‘~’@");
                     return;
                 }
+                message_to_send = replaceAll(message_to_send, "l", "w");
+                message_to_send = replaceAll(message_to_send, "r", "w");
+                message_to_send = replaceAll(message_to_send, "u", "uwu");
+                message_to_send = replaceAll(message_to_send, "L", "W");
+                message_to_send = replaceAll(message_to_send, "R", "W");
+                message_to_send = replaceAll(message_to_send, "U", "Uwu");
 
-                let newmsg = ""
-                for (let i = 0; i < msg.length; i++) {
-                    switch (msg[i]) {
-                        case 'r':
-                        case 'l':
-                            newmsg += 'w'
-                            break
-                        case 'L':
-                        case 'R':
-                            newmsg += 'W'
-                            break
-                        case 'u':
-                            newmsg += 'uwu'
-                            break
-                        case 'U':
-                            newmsg += 'Uwu'
-                            break
-                        default:
-                            newmsg += msg[i]
-                    }
-                }
-
-                params?.client_name.send_message(params?.id, msg);
+                params?.client_name.send_message(params?.id, message_to_send);
                 return;
             }
         } catch (error) {
