@@ -19,8 +19,7 @@ cassiohcore/notindex.js
 .env
 /auth_info_baileys/
 auth_info_baileys/
-/downloads/
-downloads/
+cassiohcore/Commands/CommandsAssets/downloads/
 #Secondary Repo dependencies
 cassiohcore/Commands/CommandsAssets/MemeGen
 /cassiohcore/Commands/CommandsAssets/MemeGen

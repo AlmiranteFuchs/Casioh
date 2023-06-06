@@ -1,6 +1,6 @@
 {
   "name": "cassiohcore",
-  "version": "2.0.16",
+  "version": "2.0.20",
   "description": "Computer Assisted Services on Input and Output Helper, Casioh",
   "main": "index.js",
   "scripts": {
@@ -13,13 +13,13 @@
   "dev": "cd cassiohcore/Commands/CommandsAssets/MemeGen/Computudos-Simulator/ && git pull && cd - && npx nodemon",
   "license": "MIT",
   "dependencies": {
-    "@adiwajshing/baileys": "^5.0.0",
     "@adiwajshing/keyed-db": "^0.2.4",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@hapi/boom": "^10.0.0",
     "@types/cheerio": "^0.22.31",
     "@types/node-wit": "^6.0.1",
     "@types/ws": "^8.5.4",
+    "@whiskeysockets/baileys": "^6.1.0",
     "axios": "^0.27.2",
     "cheerio": "^1.0.0-rc.12",
     "dotenv": "^16.0.3",

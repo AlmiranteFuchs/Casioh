@@ -1,4 +1,4 @@
-import makeWASocket, { DisconnectReason, useMultiFileAuthState, downloadMediaMessage } from '@adiwajshing/baileys'
+import makeWASocket, { DisconnectReason, useMultiFileAuthState, downloadMediaMessage } from '@whiskeysockets/baileys'
 import { writeFile } from 'fs/promises'
 import { Boom } from '@hapi/boom'
 import { CommandsControllers } from '../..';
@@ -56,14 +56,17 @@ export class baileys_api implements API {
             }
         });
         sock.ev.on('messages.upsert', async m => {
-            console.log('[Cassioh]: message received');
-
             // Check if message is from the bot
             if (m.messages[0].key.fromMe) return;
+            console.log('[Cassioh]: message received');
+
 
             // Check if message is text, image or audio
             let messageType = m.messages[0].message?.imageMessage ? 'imageMessage' : 'textMessage';
             messageType = m.messages[0].message?.audioMessage ? 'audioMessage' : messageType;
+
+            console.log('[Cassioh]: message type: ', messageType);
+
 
             // if the message is audio
             if (messageType === 'audioMessage') {
@@ -126,12 +129,14 @@ export class baileys_api implements API {
 
 
             // Check if message starts with the prefix
-            if (!m.messages[0].message?.conversation?.startsWith("/")) return;
+            // if (!m.messages[0].message?.conversation?.startsWith("/")) return; // old
+
+            if (!m.messages[0].message?.extendedTextMessage?.text?.startsWith("/")) return;
+            console.log('[Cassioh]: message starts with prefix');
+
+
 
             let formatted_message = this.parse_message(m);
-
-            // TODO: Get user info from DB, and access the user level
-            // DBCOntrollers.User_controller.GetUser(formatted_message.user_id);
 
             CommandsControllers.Command_service.Run_command(0, formatted_message);
 
@@ -244,7 +249,7 @@ export class baileys_api implements API {
         const msg: any = message.messages[0];
 
         // Message body, can be a text or a image caption
-        const text: string = msg.message?.imageMessage?.caption ?? (msg.message.conversation ?? msg.message.extendedTextMessage.text);
+        const text: string = msg.message?.imageMessage?.caption ?? (msg.message.extendedTextMessage.text);
 
         // Raw params, all words in the message, options and params
         const raw_params = text.split(/\s*[\s,]\s*/).slice(1);
@@ -257,7 +262,7 @@ export class baileys_api implements API {
         return {
             // Message Id, chat can be group or user and the same person
             id: msg.key.remoteJid,
-            body: msg.message.conversation ?? msg.message.extendedTextMessage.text,
+            body: msg.message.extendedTextMessage.text,
             text: text,
             // Unique id, users only have one
             from: msg.key.participant ?? msg.key.remoteJid,
@@ -316,7 +321,7 @@ export class baileys_api implements API {
             // Save altered json
             fs.writeFileSync(path_url, JSON.stringify(json));
             console.log("Mensagem salva no json");
-            
+
             return true;
 
         }

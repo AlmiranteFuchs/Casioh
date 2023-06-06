@@ -2,51 +2,50 @@
     "messages": [
         {
             "key": {
-                "remoteJid": "120363041877741739@g.us",
+                "remoteJid": "554498579172@s.whatsapp.net",
                 "fromMe": false,
-                "id": "3EB01F3CF46A01AB965A",
-                "participant": "554498579172@s.whatsapp.net"
+                "id": "3EB0729146B12929C7282A",
+                "participant": "undefined"
             },
-            "messageTimestamp": 1675123033,
+            "messageTimestamp": 1686102306,
             "pushName": "A. Fuchs",
+            "broadcast": false,
             "message": {
-                "conversation": "a",
-                "messageContextInfo": {
-                    "deviceListMetadata": {
-                        "senderKeyHash": "y97nFe7U69hDTw==",
-                        "senderTimestamp": "1674671036",
-                        "recipientKeyHash": "bFRsFPdHBKNGEQ==",
-                        "recipientTimestamp": "1674790937"
-                    },
-                    "deviceListMetadataVersion": 2
-                }
-            },
-            "message_reply": {
                 "extendedTextMessage": {
-                    "text": "a",
+                    "text": "/olá",
                     "contextInfo": {
-                        "stanzaId": "3EB0F843912B1739D6F2",
-                        "participant": "554498579172@s.whatsapp.net",
-                        "quotedMessage": {
-                            "conversation": "a"
-                        },
-                        "disappearingMode": {
-                            "initiator": "CHANGED_IN_CHAT"
-                        }
+                        "mentionedJid": [],
+                        "groupMentions": [],
+                        "ephemeralSettingTimestamp": [
+                            "Long"
+                        ],
+                        "disappearingMode": [
+                            "DisappearingMode"
+                        ]
                     },
-                    "inviteLinkGroupTypeV2": "DEFAULT"
+                    "inviteLinkGroupTypeV2": 0
                 },
                 "messageContextInfo": {
                     "deviceListMetadata": {
-                        "senderKeyHash": "y97nFe7U69hDTw==",
-                        "senderTimestamp": "1674671036",
-                        "recipientKeyHash": "bFRsFPdHBKNGEQ==",
-                        "recipientTimestamp": "1674790937"
+                        "senderKeyIndexes": [],
+                        "recipientKeyIndexes": [],
+                        "senderKeyHash": [
+                            "Uint8Array"
+                        ],
+                        "senderTimestamp": [
+                            "Long"
+                        ],
+                        "recipientKeyHash": [
+                            "Uint8Array"
+                        ],
+                        "recipientTimestamp": [
+                            "Long"
+                        ]
                     },
                     "deviceListMetadataVersion": 2
                 }
             }
         }
     ],
-    "type": "append"
+    "type": "notify"
 }
