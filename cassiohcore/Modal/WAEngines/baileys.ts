@@ -59,6 +59,11 @@ export class baileys_api implements API {
             // Check if message is from the bot
             if (m.messages[0].key.fromMe) return;
             console.log('[Cassioh]: message received');
+            console.log('[Cassioh]: from ' + m.messages[0].key.remoteJid);
+
+            // Debug menssage 
+            console.log('[Cassioh]: message: ', m.messages[0].message?.conversation);
+
 
 
             // Check if message is text, image or audio
@@ -129,9 +134,9 @@ export class baileys_api implements API {
 
 
             // Check if message starts with the prefix
-            // if (!m.messages[0].message?.conversation?.startsWith("/")) return; // old
-
-            if (!m.messages[0].message?.extendedTextMessage?.text?.startsWith("/")) return;
+            // Fucking hell
+            const fuckmessage = m.messages[0].message?.extendedTextMessage?.text ?? m.messages[0].message?.conversation;
+            if (!fuckmessage?.startsWith("/")) return;
             console.log('[Cassioh]: message starts with prefix');
 
 
@@ -249,7 +254,7 @@ export class baileys_api implements API {
         const msg: any = message.messages[0];
 
         // Message body, can be a text or a image caption
-        const text: string = msg.message?.imageMessage?.caption ?? (msg.message.extendedTextMessage.text);
+        const text: string = msg.message?.imageMessage?.caption ?? (msg.message.extendedTextMessage?.text) ?? msg.message?.conversation;
 
         // Raw params, all words in the message, options and params
         const raw_params = text.split(/\s*[\s,]\s*/).slice(1);
@@ -262,7 +267,7 @@ export class baileys_api implements API {
         return {
             // Message Id, chat can be group or user and the same person
             id: msg.key.remoteJid,
-            body: msg.message.extendedTextMessage.text,
+            body: msg.message.extendedTextMessage?.text,
             text: text,
             // Unique id, users only have one
             from: msg.key.participant ?? msg.key.remoteJid,
