@@ -25,6 +25,7 @@ cassiohcore/Commands/CommandsAssets/MemeGen
 /cassiohcore/Commands/CommandsAssets/MemeGen
 #Images and temporary bd
 cassiohcore/Commands/CommandsAssets/lastmessages.json
+cassiohcore/Commands/CommandsAssets/passive-response.json
 cassiohcore/Commands/CommandsAssets/copypasta.json
 cassiohcore/Commands/CommandsAssets/userUse.json
 cassiohcore/Commands/CommandsAssets/*.png

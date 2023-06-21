@@ -67,9 +67,7 @@ export class baileys_api implements API {
 
 
             // Check if message is text, image or audio
-            let messageType = m.messages[0].message?.imageMessage ? 'imageMessage' : 'textMessage';
-            messageType = m.messages[0].message?.audioMessage ? 'audioMessage' : messageType;
-
+            let messageType = m.messages[0].message?.imageMessage?.mimetype ? 'imageMessage' : m.messages[0].message?.audioMessage?.mimetype ? 'audioMessage' : m.messages[0].message?.stickerMessage?.mimetype ? 'stickerMessage' : 'textMessage';
             console.log('[Cassioh]: message type: ', messageType);
 
 
@@ -136,12 +134,15 @@ export class baileys_api implements API {
             // Check if message starts with the prefix
             // Fucking hell
             const fuckmessage = m.messages[0].message?.extendedTextMessage?.text ?? m.messages[0].message?.conversation;
-            if (!fuckmessage?.startsWith("/")) return;
-            console.log('[Cassioh]: message starts with prefix');
-
-
-
             let formatted_message = this.parse_message(m);
+
+            if (!fuckmessage?.startsWith("/")) {
+                // Runs passive detection
+                if (messageType == 'textMessage') {
+                    CommandsControllers.Command_service.Run_command_passive(0, formatted_message);
+                }
+                return;
+            };
 
             CommandsControllers.Command_service.Run_command(0, formatted_message);
 
@@ -253,6 +254,8 @@ export class baileys_api implements API {
         // Message object
         const msg: any = message.messages[0];
 
+        const message_type = msg.message?.imageMessage?.mimetype ? 'imageMessage' : msg.message?.audioMessage?.mimetype ? 'audioMessage' : msg.message?.stickerMessage?.mimetype ? 'stickerMessage' : 'textMessage';
+
         // Message body, can be a text or a image caption
         const text: string = msg.message?.imageMessage?.caption ?? (msg.message.extendedTextMessage?.text) ?? msg.message?.conversation;
 
@@ -276,7 +279,7 @@ export class baileys_api implements API {
             chat_id: msg.key.remoteJid,
             isFrom_group: msg.key.remoteJid.includes("@g.us"),
             _serialized_chat_id: "",
-            isMedia: msg.message?.imageMessage ? true : false,
+            isMedia: message_type == 'textMessage' ? false : true,
             last_chat_message_id: "",
             not_Spam: false,
             timestamp: msg.messageTimestamp,

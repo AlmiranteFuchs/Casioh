@@ -19,11 +19,12 @@ import { MemesCommand } from "../Commands/ComputuMeme";
 import { LaEleCommand } from "../Commands/LaEle";
 import { RestartCommand } from "../Commands/Restart";
 import { UwUfyCommand } from "../Commands/UwUfy";
+import { PassiveResponse } from "../Commands/PassiveResponse";
 
 const _ = require("lodash");
 
 class CommandsController {
-  constructor(public Commands_list: Array<CommandModel>) {}
+  constructor(public Commands_list: Array<CommandModel>) { }
 
   public async Run_command(
     user_access_level: number,
@@ -33,7 +34,7 @@ class CommandsController {
     let command: CommandModel = _.find(
       this.Commands_list,
       function (el: CommandModel) {
-        return el.key == trigger_key || el.alias == trigger_key;
+        return (el.key == trigger_key || el.alias == trigger_key);
       }
     );
 
@@ -48,6 +49,24 @@ class CommandsController {
       return;
     }
     console.log("Comando não encontrado");
+  }
+
+  public async Run_command_passive(
+    user_access_level: number,
+    params: IMessage_format
+  ): Promise<void> {
+    const _command_passive: PassiveResponse = new PassiveResponse();
+
+    let command: CommandModel = _command_passive;
+
+    let command_result = await command.Exec_command(
+      user_access_level,
+      params
+    );
+    command_result
+      ? console.log("Executado com sucesso")
+      : console.log("Algo de errado aconteceu");
+    return;
   }
 }
 
@@ -70,8 +89,9 @@ export class CommandsControllerService {
   private _command_terms: TermsCommand;
   private _command_memes: MemesCommand;
   private _command_laEle: LaEleCommand;
-  private _command_restart : RestartCommand;
+  private _command_restart: RestartCommand;
   private _command_uwufy: UwUfyCommand;
+  private _command_passive: PassiveResponse;
 
   public Command_service: CommandsController;
 
@@ -97,6 +117,7 @@ export class CommandsControllerService {
     this._command_laEle = new LaEleCommand();
     this._command_restart = new RestartCommand();
     this._command_uwufy = new UwUfyCommand();
+    this._command_passive = new PassiveResponse();
 
     CommandsControllerService._commands_array.push(this._command_hello);
     CommandsControllerService._commands_array.push(this._command_everyone);
@@ -117,6 +138,7 @@ export class CommandsControllerService {
     CommandsControllerService._commands_array.push(this._command_laEle);
     CommandsControllerService._commands_array.push(this._command_restart);
     CommandsControllerService._commands_array.push(this._command_uwufy);
+    CommandsControllerService._commands_array.push(this._command_passive);
 
     this.Command_service = new CommandsController(
       CommandsControllerService._commands_array
