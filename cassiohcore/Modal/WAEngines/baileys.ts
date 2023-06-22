@@ -134,6 +134,9 @@ export class baileys_api implements API {
             // Check if message starts with the prefix
             // Fucking hell
             const fuckmessage = m.messages[0].message?.extendedTextMessage?.text ?? m.messages[0].message?.conversation;
+
+            if (!fuckmessage) { return; }
+
             let formatted_message = this.parse_message(m);
 
             if (!fuckmessage?.startsWith("/")) {
@@ -252,7 +255,7 @@ export class baileys_api implements API {
     public parse_message(message: any): IMessage_format {
         // Transforms the message to a common format, used by the command service
         // Message object
-        const msg: any = message.messages[0];
+        const msg: any = message.messages[0]!;
 
         const message_type = msg.message?.imageMessage?.mimetype ? 'imageMessage' : msg.message?.audioMessage?.mimetype ? 'audioMessage' : msg.message?.stickerMessage?.mimetype ? 'stickerMessage' : msg.message?.reactionMessage ? 'reactionMessage' : 'textMessage';
 
@@ -267,7 +270,7 @@ export class baileys_api implements API {
         const options: string[] = raw_params.filter((word: string) => word.startsWith("-"));
 
         console.log("\n\n\ Id: " + msg.key.remoteJid);
-        
+
 
         return {
             // Message Id, chat can be group or user and the same person

@@ -40,7 +40,7 @@ export class PassiveResponse extends CommandModel {
         // Check if the message is a command to add a new response
         if (params?.text?.toLowerCase()?.startsWith("!addresponse")) {
             // Check valid
-            if (!(params?.command_params?.length! >= 2)) {
+            if (params?.command_params?.length! == 0) {
                 params!.client_name.send_message(params?.id, "E cade o que tu quer adicionar?", params);
                 return;
             }
