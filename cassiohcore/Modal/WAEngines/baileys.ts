@@ -67,7 +67,7 @@ export class baileys_api implements API {
 
 
             // Check if message is text, image or audio
-            let messageType = m.messages[0].message?.imageMessage?.mimetype ? 'imageMessage' : m.messages[0].message?.audioMessage?.mimetype ? 'audioMessage' : m.messages[0].message?.stickerMessage?.mimetype ? 'stickerMessage' : 'textMessage';
+            let messageType = m.messages[0].message?.imageMessage?.mimetype ? 'imageMessage' : m.messages[0].message?.audioMessage?.mimetype ? 'audioMessage' : m.messages[0].message?.stickerMessage?.mimetype ? 'stickerMessage' : m.messages[0].message?.reactionMessage ? 'reactionMessage' : 'textMessage';
             console.log('[Cassioh]: message type: ', messageType);
 
 
@@ -254,7 +254,7 @@ export class baileys_api implements API {
         // Message object
         const msg: any = message.messages[0];
 
-        const message_type = msg.message?.imageMessage?.mimetype ? 'imageMessage' : msg.message?.audioMessage?.mimetype ? 'audioMessage' : msg.message?.stickerMessage?.mimetype ? 'stickerMessage' : 'textMessage';
+        const message_type = msg.message?.imageMessage?.mimetype ? 'imageMessage' : msg.message?.audioMessage?.mimetype ? 'audioMessage' : msg.message?.stickerMessage?.mimetype ? 'stickerMessage' : msg.message?.reactionMessage ? 'reactionMessage' : 'textMessage';
 
         // Message body, can be a text or a image caption
         const text: string = msg.message?.imageMessage?.caption ?? (msg.message.extendedTextMessage?.text) ?? msg.message?.conversation;
@@ -266,6 +266,8 @@ export class baileys_api implements API {
         // Command options, all options starting with "-" 
         const options: string[] = raw_params.filter((word: string) => word.startsWith("-"));
 
+        console.log("\n\n\ Id: " + msg.key.remoteJid);
+        
 
         return {
             // Message Id, chat can be group or user and the same person
