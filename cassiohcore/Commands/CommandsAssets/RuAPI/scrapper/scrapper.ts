@@ -157,8 +157,8 @@ export class Scrapper {
 
 // Enum for the links of the restaurants
 export enum RestaurantLink {
-    "Politecnico" = "https://pra.ufpr.br/ru/ru-centro-politecnico/",
-    "Reitoria" = "https://pra.ufpr.br/ru/ru-central/",
-    "Agrárias" = "https://pra.ufpr.br/ru/cardapio-ru-agrarias/",
-    "Botânico" = "https://pra.ufpr.br/ru/cardapio-ru-jardim-botanico/",
+    "politécnico" = "https://pra.ufpr.br/ru/ru-centro-politecnico/",
+    "reitoria" = "https://pra.ufpr.br/ru/ru-central/",
+    "agrárias" = "https://pra.ufpr.br/ru/cardapio-ru-agrarias/",
+    "botânico" = "https://pra.ufpr.br/ru/cardapio-ru-jardim-botanico/",
 }

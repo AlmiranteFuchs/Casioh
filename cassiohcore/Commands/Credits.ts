@@ -38,7 +38,7 @@ export class InfoCommand extends CommandModel {
 
 
                 // Send the message
-                let message: string = "_*C.A.S.S.I.O.H*_ : Computer ASSisted Input & Output Helper\n*Versão*: " + "*" + version + "* " + "\n*Contribuidores*: _" + names.join(", ") + "_ 🖤";
+                let message: string = "_*C.A.S.S.I.O.H*_ : Computer ASSisted Input & Output Helper\n*Versão*: " + "*" + version + "* " + "\n*Contribuidores*: _" + names.join(", ").toLocaleLowerCase().replace("bruno","efi") + "_ 🖤";
                 params?.client_name.send_message(params?.id, message, params);
             });
 

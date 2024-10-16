@@ -22,7 +22,7 @@ export class RuMenuCommand extends CommandModel {
 
     try {
 
-      const restaurat: RestaurantLink = params?.command_params![0] as RestaurantLink ?? RestaurantLink.Politecnico;
+      const restaurat: RestaurantLink = (params?.command_params![0]) as RestaurantLink ?? RestaurantLink.politécnico;
       const getMenu = async () => {
 
         const menu: Cardapio[] = await Scrapper.get(restaurat);
